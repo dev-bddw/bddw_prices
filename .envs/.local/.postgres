@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=bddw_prices
+POSTGRES_USER=foDrpLpSuPQOwooHZElfDMEQzQuPjfdb
+POSTGRES_PASSWORD=kmwyM42nx6KFi3I4Zt2VoYBFGOR90yL7XQyVuD5jkJyjJ57TqWqKVzNhN6tPk6Sd

@@ -1,0 +1,17 @@
+{% load static %}
+<div id="caption-{{caption.pk}}" class="row">
+    <div class="col-2">
+        {{caption.caption_title}}
+    </div>
+    <div class="col-9">
+        {{caption.caption}}
+    </div>
+    <div class="col-1">
+        <img
+        hx-get='{% url 'formula_tearsheets:change_caption' caption.pk %}'
+        hx-trigger='click'
+        hx-swap='outerHTML'
+        hx-target="#caption-{{caption.pk}}"
+        height="10px" src="{% static 'images/edit.svg' %}">
+    </div>
+</div>

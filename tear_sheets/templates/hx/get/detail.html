@@ -1,0 +1,27 @@
+{% load static %}
+<form>
+    <div id="detail-{{detail.pk}}" style="padding-bottom: -20px;" class="row">
+        <div class="col-2">
+            <input value="{{detail.name}}" name="name">
+        </div>
+
+        <div class="col-9">
+            <input value="{{detail.details}}" name="details">
+        </div>
+        <div class="col-1">
+            <img
+            hx-post='{% url 'tearsheets:change_detail' detail.pk %}'
+            hx-trigger='click'
+            hx-swap='outerHTML'
+            hx-target="#detail-{{detail.pk}}"
+            height="10px" src="{% static 'images/okay.svg' %}">
+            <img
+            hx-put='{% url 'tearsheets:change_detail' detail.pk %}'
+            hx-trigger='click'
+            hx-swap='outerHTML'
+            hx-target="#detail-{{detail.pk}}"
+            height="10px" src="{% static 'images/cancel.svg' %}">
+        </div>
+    </div>
+
+</form>

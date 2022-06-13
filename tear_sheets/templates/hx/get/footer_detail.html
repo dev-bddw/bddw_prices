@@ -1,0 +1,25 @@
+{% load static %}
+<form>
+<div id="footer-detail-{{footer_detail.pk}}" class="row">
+    <div class="col-2">
+        <input name='name' value="{{footer_detail.name}}">
+    </div>
+    <div class="col-9">
+        <input name='details' value="{{footer_detail.details}}">
+    </div>
+    <div class="col-1">
+        <img
+        hx-post='{% url 'tearsheets:change_footer_detail' footer_detail.pk %}'
+        hx-trigger='click'
+        hx-swap='outerHTML'
+        hx-target="#footer-detail-{{footer_detail.pk}}"
+        height="10px" src="{% static 'images/okay.svg' %}">
+        <img
+        hx-put='{% url 'tearsheets:change_footer_detail' footer_detail.pk %}'
+        hx-trigger='click'
+        hx-swap='outerHTML'
+        hx-target="#footer-detail-{{footer_detail.pk}}"
+        height="10px" src="{% static 'images/cancel.svg' %}">
+    </div>
+</div>
+</form>

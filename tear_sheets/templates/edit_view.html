@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .image-container {
+        position: relative;
+        {% comment %} width: 50%; {% endcomment %}
+      }
+
+      .edit-image {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: white;
+      }
+
+      .image-container:hover .overlay {
+        opacity: .9;
+      }
+
+      .text {
+        color: grey;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        text-align: center;
+      }
+</style>
+
+<div style="font-size: 8px; width: 816px;">
+
+    <div style="margin-left:75px; margin-right:75px;">
+        <div class="pt-5 pb-2">
+                <h3 id="this">{{tearsheet}}
+                <img
+                    style="margin-bottom:5px; margin-left:5px;"
+                    height="20px"
+                    src="{% static 'images/edit.svg' %}"
+                    hx-get='{% url 'tearsheets:change_title' tearsheet.pk %}'
+                    hx-trigger='click'
+                    hx-swap='outerHTML'
+                    hx-target="#this"
+                    >
+                </h3>
+        </div>
+        <div class="image-container">
+            <form enctype="multipart/form-data" action="{% url 'tearsheets:change_image' tearsheet.pk %}" method="POST">
+                {% csrf_token %}
+                <div id="picture" class="overlay">
+                    <div class="text">CHANGE IMAGE FOR {{tearsheet}}</div>
+                </div>
+                <img class="img-fluid edit-image" src="{{tearsheet.image.url}}" name="pic" >
+                <input onChange="form.submit()" id="fileinput" type="file" name="fileinput" style="display:none"/>
+                {% comment %} <input type="submit" name="button" value="Submit"/> {% endcomment %}
+            </form>
+        </div>
+
+
+        <!-- CAPTIONS -->
+        {% if captions %}
+        <div id="captions" class="pt-3">
+            {% for caption in captions  %}
+            <div id="caption-{{caption.pk}}" class="row">
+                <div class="col-2">
+                    {{caption.caption_title}}
+                </div>
+                <div class="col-9">
+                    {{caption.caption}}
+                </div>
+                <div class="col-1">
+                    <img
+                    hx-get='{% url 'tearsheets:change_caption' caption.pk %}'
+                    hx-trigger='click'
+                    hx-swap='outerHTML'
+                    hx-target="#caption-{{caption.pk}}"
+                    height="10px" src="{% static 'images/edit.svg' %}">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- CAPTIONS -->
+
+        <!-- DETAILS -->
+        {% if details %}
+        <div id="details" class="pt-3">
+            {% for detail in details  %}
+            <div id="detail-{{detail.pk}}" style="padding-bottom: -20px;" class="row">
+                <div class="col-2">
+                    {{detail.name}}
+                </div>
+
+                <div class="col-9">
+                    {{detail.details}}
+                </div>
+                <div class="col-1">
+                    <img
+                    hx-get='{% url 'tearsheets:change_detail' detail.pk %}'
+                    hx-trigger='click'
+                    hx-swap='outerHTML'
+                    hx-target="#detail-{{detail.pk}}"
+                    height="10px" src="{% static 'images/edit.svg' %}">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- DETAILS -->
+
+
+        <!--RULES -->
+
+        <div class="row pt-2 pb-1">
+            <div class="col-2 text-end">
+            </div>
+            <div class="col-7">
+            </div>
+            <div class="col-1">
+                LIST
+            </div>
+            <div class="col-2">
+                NET
+            </div>
+        </div>
+
+        {% for price_record in price_records  %}
+
+        <div id="price-record-{{price_record.pk}}" class="row">
+            <div class="col-2 text-start">
+                {{price_record.rule_type}}
+            </div>
+
+            <div class="col-7">
+                {{price_record.rule_display_1}}
+                {{price_record.rule_display_2}}
+            </div>
+            <div class="col-1">
+                ${{price_record.list_price}}
+            </div>
+            <div class="col-1">
+                ${{price_record.net_price}}
+            </div>
+            <div class="col-1">
+                <img
+                hx-get='{% url 'tearsheets:change_price_record' price_record.pk %}'
+                hx-trigger='click'
+                hx-swap='outerHTML'
+                hx-target="#price-record-{{price_record.pk}}"
+                height="10px" src="{% static 'images/edit.svg' %}">
+            </div>
+        </div>
+
+        {% endfor %}
+
+
+
+        <!--RULES -->
+
+
+        <!-- FOOTER DETAILS -->
+        {% if footer_details %}
+        <div class="pt-4">
+            {% for footer_detail in footer_details  %}
+            <div id="footer-detail-{{footer_detail.pk}}" style="padding-bottom: -20px;" class="row">
+                <div class="col-2">
+                    {{ footer_detail.name}}
+                </div>
+
+                <div class="col-9">
+                    {{footer_detail.details}}
+                </div>
+                <div class="col-1">
+                    <img
+                    hx-get='{% url 'tearsheets:change_footer_detail' footer_detail.pk %}'
+                    hx-trigger='click'
+                    hx-swap='outerHTML'
+                    hx-target="#footer-detail-{{footer_detail.pk}}"
+                    height="10px" src="{% static 'images/edit.svg' %}">
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+        <!-- FOOTER DETAILS -->
+
+        <!-- ADDRESS FOOTER-->
+        <div class='text-center'>
+            <p class="pt-5 pb-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+{% block inline_javascript %}
+<script>
+    $(function() {
+        $('#picture').on('click', function() {
+            $('#fileinput').trigger('click');
+        });
+        });
+</script>
+{% endblock inline_javascript %}

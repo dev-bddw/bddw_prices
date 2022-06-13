@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class='pt-5'></div>
+<form action="{% url 'csv_imports:upload' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="file1"> Upload a file</label>
+    <input type="file" id="file1" name="file">
+    <small>Only accepts CSV files</small>
+    <button type="submit">Upload</button>
+</form>
+
+<p>details<p>
+    {% for item in report  %}
+        <p>{{item}}</p>
+    {% endfor %}
+
+{% endblock content %}
