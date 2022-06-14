@@ -45,8 +45,17 @@ class PriceRecord(models.Model):
 
     def get_net_price(self):
         try:
+            # return value rounded to hundreds place
             return (
-                (str(round(int(self.list_price) * settings.NET_PRICE_MULTIPLIER)))
+                str(
+                    (
+                        100
+                        * round(
+                            (int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
+                            * 0.01
+                        )
+                    )
+                )
                 if self.list_price is not None
                 else 0
             )
@@ -122,8 +131,17 @@ class FormulaPriceRecord(models.Model):
 
     def get_net_price(self):
         try:
+            # return value rounded to hundreds place
             return (
-                (str(round(int(self.list_price) * settings.NET_PRICE_MULTIPLIER)))
+                str(
+                    (
+                        100
+                        * round(
+                            (int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
+                            * 0.01
+                        )
+                    )
+                )
                 if self.list_price is not None
                 else 0
             )
