@@ -22,6 +22,6 @@
         hx-put="{% url 'tearsheets:change_title' tearsheet.pk %}"
         style="margin-left:20px; margin-bottom:10px;"
         height="20px"
-        src='/static/images/cancel.svg'/>
+        src='{% static 'images/cancel.svg' %}'/>
     </a>
 </form>

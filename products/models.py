@@ -60,18 +60,33 @@ class CatSeriesItem(models.Model):
         on_delete=models.SET_NULL,
     )
 
+    def save(self, *args, **kwargs):
+        # roundabout way of ensuring unique for cat-series-item fk's
+        try:
+            item = CatSeriesItem.objects.get(
+                category=self.category, series=self.series, item=self.item
+            )
+            if item.pk == self.pk:
+                super(CatSeriesItem, self).save(*args, **kwargs)
+            else:
+                raise ValueError("This Category Series Item already exists")
+
+        except CatSeriesItem.DoesNotExist:
+            super(CatSeriesItem, self).save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.category} - {self.series} - {self.item}"
 
     def return_translation(self):
         if self.formula is not None or "":
             f = self.formula.replace("[", "").replace("]", "")
+
             import re
 
             formula = re.sub("([a-z])\s([a-z])", "\\1_\\2", f)
             return formula
         else:
-            "raise ValueError"
+            return "Formula is None or empty string"
 
     def return_price_records(self):
         if self.formula is None or "":

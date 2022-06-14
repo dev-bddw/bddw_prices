@@ -2,23 +2,23 @@
 {% load static %}
 
 {% block content %}
+<div class="pt-5">
+    <h3>list view</h3>
 
-<h3>list view</h3>
-
-<ul style="list-style: none;">
-    {% for tearsheet in tearsheets  %}
-    <li class="pt-2">
-        <div class="row">
-            <div class="col-2">
-                <a href="{{tearsheet.get_absolute_url}}">{{tearsheet}}</a>
+    <ul style="list-style: none;">
+        {% for tearsheet in tearsheets  %}
+        <li class="pt-2">
+            <div class="row">
+                <div class="col-2">
+                    <a href="{{tearsheet.get_absolute_url}}">{{tearsheet}}</a>
+                </div>
+                <div class="col">
+                    <a href="{{tearsheet.get_edit_url}}"><img style="margin-left: 20px; margin-bottom:2px;" height=10px src="{% static 'images/edit.svg' %}"></a>
+                    <a href="#"><img style="margin-left: 10px; margin-bottom:2px;" height=10px src="{% static 'images/cancel.svg' %}"></a>
+                </div>
             </div>
-            <div class="col">
-                <a href="{{tearsheet.get_edit_url}}"><img style="margin-left: 20px; margin-bottom:2px;" height=10px src="{% static 'images/edit.svg' %}"></a>
-                <a href="#"><img style="margin-left: 10px; margin-bottom:2px;" height=10px src="{% static 'images/cancel.svg' %}"></a>
-            </div>
-        </div>
-    </li>
-    {% endfor %}
-</ul>
-
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock content %}

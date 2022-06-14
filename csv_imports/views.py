@@ -15,14 +15,12 @@ def upload(request):
     if request.method == "POST":
 
         csv_file = request.FILES["file"]
-        # let's check if it is a csv file
         if not csv_file.name.endswith(".csv"):
             pass
             # messages.error(request, 'THIS IS NOT A CSV FILE')
         data_set = csv_file.read().decode("UTF-8")
-        # setup a stream which is when we loop through each line we are able to handle a data in a stream
         io_string = io.StringIO(data_set)
-        next(io_string)
+        next(io_string)  # hop over first row (column headers)
 
         RECORD_DICT_TBP = {}
         report = []
@@ -32,8 +30,11 @@ def upload(request):
             series, created = Series.objects.get_or_create(name=row[2].upper())
             item, created = Item.objects.get_or_create(name=row[3].upper())
 
-            cat_series_item, csi_created = CatSeriesItem.objects.get_or_create(
-                category=category, series=series, item=item, formula=row[9]
+            cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
+                category=category,
+                series=series,
+                item=item,
+                defaults={"formula": row[9]},
             )
             if csi_created:
                 report.append(f"Created Category Series Item {cat_series_item}")
@@ -59,7 +60,7 @@ def upload(request):
             else:
 
                 # find the baseprice record in the group
-                baseprice_record = [record for record in y if record[3] == "any"]
+                baseprice_record = [record for record in y if record[4] == "any"]
 
                 # this item has a baseprice record that needs to be applied to other records
                 if baseprice_record != []:
@@ -77,13 +78,15 @@ def upload(request):
                                 new_price_record,
                                 created,
                             ) = PriceRecord.objects.update_or_create(
-                                cat_series_item=CatSeriesItem.objects.get(pk=x),
-                                rule_type=record[12],
-                                list_price=record[8],
-                                rule_display_1=record[13],
-                                rule_display_2=record[14],
-                                order=1,
                                 bin_id=record[0],
+                                defaults={
+                                    "cat_series_item": CatSeriesItem.objects.get(pk=x),
+                                    "rule_type": record[12],
+                                    "list_price": record[8],
+                                    "rule_display_1": record[13],
+                                    "rule_display_2": record[14],
+                                    "order": 1,
+                                },
                             )
                             if created:
                                 report.append(
@@ -104,13 +107,15 @@ def upload(request):
                                 new_price_record,
                                 created,
                             ) = PriceRecord.objects.update_or_create(
-                                cat_series_item=CatSeriesItem.objects.get(pk=x),
-                                rule_type=record[12],
-                                list_price=record[8],
-                                rule_display_1=record[13],
-                                rule_display_2=record[14],
-                                order=1,
                                 bin_id=record[0],
+                                defaults={
+                                    "cat_series_item": CatSeriesItem.objects.get(pk=x),
+                                    "rule_type": record[12],
+                                    "list_price": record[8],
+                                    "rule_display_1": record[13],
+                                    "rule_display_2": record[14],
+                                    "order": 1,
+                                },
                             )
                             if created:
                                 report.append(
@@ -123,9 +128,7 @@ def upload(request):
                         except IndexError:
                             report.append(f"Something wrong happened with {record[14]}")
 
-        return render(
-            request, "lot-upload.html", {"dict": RECORD_DICT_TBP, "report": report}
-        )
+        return render(request, "lot-upload.html", {"report": report})
 
     else:
         return render(request, "lot-upload.html", {})
