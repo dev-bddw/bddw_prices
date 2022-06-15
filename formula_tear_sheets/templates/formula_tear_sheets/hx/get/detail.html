@@ -6,9 +6,9 @@
         </div>
 
         <div class="col-9">
-            <input value="{{detail.details}}" name="details">
+            <input style="width: 515px;" value="{{detail.details}}" name="details">
         </div>
-        <div class="col-1">
+        <div class="text-end col-1">
             <img
             hx-post='{% url 'formula_tearsheets:change_detail' detail.pk %}'
             hx-trigger='click'

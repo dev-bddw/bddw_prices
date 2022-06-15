@@ -11,7 +11,7 @@
     hx-trigger="click"
     hx-target="#title-{{tearsheet.pk}}"
     hx-swap="outerHTML"
-    hx-post="{% url 'tearsheets:change_title' tearsheet.pk %}"
+    hx-post="{% url 'formula_tearsheets:change_title' tearsheet.pk %}"
     /><a>
 
     <a href="">
@@ -19,7 +19,7 @@
         hx-trigger="click"
         hx-target="#title-{{tearsheet.pk}}"
         hx-swap="outerHTML"
-        hx-put="{% url 'tearsheets:change_title' tearsheet.pk %}"
+        hx-put="{% url 'formula_tearsheets:change_title' tearsheet.pk %}"
         style="margin-left:20px; margin-bottom:10px;"
         height="20px"
         src='{% static 'images/cancel.svg' %}'/>

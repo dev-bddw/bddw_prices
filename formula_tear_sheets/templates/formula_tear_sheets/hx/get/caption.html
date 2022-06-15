@@ -5,9 +5,9 @@
         <input name='title' value="{{caption.caption_title}}">
     </div>
     <div class="col-9">
-        <input name='caption' value="{{caption.caption}}">
+        <input style="width: 515px;" name='caption' value="{{caption.caption}}">
     </div>
-    <div class="col-1">
+    <div class="text-end col-1">
         <img
         hx-post='{% url 'formula_tearsheets:change_caption' caption.pk %}'
         hx-trigger='click'

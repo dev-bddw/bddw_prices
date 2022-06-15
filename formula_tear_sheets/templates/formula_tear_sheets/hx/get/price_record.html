@@ -6,23 +6,28 @@
         </div>
 
         <div class="col-7">
-            <input name="rule_display_1" value="{{price_record.rule_display_1}}">
+            <input name="rule_display_1" value="{{price_record.rule_display_1}}"> \
             <input name="rule_display_2" value="{{price_record.rule_display_2}}">
         </div>
         <div class="col-1">
-            ${{price_record.list_price}}
+            ${{price_record.list_price}} \
         </div>
         <div class="col-1">
             ${{price_record.net_price}}
         </div>
-        <div class="col-1">
+        <div class="text-end col-1">
             <img
             hx-post='{% url 'formula_tearsheets:change_price_record' price_record.pk %}'
             hx-trigger='click'
             hx-swap='outerHTML'
             hx-target="#price-record-{{price_record.pk}}"
             height="10px" src="{% static 'images/okay.svg' %}">
-            <img height="10px" src="{% static 'images/cancel.svg' %}">
+            <img
+            hx-put='{% url 'formula_tearsheets:change_price_record' price_record.pk %}'
+            hx-trigger='click'
+            hx-swap='outerHTML'
+            hx-target="#price-record-{{price_record.pk}}"
+            height="10px" src="{% static 'images/cancel.svg' %}">
 
         </div>
     </div>

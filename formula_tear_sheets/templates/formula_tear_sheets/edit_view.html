@@ -83,7 +83,7 @@
                 <div class="col-9">
                     {{caption.caption}}
                 </div>
-                <div class="col-1">
+                <div class="text-end col-1">
                     <img
                     hx-get='{% url 'formula_tearsheets:change_caption' caption.pk %}'
                     hx-trigger='click'
@@ -109,7 +109,7 @@
                 <div class="col-9">
                     {{detail.details}}
                 </div>
-                <div class="col-1">
+                <div class="text-end col-1">
                     <img
                     hx-get='{% url 'formula_tearsheets:change_detail' detail.pk %}'
                     hx-trigger='click'
@@ -156,7 +156,7 @@
             <div class="col-1">
                 ${{price_record.net_price}}
             </div>
-            <div class="col-1">
+            <div class="text-end col-1">
                 <img
                 hx-get='{% url 'formula_tearsheets:change_price_record' price_record.pk %}'
                 hx-trigger='click'
@@ -185,7 +185,7 @@
                 <div class="col-9">
                     {{footer_detail.details}}
                 </div>
-                <div class="col-1">
+                <div class="text-end col-1">
                     <img
                     hx-get='{% url 'formula_tearsheets:change_footer_detail' footer_detail.pk %}'
                     hx-trigger='click'

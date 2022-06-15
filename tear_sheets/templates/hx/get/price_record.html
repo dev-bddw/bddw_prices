@@ -15,14 +15,19 @@
         <div class="col-1">
             ${{price_record.net_price}}
         </div>
-        <div class="col-1">
+        <div class="text-end col-1">
             <img
             hx-post='{% url 'tearsheets:change_price_record' price_record.pk %}'
             hx-trigger='click'
             hx-swap='outerHTML'
             hx-target="#price-record-{{price_record.pk}}"
             height="10px" src="{% static 'images/okay.svg' %}">
-            <img height="10px" src="{% static 'images/cancel.svg' %}">
+            <img
+            hx-put='{% url 'tearsheets:change_price_record' price_record.pk %}'
+            hx-trigger='click'
+            hx-swap='outerHTML'
+            hx-target="#price-record-{{price_record.pk}}"
+            height="10px" src="{% static 'images/cancel.svg' %}">
 
         </div>
     </div>

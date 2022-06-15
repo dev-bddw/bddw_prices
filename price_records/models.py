@@ -26,6 +26,7 @@ class PriceRecord(models.Model):
         help_text="ex. / 2 STANDARD DRAWERS / 2 CABS ",
         blank=True,
         null=True,
+        default="",
         max_length=200,
     )
 
@@ -103,6 +104,7 @@ class FormulaPriceRecord(models.Model):
     rule_display_1 = models.CharField(help_text="ex. 67 x 19 x 29 H", max_length=200)
     rule_display_2 = models.CharField(
         help_text="ex. / 2 STANDARD DRAWERS / 2 CABS",
+        default="",
         blank=True,
         null=True,
         max_length=200,
