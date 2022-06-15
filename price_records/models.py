@@ -30,7 +30,12 @@ class PriceRecord(models.Model):
     )
 
     list_price = models.CharField(max_length=200)
-    net_price = models.CharField(max_length=200)
+    net_price = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        help_text="This value will be calculated on record save.",
+    )
 
     order = models.IntegerField(
         help_text="The order number when this Price Record appears with others."
