@@ -101,3 +101,4 @@ class CatSeriesItem(models.Model):
     class Meta:
         verbose_name = "Category Series Item"
         verbose_name_plural = "Category Series Items"
+        ordering = ["category"]
