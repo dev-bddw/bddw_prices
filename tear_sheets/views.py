@@ -1,3 +1,5 @@
+from sqlite3 import IntegrityError
+
 from django.shortcuts import redirect, render
 
 from price_records.models import PriceRecord
@@ -61,6 +63,7 @@ def edit_view(request, pk):
             "captions": captions,
             "footer_details": footer_details,
             "price_records": price_records,
+            "cat_series_items": cat_series_items,
         },
     )
 
@@ -70,13 +73,13 @@ def change_title_hx(request, pk):
     tearsheet = TearSheet.objects.get(pk=pk)
 
     if request.method == "PUT":
-        return render(request, "hx/post/title.html", {"tearsheet": tearsheet})
+        return render(request, "hx/post/edit/title.html", {"tearsheet": tearsheet})
 
     if request.method == "POST":
         tearsheet.title = request.POST.get("title")
         tearsheet.save()
 
-        return render(request, "hx/post/title.html", {"tearsheet": tearsheet})
+        return render(request, "hx/post/edit/title.html", {"tearsheet": tearsheet})
 
     if request.method == "GET":
         return render(request, "hx/get/title.html", {"tearsheet": tearsheet})
@@ -103,13 +106,13 @@ def change_caption_hx(request, pk):
     caption = ImageCaption.objects.get(pk=pk)
 
     if request.method == "PUT":
-        return render(request, "hx/post/caption.html", {"caption": caption})
+        return render(request, "hx/post/edit/caption.html", {"caption": caption})
 
     if request.method == "POST":
         caption.caption_title = request.POST.get("title")
         caption.caption = request.POST.get("caption")
         caption.save()
-        return render(request, "hx/post/caption.html", {"caption": caption})
+        return render(request, "hx/post/edit/caption.html", {"caption": caption})
 
     if request.method == "GET":
         return render(request, "hx/get/caption.html", {"caption": caption})
@@ -120,14 +123,14 @@ def change_detail_hx(request, pk):
 
     if request.method == "PUT":
 
-        return render(request, "hx/post/detail.html", {"detail": detail})
+        return render(request, "hx/post/edit/detail.html", {"detail": detail})
 
     if request.method == "POST":
         detail.name = request.POST.get("name")
         detail.details = request.POST.get("details")
         detail.save()
 
-        return render(request, "hx/post/detail.html", {"detail": detail})
+        return render(request, "hx/post/edit/detail.html", {"detail": detail})
 
     if request.method == "GET":
         return render(request, "hx/get/detail.html", {"detail": detail})
@@ -139,7 +142,7 @@ def change_price_record_hx(request, pk):
     if request.method == "PUT":
 
         return render(
-            request, "hx/post/price_record.html", {"price_record": price_record}
+            request, "hx/post/edit/price_record.html", {"price_record": price_record}
         )
 
     if request.method == "POST":
@@ -151,7 +154,7 @@ def change_price_record_hx(request, pk):
         price_record.save()
 
         return render(
-            request, "hx/post/price_record.html", {"price_record": price_record}
+            request, "hx/post/edit/price_record.html", {"price_record": price_record}
         )
 
     if request.method == "GET":
@@ -166,7 +169,7 @@ def change_footer_detail_hx(request, pk):
     if request.method == "PUT":
 
         return render(
-            request, "hx/post/footer_detail.html", {"footer_detail": footer_detail}
+            request, "hx/post/edit/footer_detail.html", {"footer_detail": footer_detail}
         )
 
     if request.method == "POST":
@@ -175,11 +178,115 @@ def change_footer_detail_hx(request, pk):
         footer_detail.save()
 
         return render(
-            request, "hx/post/footer_detail.html", {"footer_detail": footer_detail}
+            request, "hx/post/edit/footer_detail.html", {"footer_detail": footer_detail}
         )
     if request.method == "GET":
         return render(
             request, "hx/get/footer_detail.html", {"footer_detail": footer_detail}
+        )
+
+
+def create_caption_hx(request, pk):
+
+    if request.method == "POST":
+        tear_sheet = TearSheet.objects.get(pk=pk)
+        caption = ImageCaption.objects.create(
+            caption_title=request.POST.get("title"),
+            caption=request.POST.get("caption"),
+            tear_sheet=tear_sheet,
+            order_no=1
+            + max(
+                [x.order_no for x in ImageCaption.objects.filter(tear_sheet=tear_sheet)]
+            )
+            if [x.order_no for x in ImageCaption.objects.filter(tear_sheet=tear_sheet)]
+            != []
+            else 1,
+        )
+
+        return render(
+            request,
+            "hx/post/create/caption.html",
+            {"caption": caption, "tearsheet": tear_sheet},
+        )
+
+
+def create_detail_hx(request, pk):
+
+    if request.method == "POST":
+        tear_sheet = TearSheet.objects.get(pk=pk)
+        detail = TearSheetDetail.objects.create(
+            name=request.POST.get("name"),
+            details=request.POST.get("details"),
+            tear_sheet=tear_sheet,
+            order=1
+            + max(
+                [x.order for x in TearSheetDetail.objects.filter(tear_sheet=tear_sheet)]
+            )
+            if [x.order for x in TearSheetDetail.objects.filter(tear_sheet=tear_sheet)]
+            != []
+            else 1,
+        )
+
+        return render(request, "hx/post/create/detail.html", {"detail": detail})
+
+
+def create_price_record_hx(request):
+
+    if request.method == "POST":
+        csi = CatSeriesItem.objects.get(pk=request.POST.get("cat_series_item"))
+        order = (
+            1 + max([x.order for x in PriceRecord.objects.filter(cat_series_item=csi)])
+            if [x.order for x in PriceRecord.objects.filter(cat_series_item=csi)] != []
+            else 1
+        )
+        cat_series_items = CatSeriesItem.objects.filter(tear_sheet=csi.tear_sheet)
+        try:
+            price_record = PriceRecord.objects.create(
+                rule_type=request.POST.get("rule_type"),
+                rule_display_1=request.POST.get("rule_display_1"),
+                rule_display_2=request.POST.get("rule_display_2"),
+                list_price=request.POST.get("list_price"),
+                cat_series_item=CatSeriesItem.objects.get(
+                    pk=request.POST.get("cat_series_item")
+                ),
+                order=order,
+            )
+        except IntegrityError:
+            pass
+
+        return render(
+            request,
+            "hx/post/create/price_record.html",
+            {"price_record": price_record, "cat_series_items": cat_series_items},
+        )
+
+
+def create_footer_detail_hx(request, pk):
+    if request.method == "POST":
+        tear_sheet = TearSheet.objects.get(pk=pk)
+        detail = TearSheetFooterDetail.objects.create(
+            name=request.POST.get("name"),
+            details=request.POST.get("details"),
+            tear_sheet=tear_sheet,
+            order=1
+            + max(
+                [
+                    x.order
+                    for x in TearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
+                ]
+            )
+            if [
+                x.order
+                for x in TearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
+            ]
+            != []
+            else 1,
+        )
+
+        return render(
+            request,
+            "hx/post/create/footer_detail.html",
+            {"footer_detail": detail, "tearsheet": tear_sheet},
         )
 
 

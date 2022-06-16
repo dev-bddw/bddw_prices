@@ -7,6 +7,10 @@ from .views import (
     change_image_hx,
     change_price_record_hx,
     change_title_hx,
+    create_caption_hx,
+    create_detail_hx,
+    create_footer_detail_hx,
+    create_price_record_hx,
     detail_view,
     detail_view_for_printing,
     detail_view_to_pdf,
@@ -39,5 +43,17 @@ urlpatterns = [
         "detail-for-print/<pk>",
         view=detail_view_for_printing,
         name="detail-view-for-print",
+    ),
+    path("create-caption/<pk>", view=create_caption_hx, name="create_caption"),
+    path("create-detail/<pk>", view=create_detail_hx, name="create_detail"),
+    path(
+        "create-price-record/",
+        view=create_price_record_hx,
+        name="create_price_record",
+    ),
+    path(
+        "create-footer-detail/<pk>",
+        view=create_footer_detail_hx,
+        name="create_footer_detail",
     ),
 ]
