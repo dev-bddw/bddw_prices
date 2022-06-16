@@ -73,6 +73,8 @@ class PriceRecord(models.Model):
 
     def save(self, *args, **kwargs):
         self.net_price = self.get_net_price()
+        self.cat_series_item.tear_sheet.save()
+
         super(PriceRecord, self).save(*args, **kwargs)
 
 
@@ -116,7 +118,6 @@ class FormulaPriceRecord(models.Model):
     def save(self, *args, **kwargs):
         self.list_price = self.get_price()
         self.net_price = self.get_net_price()
-
         super(FormulaPriceRecord, self).save(*args, **kwargs)
 
     def return_value_dict(self):

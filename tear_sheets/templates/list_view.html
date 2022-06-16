@@ -3,23 +3,28 @@
 
 {% block content %}
 <div class="pt-5">
-    <h3>list view</h3>
-
-    <ul style="list-style: none;">
-        {% for tearsheet in tearsheets  %}
-        <li class="pt-2">
-            <div class="row">
-                <div class="col-2">
-                    <a href="{{tearsheet.get_absolute_url}}">{{tearsheet}}</a>
-                </div>
-                <div class="col">
-                    <a href="{{tearsheet.get_edit_url}}"><img style="margin-left: 20px; margin-bottom:2px;" height=10px src="{% static 'images/edit.svg' %}"></a>
-                    <a href="#"><img style="margin-left: 10px; margin-bottom:2px;" height=10px src="{% static 'images/cancel.svg' %}"></a>
-                </div>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+    <table class="table table-striped">
+        <thead>
+          <caption>All TEARSHEETS</caption>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">NAME</th>
+            <th scope="col">EDIT</th>
+            <th scope="col">UPDATED ON</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tearsheet in tearsheets  %}
+          <tr>
+            <th scope="row">{{tearsheet.pk}}</th>
+            <td><a href="{{tearsheet.get_absolute_url}}">{{tearsheet}}</a></td>
+            <td><a href="{{tearsheet.get_edit_url}}"><img style="margin-left: 20px; margin-bottom:2px;" height=10px src="{% static 'images/edit.svg' %}"></a>
+            <td>{{tearsheet.updated_on}}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 </div>
 
 {% endblock content %}

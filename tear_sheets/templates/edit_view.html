@@ -45,19 +45,26 @@
 
 <div style="font-size: 8px; width: 816px;">
 
+
     <div style="margin-left:75px; margin-right:75px;">
+
         <div class="pt-5 pb-2">
-                <h3 id="this">{{tearsheet}}
-                <img
-                    style="margin-bottom:5px; margin-left:5px;"
-                    height="20px"
-                    src="{% static 'images/edit.svg' %}"
-                    hx-get='{% url 'tearsheets:change_title' tearsheet.pk %}'
-                    hx-trigger='click'
-                    hx-swap='outerHTML'
-                    hx-target="#this"
-                    >
-                </h3>
+            <div class"row">
+                <div class"col">
+                    <a href="{% url 'tearsheets:detail' tearsheet.pk %}"><< detail view</a>
+                </div>
+            </div>
+            <h3 class="pt-2" id="this">{{tearsheet}}
+            <img
+                style="margin-bottom:5px; margin-left:5px;"
+                height="20px"
+                src="{% static 'images/edit.svg' %}"
+                hx-get='{% url 'tearsheets:change_title' tearsheet.pk %}'
+                hx-trigger='click'
+                hx-swap='outerHTML'
+                hx-target="#this"
+                >
+            </h3>
         </div>
         <div class="image-container">
             <form enctype="multipart/form-data" action="{% url 'tearsheets:change_image' tearsheet.pk %}" method="POST">

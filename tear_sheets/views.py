@@ -15,7 +15,7 @@ def list_view(request):
         request,
         "list_view.html",
         {
-            "tearsheets": TearSheet.objects.all(),
+            "tearsheets": TearSheet.objects.all().order_by("-updated_on"),
         },
     )
 

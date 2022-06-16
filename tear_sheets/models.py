@@ -27,6 +27,10 @@ class Detail(models.Model):
         ordering = ["order"]
         abstract = True
 
+    def save(self, *args, **kwargs):
+        self.tear_sheet.save()
+        super(Detail, self).save(*args, **kwargs)
+
 
 class TearSheetDetail(Detail):
     pass
@@ -51,6 +55,8 @@ class TearSheet(models.Model):
         null=True,
         upload_to=image_upload_to,
     )
+
+    updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -96,3 +102,7 @@ class ImageCaption(models.Model):
     def return_file_name(self):
         split_up = self.file.url.split("/")
         return split_up[-1]
+
+    def save(self, *args, **kwargs):
+        self.tear_sheet.save()
+        super(ImageCaption, self).save(*args, **kwargs)
