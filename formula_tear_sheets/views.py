@@ -16,7 +16,7 @@ def list_view(request):
 
     return render(
         request,
-        "list_view.html",
+        "formula_tear_sheets/list_view.html",
         {
             "tearsheets": FormulaTearSheet.objects.all(),
         },
