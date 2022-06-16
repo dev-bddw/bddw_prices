@@ -53,7 +53,7 @@ def upload(request):
 
             # WILL CHECK FOR FORMULA RECORD FIRST
 
-            if len(y) == 1 and (y[0][9] is not None or ""):
+            if len(y) == 1 and (y[0][9] != ""):
                 # this is a formula record
                 pass
 
