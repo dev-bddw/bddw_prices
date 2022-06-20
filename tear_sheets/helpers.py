@@ -13,7 +13,6 @@ def return_price_records_by_rule_type(tear_sheet_pk):
         list_of_price_records = PriceRecord.objects.filter(
             cat_series_item__in=category_series_items
         )
-        print(list_of_price_records)
         rule_types = []
         for x in list_of_price_records:
             if x.rule_type not in rule_types:

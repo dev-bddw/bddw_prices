@@ -1,5 +1,6 @@
 from sqlite3 import IntegrityError
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from price_records.models import PriceRecord
@@ -9,6 +10,7 @@ from .helpers import return_details_by_title, return_price_records_by_rule_type
 from .models import ImageCaption, TearSheet, TearSheetDetail, TearSheetFooterDetail
 
 
+@login_required
 def list_view(request):
 
     return render(
@@ -39,6 +41,7 @@ def detail_view(request, pk):
     )
 
 
+@login_required
 def edit_view(request, pk):
 
     tear_sheet = TearSheet.objects.get(pk=pk)
@@ -68,6 +71,7 @@ def edit_view(request, pk):
     )
 
 
+@login_required
 def change_title_hx(request, pk):
 
     tearsheet = TearSheet.objects.get(pk=pk)
@@ -85,6 +89,7 @@ def change_title_hx(request, pk):
         return render(request, "hx/get/title.html", {"tearsheet": tearsheet})
 
 
+@login_required
 def change_image_hx(request, pk):
 
     tear_sheet = TearSheet.objects.get(pk=pk)
@@ -101,6 +106,7 @@ def change_image_hx(request, pk):
         pass
 
 
+@login_required
 def change_caption_hx(request, pk):
 
     caption = ImageCaption.objects.get(pk=pk)
@@ -118,6 +124,7 @@ def change_caption_hx(request, pk):
         return render(request, "hx/get/caption.html", {"caption": caption})
 
 
+@login_required
 def change_detail_hx(request, pk):
     detail = TearSheetDetail.objects.get(pk=pk)
 
@@ -136,6 +143,7 @@ def change_detail_hx(request, pk):
         return render(request, "hx/get/detail.html", {"detail": detail})
 
 
+@login_required
 def change_price_record_hx(request, pk):
     price_record = PriceRecord.objects.get(pk=pk)
 
@@ -163,6 +171,7 @@ def change_price_record_hx(request, pk):
         )
 
 
+@login_required
 def change_footer_detail_hx(request, pk):
     footer_detail = TearSheetFooterDetail.objects.get(pk=pk)
 
@@ -186,6 +195,7 @@ def change_footer_detail_hx(request, pk):
         )
 
 
+@login_required
 def create_caption_hx(request, pk):
 
     if request.method == "POST":
@@ -210,6 +220,7 @@ def create_caption_hx(request, pk):
         )
 
 
+@login_required
 def create_detail_hx(request, pk):
 
     if request.method == "POST":
@@ -230,6 +241,7 @@ def create_detail_hx(request, pk):
         return render(request, "hx/post/create/detail.html", {"detail": detail})
 
 
+@login_required
 def create_price_record_hx(request):
 
     if request.method == "POST":
@@ -261,6 +273,7 @@ def create_price_record_hx(request):
         )
 
 
+@login_required
 def create_footer_detail_hx(request, pk):
     if request.method == "POST":
         tear_sheet = TearSheet.objects.get(pk=pk)
