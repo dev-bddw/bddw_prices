@@ -231,7 +231,7 @@
                     <div class="col-3">
                         <select id="cat_series_item" name="cat_series_item">
                             {% for csi_item in cat_series_items  %}
-                            <option value="{{csi_item.pk}}">{{csi_item.series|truncatechars:15}} {{csi_item.item|truncatechars:15}}</option>
+                            <option value="{{csi_item.pk}}">{{csi_item.series|truncatewords:2}} {{csi_item.item|truncatewords:2}}</option>
                             {% endfor %}
                         </select>
                     </div>
