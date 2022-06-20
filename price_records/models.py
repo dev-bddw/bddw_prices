@@ -73,7 +73,11 @@ class PriceRecord(models.Model):
 
     def save(self, *args, **kwargs):
         self.net_price = self.get_net_price()
-        self.cat_series_item.tear_sheet.save()
+
+        if self.cat_series_item.tear_sheet is None:
+            pass
+        else:
+            self.cat_series_item.tear_sheet.save()
 
         super(PriceRecord, self).save(*args, **kwargs)
 
