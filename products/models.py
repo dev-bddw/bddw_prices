@@ -24,9 +24,6 @@ class Series(models.Model):
 class Item(models.Model):
     name = models.CharField(unique=True, blank=True, null=True, max_length=200)
 
-    class Meta:
-        pass
-
     def __str__(self):
         return f"{self.name}"
 
@@ -78,15 +75,14 @@ class CatSeriesItem(models.Model):
         return f"{self.category} - {self.series} - {self.item}"
 
     def return_translation(self):
-        if self.formula is not None or "":
-            f = self.formula.replace("[", "").replace("]", "")
 
-            import re
+        f = self.formula.replace("[", "").replace("]", "")
 
-            formula = re.sub("([a-z])\s([a-z])", "\\1_\\2", f)
-            return formula
-        else:
-            return "Formula is None or empty string"
+        import re
+
+        formula = re.sub("([a-z])\s([a-z])", "\\1_\\2", f)
+
+        return formula
 
     def return_price_records(self):
         if self.formula is None or "":
@@ -97,6 +93,9 @@ class CatSeriesItem(models.Model):
             from price_records.models import FormulaPriceRecord
 
             return FormulaPriceRecord.objects.filter(cat_series_item_id=self.pk)
+
+    def has_formula(self):
+        return True if self.formula not in ["", None] else False
 
     class Meta:
         verbose_name = "Category Series Item"

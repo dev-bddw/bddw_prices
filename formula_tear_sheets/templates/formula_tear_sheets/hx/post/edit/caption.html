@@ -6,7 +6,7 @@
     <div class="col-9">
         {{caption.caption}}
     </div>
-    <div class="col-1">
+    <div class="text-end col-1">
         <img
         hx-get='{% url 'formula_tearsheets:change_caption' caption.pk %}'
         hx-trigger='click'

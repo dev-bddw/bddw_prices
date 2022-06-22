@@ -107,7 +107,9 @@ class FormulaPriceRecord(models.Model):
     seat_height = models.IntegerField(null=True, blank=True)
     inset = models.IntegerField(null=True, blank=True)
 
-    rule_display_1 = models.CharField(help_text="ex. 67 x 19 x 29 H", max_length=200)
+    rule_display_1 = models.CharField(
+        blank=True, null=True, help_text="ex. 67 x 19 x 29 H", max_length=200
+    )
     rule_display_2 = models.CharField(
         help_text="ex. / 2 STANDARD DRAWERS / 2 CABS",
         default="",
@@ -122,6 +124,13 @@ class FormulaPriceRecord(models.Model):
     def save(self, *args, **kwargs):
         self.list_price = self.get_price()
         self.net_price = self.get_net_price()
+        self.rule_display_1 = self.return_display_rule()
+
+        if self.cat_series_item.formula_tear_sheet is None:
+            pass
+        else:
+            self.cat_series_item.formula_tear_sheet.save()
+
         super(FormulaPriceRecord, self).save(*args, **kwargs)
 
     def return_value_dict(self):
@@ -160,19 +169,34 @@ class FormulaPriceRecord(models.Model):
         except ValueError:
             return "Please make sure your LIST PRICE has an integer value."
 
+    def return_display_rule(self):
+        st = ""
+        for key, value in self.return_value_dict().items():
+            if value not in [0, None, ""]:
+                st += f"{value} {key.upper()[0]} X "
+        st = st[:-2]
+        return st
+
+    def evaluate(self):
+        return (
+            eval(self.cat_series_item.return_translation(), self.return_value_dict())
+            if self.cat_series_item != ""
+            else 0
+        )
+
     def get_price(self):
-        try:
-            return round(
-                eval(
-                    self.cat_series_item.return_translation(), self.return_value_dict()
-                )
-            )
-        except NameError:
-            return "Price Record values didn't match forumula. Double check for correct variable defs in price record."
-        except ValueError:
-            return "The Category Series Item doesn't have a formula defined."
-        except TypeError:
-            return "Price Record values didn't match forumula. Double check for correct variable defs in price record."
+        if self.cat_series_item.has_formula():
+            try:
+                return 100 * round(int(self.evaluate()) * 0.01)
+            except NameError:
+                return "Price Record values != forumula. Double check for correct variable defs in price record."
+            except ValueError:
+                return "The Category Series Item doesn't have a formula defined."
+            except TypeError:
+                return "Price Record values != forumula. Double check for correct variable defs in price record."
+
+        else:
+            return 0
 
     def __str__(self):
         return f"{self.cat_series_item}: {self.cat_series_item.return_translation()}"

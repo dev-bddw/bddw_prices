@@ -22,6 +22,8 @@ class FormulaTearSheet(models.Model):
         upload_to=image_upload_to,
     )
 
+    updated_on = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.title
 
@@ -57,6 +59,10 @@ class FormulaTearSheetDetail(models.Model):
     class Meta:
         ordering = ["order"]
 
+    def save(self, *args, **kwargs):
+        self.tear_sheet.save()
+        super(FormulaTearSheetDetail, self).save(*args, **kwargs)
+
 
 class FormulaTearSheetFooterDetail(models.Model):
     tear_sheet = models.ForeignKey(
@@ -77,6 +83,10 @@ class FormulaTearSheetFooterDetail(models.Model):
 
     class Meta:
         ordering = ["order"]
+
+    def save(self, *args, **kwargs):
+        self.tear_sheet.save()
+        super(FormulaTearSheetFooterDetail, self).save(*args, **kwargs)
 
 
 class FormulaImageCaption(models.Model):
@@ -110,3 +120,7 @@ class FormulaImageCaption(models.Model):
     def return_file_name(self):
         split_up = self.file.url.split("/")
         return split_up[-1]
+
+    def save(self, *args, **kwargs):
+        self.tear_sheet.save()
+        super(FormulaImageCaption, self).save(*args, **kwargs)

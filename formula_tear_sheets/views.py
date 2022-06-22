@@ -1,3 +1,6 @@
+from sqlite3 import IntegrityError
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from price_records.models import FormulaPriceRecord
@@ -78,7 +81,9 @@ def change_title_hx(request, pk):
 
     if request.method == "PUT":
         return render(
-            request, "formula_tear_sheets/hx/post/title.html", {"tearsheet": tearsheet}
+            request,
+            "formula_tear_sheets/hx/post/edit/title.html",
+            {"tearsheet": tearsheet},
         )
 
     if request.method == "POST":
@@ -86,7 +91,9 @@ def change_title_hx(request, pk):
         tearsheet.save()
 
         return render(
-            request, "formula_tear_sheets/hx/post/title.html", {"tearsheet": tearsheet}
+            request,
+            "formula_tear_sheets/hx/post/edit/title.html",
+            {"tearsheet": tearsheet},
         )
 
     if request.method == "GET":
@@ -117,7 +124,9 @@ def change_caption_hx(request, pk):
 
     if request.method == "PUT":
         return render(
-            request, "formula_tear_sheets/hx/post/caption.html", {"caption": caption}
+            request,
+            "formula_tear_sheets/hx/post/edit/caption.html",
+            {"caption": caption},
         )
 
     if request.method == "POST":
@@ -125,7 +134,9 @@ def change_caption_hx(request, pk):
         caption.caption = request.POST.get("caption")
         caption.save()
         return render(
-            request, "formula_tear_sheets/hx/post/caption.html", {"caption": caption}
+            request,
+            "formula_tear_sheets/hx/post/edit/caption.html",
+            {"caption": caption},
         )
 
     if request.method == "GET":
@@ -140,7 +151,7 @@ def change_detail_hx(request, pk):
     if request.method == "PUT":
 
         return render(
-            request, "formula_tear_sheets/hx/post/detail.html", {"detail": detail}
+            request, "formula_tear_sheets/hx/post/edit/detail.html", {"detail": detail}
         )
 
     if request.method == "POST":
@@ -149,7 +160,7 @@ def change_detail_hx(request, pk):
         detail.save()
 
         return render(
-            request, "formula_tear_sheets/hx/post/detail.html", {"detail": detail}
+            request, "formula_tear_sheets/hx/post/edit/detail.html", {"detail": detail}
         )
 
     if request.method == "GET":
@@ -165,7 +176,7 @@ def change_price_record_hx(request, pk):
 
         return render(
             request,
-            "formula_tear_sheets/hx/post/price_record.html",
+            "formula_tear_sheets/hx/post/edit/price_record.html",
             {"price_record": price_record},
         )
 
@@ -178,7 +189,7 @@ def change_price_record_hx(request, pk):
 
         return render(
             request,
-            "formula_tear_sheets/hx/post/price_record.html",
+            "formula_tear_sheets/hx/post/edit/price_record.html",
             {"price_record": price_record},
         )
 
@@ -197,7 +208,7 @@ def change_footer_detail_hx(request, pk):
 
         return render(
             request,
-            "formula_tear_sheets/hx/post/footer_detail.html",
+            "formula_tear_sheets/hx/post/edit/footer_detail.html",
             {"footer_detail": footer_detail},
         )
 
@@ -208,7 +219,7 @@ def change_footer_detail_hx(request, pk):
 
         return render(
             request,
-            "formula_tear_sheets/hx/post/footer_detail.html",
+            "formula_tear_sheets/hx/post/edit/footer_detail.html",
             {"footer_detail": footer_detail},
         )
     if request.method == "GET":
@@ -216,6 +227,139 @@ def change_footer_detail_hx(request, pk):
             request,
             "formula_tear_sheets/hx/get/footer_detail.html",
             {"footer_detail": footer_detail},
+        )
+
+
+@login_required
+def create_caption_hx(request, pk):
+
+    if request.method == "POST":
+        tear_sheet = FormulaTearSheet.objects.get(pk=pk)
+        caption = FormulaImageCaption.objects.create(
+            caption_title=request.POST.get("title"),
+            caption=request.POST.get("caption"),
+            tear_sheet=tear_sheet,
+            order_no=1
+            + max(
+                [
+                    x.order_no
+                    for x in FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
+                ]
+            )
+            if [
+                x.order_no
+                for x in FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
+            ]
+            != []
+            else 1,
+        )
+
+        return render(
+            request,
+            "hx/post/create/caption.html",
+            {"caption": caption, "tearsheet": tear_sheet},
+        )
+
+
+@login_required
+def create_detail_hx(request, pk):
+
+    if request.method == "POST":
+        tear_sheet = FormulaTearSheet.objects.get(pk=pk)
+        detail = FormulaTearSheetDetail.objects.create(
+            name=request.POST.get("name"),
+            details=request.POST.get("details"),
+            tear_sheet=tear_sheet,
+            order=1
+            + max(
+                [
+                    x.order
+                    for x in FormulaTearSheetDetail.objects.filter(
+                        tear_sheet=tear_sheet
+                    )
+                ]
+            )
+            if [
+                x.order
+                for x in FormulaTearSheetDetail.objects.filter(tear_sheet=tear_sheet)
+            ]
+            != []
+            else 1,
+        )
+
+        return render(request, "hx/post/create/detail.html", {"detail": detail})
+
+
+@login_required
+def create_price_record_hx(request):
+
+    if request.method == "POST":
+        csi = CatSeriesItem.objects.get(pk=request.POST.get("cat_series_item"))
+        order = (
+            1
+            + max(
+                [
+                    x.order
+                    for x in FormulaPriceRecord.objects.filter(cat_series_item=csi)
+                ]
+            )
+            if [x.order for x in FormulaPriceRecord.objects.filter(cat_series_item=csi)]
+            != []
+            else 1
+        )
+        cat_series_items = CatSeriesItem.objects.filter(tear_sheet=csi.tear_sheet)
+        try:
+            price_record = FormulaPriceRecord.objects.create(
+                rule_type=request.POST.get("rule_type"),
+                rule_display_1=request.POST.get("rule_display_1"),
+                rule_display_2=request.POST.get("rule_display_2"),
+                list_price=request.POST.get("list_price"),
+                cat_series_item=CatSeriesItem.objects.get(
+                    pk=request.POST.get("cat_series_item")
+                ),
+                order=order,
+            )
+        except IntegrityError:
+            pass
+
+        return render(
+            request,
+            "hx/post/create/price_record.html",
+            {"price_record": price_record, "cat_series_items": cat_series_items},
+        )
+
+
+@login_required
+def create_footer_detail_hx(request, pk):
+    if request.method == "POST":
+        tear_sheet = FormulaTearSheet.objects.get(pk=pk)
+        detail = FormulaTearSheetFooterDetail.objects.create(
+            name=request.POST.get("name"),
+            details=request.POST.get("details"),
+            tear_sheet=tear_sheet,
+            order=1
+            + max(
+                [
+                    x.order
+                    for x in FormulaTearSheetFooterDetail.objects.filter(
+                        tear_sheet=tear_sheet
+                    )
+                ]
+            )
+            if [
+                x.order
+                for x in FormulaTearSheetFooterDetail.objects.filter(
+                    tear_sheet=tear_sheet
+                )
+            ]
+            != []
+            else 1,
+        )
+
+        return render(
+            request,
+            "hx/post/create/footer_detail.html",
+            {"footer_detail": detail, "tearsheet": tear_sheet},
         )
 
 

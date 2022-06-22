@@ -157,12 +157,12 @@
                 ${{price_record.net_price}}
             </div>
             <div class="text-end col-1">
-                <img
+                {% comment %} <img
                 hx-get='{% url 'formula_tearsheets:change_price_record' price_record.pk %}'
                 hx-trigger='click'
                 hx-swap='outerHTML'
                 hx-target="#price-record-{{price_record.pk}}"
-                height="10px" src="{% static 'images/edit.svg' %}">
+                height="10px" src="{% static 'images/edit.svg' %}"> {% endcomment %}
             </div>
         </div>
 
