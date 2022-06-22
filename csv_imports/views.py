@@ -325,3 +325,5 @@ def price_records_template(request):
             "pricelist_include",
         ]
     )
+
+    return response
