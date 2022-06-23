@@ -85,7 +85,8 @@ LOCAL_APPS = [
     "csv_imports",
     "tear_sheets",
     "formula_tear_sheets",
-    "price_records"
+    "price_records",
+    "price_lists"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

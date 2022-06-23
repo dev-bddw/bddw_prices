@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="height: 100px;"></div>
+<div class="text-center">
+    <h1>PRICELIST</h1>
+</div>
+<ul>
+    {% for key,values in price_list_records  %}
+    <li><a href="#{{key| cut:" "}}">{{key}}</a></li>
+
+    {% endfor %}
+{% for key,values in price_list_records   %}
+<div style="width: 900px">
+    <div class='pt-3' id="{{key| cut:" "}}">
+        <div class="mt-3" style="background-color: #ededed;">
+            <div class="text-center">
+                <h4 class="p-2" style="text-decoration: underline; color:black;">{{key | cut:"-"}}</h4>
+            </div>
+            <table class="table">
+                <thead>
+                    <caption class="text-end">{{key}} Price Records</caption>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th class="text-end">list price</th>
+                    <th class="text-end">net price</th>
+                </thead>
+                    {% for item in values  %}
+                    <tr>
+                        <td></td>
+                        <td>{% if item.rule_type == None %}{% else %}{{item.rule_type}}{% endif %}</td>
+                        <td>{{item.rule_display_1}}</td>
+                        <td>{% if item.rule_display_2 == None %}{% else %}{{item.rule_display_2}}{% endif %}</td>
+                        <td class="text-end">${{item.list_price}}</td>
+                        <td class="text-end">${{item.net_price}}</td>
+
+                    </tr>
+                    {% endfor %}
+            </table>
+        </div>
+
+
+    </div>
+</div>
+{% endfor %}
+
+
+
+
+{% comment %} {% for key,values in price_list_records.items   %}
+<ul>
+    <li>{{key}}</li>
+    <ul>
+        {% for item in values  %}
+        <li>{{item.rule_display_1}}</li>
+            {% endfor %}
+    </ul>
+</li>
+</ul>
+{% endfor %} {% endcomment %}
+
+
+{% endblock content %}

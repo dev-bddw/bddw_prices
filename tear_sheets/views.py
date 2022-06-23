@@ -1,7 +1,7 @@
 from sqlite3 import IntegrityError
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import HttpResponse, redirect, render
 
 from price_records.models import PriceRecord
 from products.models import CatSeriesItem
@@ -111,6 +111,10 @@ def change_caption_hx(request, pk):
 
     caption = ImageCaption.objects.get(pk=pk)
 
+    if request.method == "DELETE":
+        caption.delete()
+        return HttpResponse("")
+
     if request.method == "PUT":
         return render(request, "hx/post/edit/caption.html", {"caption": caption})
 
@@ -127,6 +131,10 @@ def change_caption_hx(request, pk):
 @login_required
 def change_detail_hx(request, pk):
     detail = TearSheetDetail.objects.get(pk=pk)
+
+    if request.method == "DELETE":
+        detail.delete()
+        return HttpResponse("")
 
     if request.method == "PUT":
 
@@ -146,6 +154,10 @@ def change_detail_hx(request, pk):
 @login_required
 def change_price_record_hx(request, pk):
     price_record = PriceRecord.objects.get(pk=pk)
+
+    if request.method == "DELETE":
+        price_record.delete()
+        return HttpResponse("")
 
     if request.method == "PUT":
 
@@ -174,6 +186,10 @@ def change_price_record_hx(request, pk):
 @login_required
 def change_footer_detail_hx(request, pk):
     footer_detail = TearSheetFooterDetail.objects.get(pk=pk)
+
+    if request.method == "DELETE":
+        footer_detail.delete()
+        return HttpResponse("")
 
     if request.method == "PUT":
 

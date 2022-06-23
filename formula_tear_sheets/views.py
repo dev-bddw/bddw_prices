@@ -1,7 +1,7 @@
 from sqlite3 import IntegrityError
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import HttpResponse, redirect, render
 
 from price_records.models import FormulaPriceRecord
 from products.models import CatSeriesItem
@@ -122,6 +122,11 @@ def change_caption_hx(request, pk):
 
     caption = FormulaImageCaption.objects.get(pk=pk)
 
+    if request.method == "DELETE":
+        caption.delete()
+
+        return HttpResponse("")
+
     if request.method == "PUT":
         return render(
             request,
@@ -148,6 +153,10 @@ def change_caption_hx(request, pk):
 def change_detail_hx(request, pk):
     detail = FormulaTearSheetDetail.objects.get(pk=pk)
 
+    if request.method == "DELETE":
+        detail.delete()
+        return HttpResponse("")
+
     if request.method == "PUT":
 
         return render(
@@ -171,6 +180,11 @@ def change_detail_hx(request, pk):
 
 def change_price_record_hx(request, pk):
     price_record = FormulaPriceRecord.objects.get(pk=pk)
+
+    if request.method == "DELETE":
+        price_record.delete()
+
+        return HttpResponse("")
 
     if request.method == "PUT":
 
@@ -203,6 +217,11 @@ def change_price_record_hx(request, pk):
 
 def change_footer_detail_hx(request, pk):
     footer_detail = FormulaTearSheetFooterDetail.objects.get(pk=pk)
+
+    if request.method == "DELETE":
+        footer_detail.delete()
+
+        return HttpResponse("")
 
     if request.method == "PUT":
 

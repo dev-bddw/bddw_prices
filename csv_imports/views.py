@@ -5,10 +5,10 @@ import io
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from price_records.models import FormulaPriceRecord, PriceRecord
+from price_records.models import FormulaPriceRecord
 from products.models import Category, CatSeriesItem, Item, Series
 
-from .helpers import return_updated_list
+from .helpers import process_price_list, process_tear_sheets
 
 # Create your views here.
 
@@ -70,118 +70,74 @@ def upload(request):
     if request.method == "POST":
 
         csv_file = request.FILES["file"]
-        if not csv_file.name.endswith(".csv"):
-            pass
-            # messages.error(request, 'THIS IS NOT A CSV FILE')
-        data_set = csv_file.read().decode("UTF-8")
-        io_string = io.StringIO(data_set)
-        next(io_string)  # hop over first row (column headers)
 
-        RECORD_DICT_TBP = {}
+        data_set = csv_file.read().decode("UTF-8")
+
+        io_string = io.StringIO(data_set)
+
+        next(io_string)
+
         report = []
+        TEAR_SHEET_FOR_PROCESSING = {}
+        PRICE_LIST_FOR_PROCESSING = {}
 
         for row in csv.reader(io_string, delimiter=",", quotechar='"'):
-            category, created = Category.objects.get_or_create(name=row[1].upper())
-            series, created = Series.objects.get_or_create(name=row[2].upper())
-            item, created = Item.objects.get_or_create(name=row[3].upper())
 
-            cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
-                category=category,
-                series=series,
-                item=item,
-                defaults={"formula": row[9]},
-            )
-            if csi_created:
-                report.append(f"Created Category Series Item {cat_series_item}")
+            # TEARSHEET PRICE RECORDS
+            if row[11] not in [0, "0", ""]:
 
-            if str(cat_series_item.pk) not in RECORD_DICT_TBP.keys():
-                RECORD_DICT_TBP.update({str(cat_series_item.pk): []})
+                category, created = Category.objects.get_or_create(name=row[1].upper())
+                series, created = Series.objects.get_or_create(name=row[2].upper())
+                item, created = Item.objects.get_or_create(name=row[3].upper())
 
-            # if tearsheet_included = 1 include row in list for processing
-            if row[11] not in ["0", ""]:
-                RECORD_DICT_TBP[str(cat_series_item.pk)].append(row)
+                cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
+                    category=category,
+                    series=series,
+                    item=item,
+                    defaults={"formula": row[9]},
+                )
 
-        # process all the eligible records based on cat - series - item
-        # so all records w/ same cat - series - item are processed at once
-        # ( cat_id, [[row lists]])
-        for x, y in RECORD_DICT_TBP.items():
+                key = str(cat_series_item.pk)
 
-            # WILL CHECK FOR FORMULA RECORD FIRST
+                if key not in TEAR_SHEET_FOR_PROCESSING.keys():
+                    TEAR_SHEET_FOR_PROCESSING.update({f"{key}": []})
 
-            if len(y) == 1 and (y[0][9] != ""):
-                # this is a formula record
-                pass
+                if row[9] == "":  # if there is no formula add it to be processed
+                    TEAR_SHEET_FOR_PROCESSING[key].append(row)
 
-            else:
+                if csi_created:
+                    report.append(f"Created {cat_series_item}")
 
-                # find the baseprice record in the group
-                baseprice_record = [record for record in y if record[4] == "any"]
+            # PRICE LIST PRICE RECORDS
+            if row[17] not in [0, "0", ""]:
+                category, cat_created = Category.objects.get_or_create(
+                    name=row[1].upper()
+                )
+                series, series_created = Series.objects.get_or_create(
+                    name=row[2].upper()
+                )
+                item, item_created = Item.objects.get_or_create(name=row[3].upper())
 
-                # this item has a baseprice record that needs to be applied to other records
-                if baseprice_record != []:
+                cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
+                    category=category,
+                    series=series,
+                    item=item,
+                    defaults={"formula": row[9]},
+                )
 
-                    # remove baseprice record from records to be processed
-                    z = [k for k in y if k not in baseprice_record]
+                key = str(cat_series_item.pk)
 
-                    # alter price for all records using baseprice record
-                    p = [return_updated_list(baseprice_record, n) for n in z]
+                if key not in PRICE_LIST_FOR_PROCESSING.keys():
+                    PRICE_LIST_FOR_PROCESSING.update({f"{key}": []})
 
-                    # now create records using baseprice + surcharge
-                    for record in p:
-                        try:
-                            (
-                                new_price_record,
-                                created,
-                            ) = PriceRecord.objects.update_or_create(
-                                bin_id=record[0],
-                                defaults={
-                                    "cat_series_item": CatSeriesItem.objects.get(pk=x),
-                                    "rule_type": record[12],
-                                    "list_price": record[8],
-                                    "rule_display_1": record[13],
-                                    "rule_display_2": record[14],
-                                    "order": 1,
-                                },
-                            )
-                            if created:
-                                report.append(
-                                    f"Created Price Record {new_price_record} {record[14]}"
-                                )
-                            else:
-                                report.append(
-                                    f"Updated Price Record {new_price_record} {record[14]}"
-                                )
-                        except IndexError:
-                            report.append(f"Something wrong happened with {record[14]}")
+                if row[9] == "":  # if there is no formula add it to be processed
+                    PRICE_LIST_FOR_PROCESSING[key].append(row)
 
-                else:
-                    # process records normally
-                    for record in y:
-                        try:
-                            (
-                                new_price_record,
-                                created,
-                            ) = PriceRecord.objects.update_or_create(
-                                bin_id=record[0],
-                                defaults={
-                                    "cat_series_item": CatSeriesItem.objects.get(pk=x),
-                                    "rule_type": record[12],
-                                    "list_price": record[8],
-                                    "rule_display_1": record[13],
-                                    "rule_display_2": record[14],
-                                    "order": 1,
-                                },
-                            )
-                            if created:
-                                report.append(
-                                    f"Created Price Record {new_price_record} {record[14]}"
-                                )
-                            else:
-                                report.append(
-                                    f"Updated Price Record {new_price_record} {record[14]}"
-                                )
-                        except IndexError:
-                            report.append(f"Something wrong happened with {record[14]}")
+                if csi_created:
+                    report.append(f"Created {cat_series_item}")
+
+        report += process_tear_sheets(TEAR_SHEET_FOR_PROCESSING)
+        report += process_price_list(PRICE_LIST_FOR_PROCESSING)
 
         return render(request, "lot-upload.html", {"report": report})
 
@@ -319,10 +275,12 @@ def price_records_template(request):
             "formula_price",
             "surcharge",
             "tearsheet_include",
-            "tearsheet_rule_type",
+            "rule_type",
             "tearsheet_rule_display_1",
             "tearsheet_rule_display_2",
-            "pricelist_include",
+            "price_list_rule_display_1",
+            "price_list_rule_display_2",
+            "price_list_include",
         ]
     )
 

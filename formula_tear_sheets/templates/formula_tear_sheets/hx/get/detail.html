@@ -5,10 +5,10 @@
             <input value="{{detail.name}}" name="name">
         </div>
 
-        <div class="col-9">
-            <input style="width: 515px;" value="{{detail.details}}" name="details">
+        <div class="col-8">
+            <input style="width: 505px;" value="{{detail.details}}" name="details">
         </div>
-        <div class="text-end col-1">
+        <div class="text-end col-2">
             <img
             hx-post='{% url 'formula_tearsheets:change_detail' detail.pk %}'
             hx-trigger='click'
@@ -21,6 +21,12 @@
             hx-swap='outerHTML'
             hx-target="#detail-{{detail.pk}}"
             height="10px" src="{% static 'images/cancel.svg' %}">
+            <img
+            hx-delete='{% url 'formula_tearsheets:change_caption' detail.pk %}'
+            hx-trigger='click'
+            hx-swap='outerHTML'
+            hx-target="#detail-{{detail.pk}}"
+            height="12px" src="{% static 'images/delete.svg' %}">
         </div>
     </div>
 

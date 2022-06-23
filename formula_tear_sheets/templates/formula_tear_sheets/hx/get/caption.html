@@ -4,10 +4,10 @@
     <div class="col-2">
         <input name='title' value="{{caption.caption_title}}">
     </div>
-    <div class="col-9">
-        <input style="width: 515px;" name='caption' value="{{caption.caption}}">
+    <div class="col-8">
+        <input style="width: 505px;" name='caption' value="{{caption.caption}}">
     </div>
-    <div class="text-end col-1">
+    <div class="text-end col-2">
         <img
         hx-post='{% url 'formula_tearsheets:change_caption' caption.pk %}'
         hx-trigger='click'
@@ -20,6 +20,12 @@
         hx-swap='outerHTML'
         hx-target="#caption-{{caption.pk}}"
         height="8px" src="{% static 'images/cancel.svg' %}">
+        <img
+        hx-delete='{% url 'formula_tearsheets:change_caption' caption.pk %}'
+        hx-trigger='click'
+        hx-swap='outerHTML'
+        hx-target="#caption-{{caption.pk}}"
+        height="12px" src="{% static 'images/delete.svg' %}">
     </div>
 </div>
 </form>

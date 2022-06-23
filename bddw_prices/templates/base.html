@@ -16,6 +16,7 @@
     <!-- Your stuff: Third-party CSS libraries go here -->
 
     <!-- This file stores project-specific CSS -->
+    <link rel="stylesheet" href="{% static 'css/project.css' %}">
     {% endblock %}
     <!-- Le javascript
     ================================================== -->
@@ -53,7 +54,7 @@
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                  <li><a id="log-in-link" class="nav-link" href="{% url 'tearsheets:list' %}">{% translate "TEARSHEETS" %}</a></li>
                  <li><a id="log-in-link" class="nav-link" href="{% url 'formula_tearsheets:list' %}">{% translate "FORMULA TEARSHEETS" %}</a></li>
-                 <li><a id="log-in-link" class="nav-link" href="{% url 'csv_imports:upload' %}">{% translate "CSV IMPORT" %}</a></li>
+                 <li><a id="log-in-link" class="nav-link" href="{% url 'csv_imports:upload' %}">{% translate "CSV" %}</a></li>
 
               </ul>
             </div>
@@ -62,9 +63,8 @@
             <div class="bg-light dropdown pt-.5">
               <a style="font-size: 16px; border: 0px; color: grey; margin: 1.5px" class=" btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">PRICELISTS</a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                 {% comment %} <li><a id="log-in-link" class="nav-link" href="">COMING</a></li>
-                 <li><a id="log-in-link" class="nav-link" href="">~SOON~</a></li>
-                 <li><a id="log-in-link" class="nav-link" href="">!!!!!!</a></li> {% endcomment %}
+                 <li><a id="log-in-link" class="nav-link" href="{% url 'price-list' %}">LIST</a></li>
+
              </ul>
             </div>
           </li>
@@ -99,6 +99,7 @@
       {% endif %} {% endcomment %}
 
       {% block content %}
+
       {% endblock content %}
 
     </div> <!-- /container -->

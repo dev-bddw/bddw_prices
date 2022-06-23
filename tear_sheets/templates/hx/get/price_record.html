@@ -12,10 +12,10 @@
         <div class="col-1">
             <input style="width: 40px" name="list_price" value="{{price_record.list_price}}">
         </div>
-        <div class="col-1">
+        {% comment %} <div class="col-1">
             ${{price_record.net_price}}
-        </div>
-        <div class="text-end col-1">
+        </div> {% endcomment %}
+        <div class="text-end col-2">
             <img
             hx-post='{% url 'tearsheets:change_price_record' price_record.pk %}'
             hx-trigger='click'
@@ -28,7 +28,12 @@
             hx-swap='outerHTML'
             hx-target="#price-record-{{price_record.pk}}"
             height="10px" src="{% static 'images/cancel.svg' %}">
-
+            <img
+            hx-delete='{% url 'tearsheets:change_price_record' price_record.pk %}'
+            hx-trigger='click'
+            hx-swap='outerHTML'
+            hx-target="#price-record-{{price_record.pk}}"
+            height="12px" src="{% static 'images/delete.svg' %}">
         </div>
     </div>
 </form>

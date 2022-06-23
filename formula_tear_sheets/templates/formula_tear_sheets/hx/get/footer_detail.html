@@ -4,10 +4,10 @@
     <div class="col-2">
         <input name='name' value="{{footer_detail.name}}">
     </div>
-    <div class="col-9">
-        <input style="width: 515px;" value="{{footer_detail.details}}" name="details">
+    <div class="col-8">
+        <input style="width: 505px;" value="{{footer_detail.details}}" name="details">
     </div>
-    <div class="text-end col-1">
+    <div class="text-end col-2">
         <img
         hx-post='{% url 'formula_tearsheets:change_footer_detail' footer_detail.pk %}'
         hx-trigger='click'
@@ -20,6 +20,12 @@
         hx-swap='outerHTML'
         hx-target="#footer-detail-{{footer_detail.pk}}"
         height="10px" src="{% static 'images/cancel.svg' %}">
+        <img
+        hx-delete='{% url 'formula_tearsheets:change_footer_detail' footer_detail.pk %}'
+        hx-trigger='click'
+        hx-swap='outerHTML'
+        hx-target="#footer-detail-{{footer_detail.pk}}"
+        height="10px" src="{% static 'images/delete.svg' %}">
     </div>
 </div>
 </form>

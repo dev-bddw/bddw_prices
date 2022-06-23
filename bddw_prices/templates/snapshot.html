@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="pt-5">tearsheets snapshot</h2>
+<table class="table table-striped">
+  <caption>quick look at data in the tearsheets app</caption>
+  <thead>
+    <th>data type</th>
+    <th>number</th>
+    <th>last updated</th>
+  </thead>
+  <tr>
+    <td>category series items</td>
+    <td>{{cat_series_items | length}}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>category series items w/ price formulas</td>
+    <td>{{cat_series_items_with_formula | length}}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td class="text-center"><strong>NORMAL TEAR SHEETS</strong></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>tear sheets</td>
+    <td>{{tear_sheets |length}}</td>
+    <td>{{tear_sheets__last_updated.updated_on}}</td>
+  </tr>
+  <tr>
+    <td>tearsheet price records</td>
+    <td>{{price_records | length}}</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td class="text-center"><strong>FORMULA TEAR SHEETS</strong></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>formula tear sheets</td>
+    <td>{{formula_tear_sheets |length}}</td>
+    <td>{{formula_tear_sheets__last_updated.updated_on}}</td>
+  </tr>
+  <tr>
+    <td>formula tearsheet price records</td>
+    <td>{{formula_tear_sheets__price_records | length}}</td>
+    <td></td>
+  </tr>
+</table>
+
+{% endblock content %}
