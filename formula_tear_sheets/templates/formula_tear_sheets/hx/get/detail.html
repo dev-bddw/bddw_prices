@@ -22,7 +22,7 @@
             hx-target="#detail-{{detail.pk}}"
             height="10px" src="{% static 'images/cancel.svg' %}">
             <img
-            hx-delete='{% url 'formula_tearsheets:change_caption' detail.pk %}'
+            hx-delete='{% url 'formula_tearsheets:change_detail' detail.pk %}'
             hx-trigger='click'
             hx-swap='outerHTML'
             hx-target="#detail-{{detail.pk}}"

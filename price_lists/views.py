@@ -1,35 +1,25 @@
 from django.shortcuts import render
 
 # Create your views here.
-from price_records.models import FormulaPriceListPriceRecord, PriceListPriceRecord
+from products.models import Category, CatSeriesItem
 
 
 def price_list(request):
 
     new_dict = {}
 
-    norm_csi = [
-        x.cat_series_item
-        for x in PriceListPriceRecord.objects.all().order_by("cat_series_item")
-    ]
-    form_csi = [
-        x.cat_series_item
-        for x in FormulaPriceListPriceRecord.objects.all().order_by("cat_series_item")
-    ]
+    for category in Category.objects.all():
+        new_dict.update({f"{category}": {}})
 
-    for item in norm_csi:
-        new_dict.update(
-            {f"{item}": PriceListPriceRecord.objects.filter(cat_series_item=item)}
-        )
-
-    for item in form_csi:
-        new_dict.update(
-            {
-                f"{item}": FormulaPriceListPriceRecord.objects.filter(
-                    cat_series_item=item
-                )
-            }
-        )
+        for csi in CatSeriesItem.objects.filter(category=category):
+            new_dict[f"{category}"].update(
+                {
+                    f"{csi.return_series_item()}": [
+                        [x for x in csi.pricelistpricerecord_set.all()],
+                        [x for x in csi.formulapricelistpricerecord_set.all()],
+                    ]
+                }
+            )
 
     final_tuples = sorted(new_dict.items(), reverse=True)
 

@@ -39,6 +39,14 @@ class CatSeriesItem(models.Model):
         "products.Item", blank=False, null=False, on_delete=models.DO_NOTHING
     )
 
+    opt_series_item_display = models.CharField(
+        blank=True,
+        null=True,
+        default=None,
+        help_text="The string version of the formula",
+        max_length=200,
+    )
+
     formula = models.CharField(
         blank=True,
         null=True,
@@ -56,6 +64,13 @@ class CatSeriesItem(models.Model):
         null=True,
         on_delete=models.SET_NULL,
     )
+
+    def return_series_item(self):
+        return (
+            f"{self.series} {self.item}"
+            if self.opt_series_item_display is None
+            else self.opt_series_item_display
+        )
 
     def save(self, *args, **kwargs):
         # roundabout way of ensuring unique for cat-series-item fk's

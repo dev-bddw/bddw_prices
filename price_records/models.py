@@ -51,17 +51,8 @@ class PriceRecord(models.Model):
 
     def get_net_price(self):
         try:
-            # return value rounded to hundreds place
             return (
-                str(
-                    (
-                        100
-                        * round(
-                            (int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
-                            * 0.01
-                        )
-                    )
-                )
+                str(int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
                 if self.list_price is not None
                 else 0
             )
@@ -152,17 +143,8 @@ class FormulaPriceRecord(models.Model):
 
     def get_net_price(self):
         try:
-            # return value rounded to hundreds place
             return (
-                str(
-                    (
-                        100
-                        * round(
-                            (int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
-                            * 0.01
-                        )
-                    )
-                )
+                str(int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
                 if self.list_price is not None
                 else 0
             )
@@ -249,17 +231,8 @@ class PriceListPriceRecord(models.Model):
 
     def get_net_price(self):
         try:
-            # return value rounded to hundreds place
             return (
-                str(
-                    (
-                        100
-                        * round(
-                            (int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
-                            * 0.01
-                        )
-                    )
-                )
+                str(int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
                 if self.list_price is not None
                 else 0
             )
@@ -306,7 +279,11 @@ class FormulaPriceListPriceRecord(models.Model):
     inset = models.IntegerField(null=True, blank=True)
 
     rule_display_1 = models.CharField(
-        blank=True, null=True, help_text="ex. 67 x 19 x 29 H", max_length=200
+        blank=True,
+        default=" ",
+        null=True,
+        help_text="ex. 67 x 19 x 29 H",
+        max_length=200,
     )
     rule_display_2 = models.CharField(
         help_text="ex. / 2 STANDARD DRAWERS / 2 CABS",
@@ -322,7 +299,7 @@ class FormulaPriceListPriceRecord(models.Model):
     def save(self, *args, **kwargs):
         self.list_price = self.get_price()
         self.net_price = self.get_net_price()
-        self.rule_display_1 = self.return_display_rule()
+        # self.rule_display_1 = self.return_display_rule()
 
         if self.cat_series_item.formula_tear_sheet is None:
             pass
@@ -351,30 +328,33 @@ class FormulaPriceListPriceRecord(models.Model):
 
     def get_net_price(self):
         try:
-            # return value rounded to hundreds place
             return (
-                str(
-                    (
-                        100
-                        * round(
-                            (int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
-                            * 0.01
-                        )
-                    )
-                )
+                str(int(self.list_price * settings.NET_PRICE_MULTIPLIER))
                 if self.list_price is not None
                 else 0
             )
         except ValueError:
             return "Please make sure your LIST PRICE has an integer value."
 
-    def return_display_rule(self):
-        st = ""
-        for key, value in self.return_value_dict().items():
-            if value not in [0, None, ""]:
-                st += f"{value} {key.upper()[0]} X "
-        st = st[:-2]
-        return st
+    def return_rule_display_1_translation(self):
+
+        f = self.rule_display_1.replace("[", "{").replace("]", "}")
+
+        import re
+
+        rule_display_1 = re.sub("([a-z])\s([a-z])", "\\1_\\2", f)
+
+        return rule_display_1
+
+    def return_rule_display_1(self):
+        if "[" in self.rule_display_1:
+
+            template = self.return_rule_display_1_translation()
+            variables = self.return_value_dict()
+            return template.format(**variables)
+
+        else:
+            return self.rule_display_1
 
     def evaluate(self):
         return (

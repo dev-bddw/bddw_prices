@@ -275,7 +275,7 @@ def create_caption_hx(request, pk):
 
         return render(
             request,
-            "hx/post/create/caption.html",
+            "formula_tear_sheets/hx/post/create/caption.html",
             {"caption": caption, "tearsheet": tear_sheet},
         )
 
@@ -306,7 +306,11 @@ def create_detail_hx(request, pk):
             else 1,
         )
 
-        return render(request, "hx/post/create/detail.html", {"detail": detail})
+        return render(
+            request,
+            "formula_tear_sheets/hx/post/create/detail.html",
+            {"detail": detail, "tearsheet": tear_sheet},
+        )
 
 
 @login_required
@@ -343,7 +347,7 @@ def create_price_record_hx(request):
 
         return render(
             request,
-            "hx/post/create/price_record.html",
+            "formula_tear_sheets/hx/post/create/price_record.html",
             {"price_record": price_record, "cat_series_items": cat_series_items},
         )
 
@@ -377,7 +381,7 @@ def create_footer_detail_hx(request, pk):
 
         return render(
             request,
-            "hx/post/create/footer_detail.html",
+            "formula_tear_sheets/hx/post/create/footer_detail.html",
             {"footer_detail": detail, "tearsheet": tear_sheet},
         )
 

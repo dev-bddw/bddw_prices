@@ -1,65 +1,99 @@
 {% extends 'base.html' %}
 
+{% comment %}
+
+price_list records are organized this way:
+
+{ 'CATEGORY-A':
+    { 'SERIES-ITEM':
+    [
+        [<queryset: pricerecords>],
+        [<queryset: formulapricerecods>],
+    ],
+        ...
+    },
+}, ...
+
+
+{% endcomment %}
+
 {% block content %}
 <div style="height: 100px;"></div>
 <div class="text-center">
     <h1>PRICELIST</h1>
 </div>
-<ul>
+<ul style="list-style-type:none;">
     {% for key,values in price_list_records  %}
     <li><a href="#{{key| cut:" "}}">{{key}}</a></li>
-
     {% endfor %}
-{% for key,values in price_list_records   %}
-<div style="width: 900px">
-    <div class='pt-3' id="{{key| cut:" "}}">
-        <div class="mt-3" style="background-color: #ededed;">
-            <div class="text-center">
-                <h4 class="p-2" style="text-decoration: underline; color:black;">{{key | cut:"-"}}</h4>
-            </div>
-            <table class="table">
-                <thead>
-                    <caption class="text-end">{{key}} Price Records</caption>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th class="text-end">list price</th>
-                    <th class="text-end">net price</th>
-                </thead>
-                    {% for item in values  %}
-                    <tr>
-                        <td></td>
-                        <td>{% if item.rule_type == None %}{% else %}{{item.rule_type}}{% endif %}</td>
-                        <td>{{item.rule_display_1}}</td>
-                        <td>{% if item.rule_display_2 == None %}{% else %}{{item.rule_display_2}}{% endif %}</td>
-                        <td class="text-end">${{item.list_price}}</td>
-                        <td class="text-end">${{item.net_price}}</td>
+</ul>
 
+{% for category,series_item_dict in price_list_records   %}
+<div style="width: 1000px">
+    <div class='pt-3' id="{{category| cut:" "}}">
+        <div class="mt-3" style="background-color: white;">
+                {% for series_item_key,lists in series_item_dict.items  %}
+                {% if lists.0|length > 0 or lists.1|length > 0 %}
+                {% if forloop.first %}
+                <h1 style="font-size: 100px;">{{category}}</h1>
+                {% endif %}
+                <table class="table">
+                <thead>
+                    <th style="width:30%;"></th>
+                    <th style="width:50%;" class="text-end">{{lists.0.0.rule_type}}{{lists.1.0.rule_type}}</th>
+                    <th style="width:10%;" class="text-end">list</th>
+                    <th style="width:10%;" class="text-end">net</th>
+                </thead>
+                {% for price_record in lists.0  %}
+                    {% if forloop.first %}
+                    <tr>
+                        <td>{{series_item_key}}</td>
+                        <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                        <td class="text-end">${{price_record.list_price}}</td>
+                        <td class="text-end">${{price_record.net_price}}</td>
                     </tr>
-                    {% endfor %}
+                    {% else %}
+                <tr>
+                    <td></td>
+                    <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                    <td class="text-end">${{price_record.list_price}}</td>
+                    <td class="text-end">${{price_record.net_price}}</td>
+                </tr>
+
+
+                    {% endif %}
+
+                {% endfor %}
+                {% for price_record in lists.1  %}
+                {% if forloop.first %}
+                <tr>
+                    <td>{{series_item_key}}</td>
+                    <td style="font-size: 10px" class="text-end">{{price_record.return_rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                    <td class="text-end">${{price_record.list_price}}</td>
+                    <td class="text-end">${{price_record.net_price}}</td>
+                </tr>
+                {% else %}
+            <tr>
+                <td></td>
+                <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                <td class="text-end">${{price_record.list_price}}</td>
+                <td class="text-end">${{price_record.net_price}}</td>
+            </tr>
+
+
+                {% endif %}
+
+            {% endfor %}
+
+
             </table>
+            {% endif %}
+            {% endfor %}
         </div>
 
 
     </div>
 </div>
 {% endfor %}
-
-
-
-
-{% comment %} {% for key,values in price_list_records.items   %}
-<ul>
-    <li>{{key}}</li>
-    <ul>
-        {% for item in values  %}
-        <li>{{item.rule_display_1}}</li>
-            {% endfor %}
-    </ul>
-</li>
-</ul>
-{% endfor %} {% endcomment %}
-
 
 {% endblock content %}
