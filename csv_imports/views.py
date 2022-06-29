@@ -454,7 +454,7 @@ def sorting_upload(request):
         response = HttpResponse(
             content_type="text/csv",
             headers={
-                "Content-Disposition": f'attachment; filename="PRICE-RULES-{date}.csv"'
+                "Content-Disposition": f'attachment; filename="SORTING RULES TEMPLATE-{date}.csv"'
             },
         )
 
@@ -466,9 +466,55 @@ def sorting_upload(request):
                 "category",
                 "category_order",
                 "series",
-                "series_order" "item",
+                "series_order",
+                "item",
                 "item_order",
             ]
         )
+
+        return response
+
+    if request.method == "PUT":
+
+        date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={
+                "Content-Disposition": f'attachment; filename="SORTING-ORDER-{date}.csv"'
+            },
+        )
+
+        writer = csv.writer(response)
+
+        csi_records = CatSeriesItem.objects.all().values_list(
+            "id",
+            "category",
+            "cat_order",
+            "series",
+            "series_order",
+            "item",
+            "item_order",
+        )
+
+        date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+        writer = csv.writer(response)
+
+        writer.writerow(
+            [
+                "id",
+                "category",
+                "category_order",
+                "series",
+                "series_order",
+                "item",
+                "item_order",
+            ]
+        )
+
+        for record in csi_records:
+            record = list(record)
+            writer.writerow(record)
 
         return response

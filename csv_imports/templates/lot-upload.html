@@ -61,6 +61,8 @@
         <h4>Upload Sorting Rules</h4>
         <p>Define Ordering for Category Series Item objects w/ one simple csv upload.</p>
         <p><a href="{% url 'csv_imports:sorting_upload' %}">DOWNLOAD TEMPLATE</a>
+        <p><a method="put" href="{% url 'csv_imports:sorting_upload' %}">EXPORT ALL RECORDS</a>
+
         <form action="{% url 'csv_imports:sorting_upload' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" id="file1" name="file">
