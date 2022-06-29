@@ -29,7 +29,7 @@
 <div class="row">
     <div class="col">
         <h4>upload price rules</h4>
-        <p>Normal price records and price formulas. Simply upload the pricing export from the bin.</p>
+        <p>Normal price records and price formulas. Simply upload the pricing export from the bin. Delete details TBD.</p>
         <p><a href="{% url 'csv_imports:normal_template' %}">DOWNLOAD TEMPLATE</a>
         <form action="{% url 'csv_imports:upload' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -40,7 +40,9 @@
     </div>
     <div class="col">
         <h4>upload formula records</h4>
-        <p>These are the records that "fill in" the price formulas.</p>
+        <p>These are the records that "fill in" the price formulas. Leave ID column blank
+            to create new records. Delete details TBD.
+        </p>
         <p><a href="{% url 'csv_imports:form_template' %}">DOWNLOAD TEMPLATE</a>
         <p><a href="{% url 'csv_imports:export_formula' %}">EXPORT ALL RECORDS</a>
         <form action="{% url 'csv_imports:upload_formula' %}" method="POST" enctype="multipart/form-data">
@@ -51,6 +53,25 @@
         </form>
     </div>
 </div>
+
+<div style="height: 40px;"></div>
+
+<div class="row">
+    <div class="col">
+        <h4>Upload Sorting Rules</h4>
+        <p>Define Ordering for Category Series Item objects w/ one simple csv upload.</p>
+        <p><a href="{% url 'csv_imports:sorting_upload' %}">DOWNLOAD TEMPLATE</a>
+        <form action="{% url 'csv_imports:sorting_upload' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="file1" name="file">
+            <small>Only accepts CSV files</small>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    <div class="col">
+    </div>
+</div>
+
 <div class='pt-5'></div>
 {% if report %}
 <p>details<p>

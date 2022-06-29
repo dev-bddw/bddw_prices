@@ -52,7 +52,7 @@ class PriceRecord(models.Model):
     def get_net_price(self):
         try:
             return (
-                str(int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
+                str(int(int(self.list_price) * settings.NET_PRICE_MULTIPLIER))
                 if self.list_price is not None
                 else 0
             )
@@ -144,7 +144,7 @@ class FormulaPriceRecord(models.Model):
     def get_net_price(self):
         try:
             return (
-                str(int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
+                str(int(int(self.list_price) * settings.NET_PRICE_MULTIPLIER))
                 if self.list_price is not None
                 else 0
             )
@@ -232,7 +232,7 @@ class PriceListPriceRecord(models.Model):
     def get_net_price(self):
         try:
             return (
-                str(int(self.list_price) * settings.NET_PRICE_MULTIPLIER)
+                str(int(int(self.list_price) * settings.NET_PRICE_MULTIPLIER))
                 if self.list_price is not None
                 else 0
             )
@@ -329,7 +329,7 @@ class FormulaPriceListPriceRecord(models.Model):
     def get_net_price(self):
         try:
             return (
-                str(int(self.list_price * settings.NET_PRICE_MULTIPLIER))
+                str(int(int(self.list_price) * settings.NET_PRICE_MULTIPLIER))
                 if self.list_price is not None
                 else 0
             )

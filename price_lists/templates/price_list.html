@@ -19,12 +19,9 @@ price_list records are organized this way:
 
 {% block content %}
 <div style="height: 100px;"></div>
-<div class="text-center">
-    <h1>PRICELIST</h1>
-</div>
 <ul style="list-style-type:none;">
-    {% for key,values in price_list_records  %}
-    <li><a href="#{{key| cut:" "}}">{{key}}</a></li>
+    {% for category,series_item_dict in price_list_records  %}
+    <li><a href="#{{category| cut:" "}}">{{category}}</a></li>
     {% endfor %}
 </ul>
 
@@ -33,9 +30,10 @@ price_list records are organized this way:
     <div class='pt-3' id="{{category| cut:" "}}">
         <div class="mt-3" style="background-color: white;">
                 {% for series_item_key,lists in series_item_dict.items  %}
-                {% if lists.0|length > 0 or lists.1|length > 0 %}
                 {% if forloop.first %}
-                <h1 style="font-size: 100px;">{{category}}</h1>
+                <div class="text-center">
+                    <h1 style="font-size: 50px;">{{category}}</h1>
+                </div>
                 {% endif %}
                 <table class="table">
                 <thead>
@@ -75,7 +73,7 @@ price_list records are organized this way:
                 {% else %}
             <tr>
                 <td></td>
-                <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                <td style="font-size: 10px" class="text-end">{{price_record.return_rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
                 <td class="text-end">${{price_record.list_price}}</td>
                 <td class="text-end">${{price_record.net_price}}</td>
             </tr>
@@ -87,7 +85,6 @@ price_list records are organized this way:
 
 
             </table>
-            {% endif %}
             {% endfor %}
         </div>
 

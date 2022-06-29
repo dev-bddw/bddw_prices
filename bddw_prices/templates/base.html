@@ -50,18 +50,17 @@
           {% if request.user.is_authenticated %}
           <li class="nav-item dropdown">
             <div class="bg-light dropdown pt-.5">
-              <a style="font-size: 16px; border: 0px; color: grey; margin: 1.5px" class=" btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">TEARSHEETS</a>
+              <a style="font-size: 15px; border: 0px; color: grey; margin: 1.5px" class=" btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">TEARSHEETS</a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                  <li><a id="log-in-link" class="nav-link" href="{% url 'tearsheets:list' %}">{% translate "TEARSHEETS" %}</a></li>
                  <li><a id="log-in-link" class="nav-link" href="{% url 'formula_tearsheets:list' %}">{% translate "FORMULA TEARSHEETS" %}</a></li>
-                 <li><a id="log-in-link" class="nav-link" href="{% url 'csv_imports:upload' %}">{% translate "CSV" %}</a></li>
 
               </ul>
             </div>
           </li>
           <li class="nav-item dropdown">
             <div class="bg-light dropdown pt-.5">
-              <a style="font-size: 16px; border: 0px; color: grey; margin: 1.5px" class=" btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">PRICELISTS</a>
+              <a style="font-size: 15px; border: 0px; color: grey; margin: 1.5px" class=" btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">PRICELISTS</a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                  <li><a id="log-in-link" class="nav-link" href="{% url 'price-list' %}">LIST</a></li>
 
@@ -69,16 +68,19 @@
             </div>
           </li>
           <li class="nav-item">
-            <a style="font-size: 16px;" id="log-in-link" class="nav-link" href="{% url 'admin:index' %}">{% translate "ADMIN" %}</a>
+            <a style="padding: 6px 12px; font-size: 15px; border: 0px; color: grey; margin: 1.5px" class="nav-link" href="{% url 'csv_imports:upload' %}">{% translate "CSV" %}</a>
+          </li>
+          <li class="nav-item">
+            <a style="padding: 6px 12px; font-size: 15px; border: 0px; color: grey; margin: 1.5px" id="log-in-link" class="nav-link" href="{% url 'admin:index' %}">{% translate "ADMIN" %}</a>
           </li>
           <li class="nav-item">
             {# URL provided by django-allauth/account/urls.py #}
-            <a style="font-size: 16px;" id="log-in-link" class="nav-link" href="{% url 'account_logout' %}">{% translate "LOGOUT" %}</a>
+            <a style="padding: 6px 12px; font-size: 15px; border: 0px; color: grey; margin: 1.5px" id="log-in-link" class="nav-link" href="{% url 'account_logout' %}">{% translate "LOGOUT" %}</a>
           </li>
           {% else %}
           <li class="nav-item">
             {# URL provided by django-allauth/account/urls.py #}
-            <a style="font-size: 16px;" id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "LOGIN" %}</a>
+            <a style="padding: 6px 12px; font-size: 15px; border: 0px; color: grey; margin: 1.5px" id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "LOGIN" %}</a>
           </li>
           {% endif %}
         </ul>

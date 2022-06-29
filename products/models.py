@@ -24,6 +24,9 @@ class Series(models.Model):
 class Item(models.Model):
     name = models.CharField(unique=True, blank=True, null=True, max_length=200)
 
+    class Meta:
+        verbose_name_plural = "Items"
+
     def __str__(self):
         return f"{self.name}"
 
@@ -38,6 +41,10 @@ class CatSeriesItem(models.Model):
     item = models.ForeignKey(
         "products.Item", blank=False, null=False, on_delete=models.DO_NOTHING
     )
+
+    cat_order = models.IntegerField(blank=True, null=True)
+    series_order = models.IntegerField(blank=True, null=True)
+    item_order = models.IntegerField(blank=True, null=True)
 
     opt_series_item_display = models.CharField(
         blank=True,
@@ -115,4 +122,4 @@ class CatSeriesItem(models.Model):
     class Meta:
         verbose_name = "Category Series Item"
         verbose_name_plural = "Category Series Items"
-        ordering = ["category"]
+        ordering = ["cat_order", "series_order", "item_order"]

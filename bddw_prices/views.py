@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from formula_tear_sheets.models import FormulaTearSheet
@@ -6,6 +7,7 @@ from products.models import CatSeriesItem
 from tear_sheets.models import TearSheet
 
 
+@login_required
 def snapshot(request):
 
     return render(

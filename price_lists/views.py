@@ -12,16 +12,30 @@ def price_list(request):
         new_dict.update({f"{category}": {}})
 
         for csi in CatSeriesItem.objects.filter(category=category):
-            new_dict[f"{category}"].update(
-                {
-                    f"{csi.return_series_item()}": [
-                        [x for x in csi.pricelistpricerecord_set.all()],
-                        [x for x in csi.formulapricelistpricerecord_set.all()],
-                    ]
-                }
-            )
+            if (
+                len(csi.pricelistpricerecord_set.all()) > 0
+                or len(csi.formulapricelistpricerecord_set.all()) > 0
+            ):
+                new_dict[f"{category}"].update(
+                    {
+                        f"{csi.return_series_item()}": [
+                            [x for x in csi.pricelistpricerecord_set.all()],
+                            [x for x in csi.formulapricelistpricerecord_set.all()],
+                        ]
+                    }
+                )
 
-    final_tuples = sorted(new_dict.items(), reverse=True)
+    empty_series_items = []
+
+    # remove empty series item dictionaries
+    for key, value in new_dict.items():
+        for series_item, lists in value.items():
+            if lists == [[], []]:
+                empty_series_items.append(series_item)
+
+    final_tuples = new_dict.items()
+
+    print(empty_series_items)
 
     return render(
         request,
