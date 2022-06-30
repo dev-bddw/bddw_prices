@@ -12,7 +12,8 @@ def process_tear_sheets(TEAR_SHEET_FOR_PROCESSING):
     report = []
     for x, y in TEAR_SHEET_FOR_PROCESSING.items():
         baseprice_record = [record for record in y if record[4] == "any"]
-        if baseprice_record != []:
+        non_baseprice_record = [record for record in y if record[4] != "any"]
+        if baseprice_record != [] and non_baseprice_record != []:
             z = [k for k in y if k not in baseprice_record]
             p = [return_updated_list(baseprice_record, n) for n in z]
             # now create records using baseprice + surcharge
@@ -59,7 +60,10 @@ def process_price_list(PRICE_LIST_FOR_PROCESSING):
 
     for x, y in PRICE_LIST_FOR_PROCESSING.items():
         baseprice_record = [record for record in y if record[4] == "any"]
-        if baseprice_record != []:
+        non_baseprice_record = [
+            record for record in y if record[4] != "any"
+        ]  # does it have more records than the any one?
+        if baseprice_record != [] and non_baseprice_record != []:
             z = [k for k in y if k not in baseprice_record]
             p = [return_updated_list(baseprice_record, n) for n in z]
             for record in p:

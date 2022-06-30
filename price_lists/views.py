@@ -8,6 +8,7 @@ def price_list(request):
 
     new_dict = {}
 
+    # we need to fix the Category sorting here in some way
     for category in Category.objects.all():
         new_dict.update({f"{category}": {}})
 
@@ -34,8 +35,6 @@ def price_list(request):
                 empty_series_items.append(series_item)
 
     final_tuples = new_dict.items()
-
-    print(empty_series_items)
 
     return render(
         request,
