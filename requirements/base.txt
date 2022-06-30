@@ -20,4 +20,3 @@ django-cors-headers==3.11.0 # https://github.com/adamchainz/django-cors-headers
 # DRF-spectacular for api documentation
 drf-spectacular==0.21.2  # https://github.com/tfranzel/drf-spectacular
 django-jazzmin==2.5.0 #https://django-jazzmin.readthedocs.io/
-django-silk==4.3.0 #https://github.com/jazzband/django-silk
