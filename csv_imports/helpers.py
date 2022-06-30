@@ -17,7 +17,7 @@ def process_tear_sheets(TEAR_SHEET_FOR_PROCESSING):
             p = [return_updated_list(baseprice_record, n) for n in z]
             # now create records using baseprice + surcharge
             for record in p:
-                (new_price_record, created,) = PriceRecord.objects.update_or_create(
+                (new_price_record, created) = PriceRecord.objects.update_or_create(
                     bin_id=record[0],
                     defaults={
                         "cat_series_item": CatSeriesItem.objects.get(pk=x),
@@ -28,10 +28,15 @@ def process_tear_sheets(TEAR_SHEET_FOR_PROCESSING):
                         "order": 1,
                     },
                 )
+                if created:
+                    report.append(f"Created {new_price_record} (Tearsheet)")
+                if not created:
+                    report.append(f"Updated {new_price_record} (Tearsheet)")
+
         else:
             # process records normally
             for record in y:
-                (new_price_record, created,) = PriceRecord.objects.update_or_create(
+                (new_price_record, created) = PriceRecord.objects.update_or_create(
                     bin_id=record[0],
                     defaults={
                         "cat_series_item": CatSeriesItem.objects.get(pk=x),
@@ -42,10 +47,10 @@ def process_tear_sheets(TEAR_SHEET_FOR_PROCESSING):
                         "order": 1,
                     },
                 )
-        if created:
-            report.append(f"Created {new_price_record} (Tearsheet)")
-        if not created:
-            report.append(f"Updated {new_price_record} (Tearsheet)")
+                if created:
+                    report.append(f"Created {new_price_record} (Tearsheet)")
+                if not created:
+                    report.append(f"Updated {new_price_record} (Tearsheet)")
     return report
 
 
@@ -72,6 +77,10 @@ def process_price_list(PRICE_LIST_FOR_PROCESSING):
                         "order": 1,
                     },
                 )
+                if created:
+                    report.append(f"Created {new_price_record} (Pricelist)")
+                if not created:
+                    report.append(f"Updated {new_price_record} (Pricelist)")
 
         else:
             for record in y:
@@ -90,9 +99,9 @@ def process_price_list(PRICE_LIST_FOR_PROCESSING):
                     },
                 )
 
-        if created:
-            report.append(f"Created {new_price_record} (Pricelist)")
-        if not created:
-            report.append(f"Updated {new_price_record} (Pricelist)")
+                if created:
+                    report.append(f"Created {new_price_record} (Pricelist)")
+                if not created:
+                    report.append(f"Updated {new_price_record} (Pricelist)")
 
     return report
