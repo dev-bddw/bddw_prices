@@ -333,7 +333,7 @@ def detail_view_for_printing(request, pk):
 
     number_of += len(captions) + len(footer_details)
 
-    spacing_px = 350 if number_of <= 10 else 200
+    spacing_px = 250 if number_of <= 10 else 100
 
     return render(
         request,
