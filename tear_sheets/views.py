@@ -325,9 +325,15 @@ def create_footer_detail_hx(request, pk):
 
 def detail_view_for_printing(request, pk):
 
+    number_of = 0
+
     tear_sheet = TearSheet.objects.get(pk=pk)
     captions = ImageCaption.objects.filter(tear_sheet=tear_sheet)
     footer_details = TearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
+
+    number_of += len(captions) + len(footer_details)
+
+    spacing_px = 500 if number_of <= 10 else 200
 
     return render(
         request,
@@ -338,6 +344,7 @@ def detail_view_for_printing(request, pk):
             "captions": captions,
             "footer_details": footer_details,
             "price_records": return_price_records_by_rule_type(pk),
+            "spacing": spacing_px,
         },
     )
 
