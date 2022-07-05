@@ -426,27 +426,35 @@ def sorting_upload(request):
         report = []
 
         for row in csv.reader(io_string, delimiter=",", quotechar='"'):
-            category, created = Category.objects.get_or_create(name=row[1].upper())
-            series, created = Series.objects.get_or_create(name=row[3].upper())
-            item, created = Item.objects.get_or_create(name=row[5].upper())
+            try:
+                category, created = Category.objects.get_or_create(name=row[1].upper())
+                series, created = Series.objects.get_or_create(name=row[3].upper())
+                item, created = Item.objects.get_or_create(name=row[5].upper())
 
-            cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
-                category=category,
-                series=series,
-                item=item,
-                defaults={
-                    "cat_order": row[2],
-                    "series_order": row[4],
-                    "item_order": row[6],
-                },
-            )
+                cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
+                    category=category,
+                    series=series,
+                    item=item,
+                    defaults={
+                        "cat_order": row[2],
+                        "series_order": row[4],
+                        "item_order": row[6],
+                    },
+                )
+
+            except ValueError:
+                report.append(
+                    f"Sorting record unchanged. Missing column for {row[1]} - {row[3]} - {row[5]}"
+                )
 
             if csi_created:
-                report.append(f"Updated sorting for {cat_series_item}")
-            else:
                 report.append(
-                    f"Created record and updated sorting for {cat_series_item}"
+                    f"Creqated record and updated sorting for {cat_series_item}"
                 )
+            else:
+                report.append(f" Updated sorting for {cat_series_item}")
+
+        return render(request, "lot-upload.html", {"report": report})
 
     if request.method == "GET":
 
@@ -474,47 +482,51 @@ def sorting_upload(request):
 
         return response
 
-    if request.method == "PUT":
 
-        date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+def export_sorting_records(request):
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
 
-        response = HttpResponse(
-            content_type="text/csv",
-            headers={
-                "Content-Disposition": f'attachment; filename="SORTING-ORDER-{date}.csv"'
-            },
-        )
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="SORTING-ORDER-{date}.csv"'
+        },
+    )
 
-        writer = csv.writer(response)
+    writer = csv.writer(response)
 
-        csi_records = CatSeriesItem.objects.all().values_list(
+    csi_records = CatSeriesItem.objects.all().values_list(
+        "id",
+        "category",
+        "cat_order",
+        "series",
+        "series_order",
+        "item",
+        "item_order",
+    )
+
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    writer = csv.writer(response)
+
+    writer.writerow(
+        [
             "id",
             "category",
-            "cat_order",
+            "category_order",
             "series",
             "series_order",
             "item",
             "item_order",
-        )
+        ]
+    )
 
-        date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    for record in csi_records:
+        record = list(record)
+        record[1] = Category.objects.get(pk=record[1]).name
+        record[3] = Series.objects.get(pk=record[3]).name
+        record[5] = Item.objects.get(pk=record[5]).name
 
-        writer = csv.writer(response)
+        writer.writerow(record)
 
-        writer.writerow(
-            [
-                "id",
-                "category",
-                "category_order",
-                "series",
-                "series_order",
-                "item",
-                "item_order",
-            ]
-        )
-
-        for record in csi_records:
-            record = list(record)
-            writer.writerow(record)
-
-        return response
+    return response

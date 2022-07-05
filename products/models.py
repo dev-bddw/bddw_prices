@@ -3,12 +3,23 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(unique=True, blank=True, null=True, max_length=200)
+    order = models.IntegerField(blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Categories"
+        ordering = ["order"]
 
     def __str__(self):
         return f"{self.name}"
+
+    def save(self, *args, **kwargs):
+
+        for obj in CatSeriesItem.objects.filter(category=self):
+            if (obj.cat_order is not None) and (obj.cat_order != ""):
+                self.order = obj.cat_order
+                break
+
+        super(Category, self).save(*args, **kwargs)
 
 
 class Series(models.Model):
