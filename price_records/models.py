@@ -57,6 +57,82 @@ class PriceRecord(models.Model):
                 else 0
             )
         except ValueError:
+            return "LIST PRICE MUST HAVE INT VALUE."
+
+    def __str__(self):
+        return f"{self.cat_series_item} PRICE RECORD"
+
+    def save(self, *args, **kwargs):
+        self.net_price = self.get_net_price()
+
+        try:
+            order = int(self.list_price)
+        except ValueError:
+            order = 0
+
+        self.order = order
+
+        if self.cat_series_item.tear_sheet is None:
+            pass
+        else:
+            self.cat_series_item.tear_sheet.save()
+
+        super(PriceRecord, self).save(*args, **kwargs)
+
+
+class PriceListPriceRecord(models.Model):
+    class RecordType(models.TextChoices):
+        size = "SIZES", "SIZES"
+        finish = "FINISH", "FINISH"
+        any = "ANY", "ANY"
+
+    cat_series_item = models.ForeignKey(
+        "products.CatSeriesItem", blank=False, null=False, on_delete=models.CASCADE
+    )
+
+    rule_type = models.CharField(
+        help_text="What kind of price record is this?",
+        choices=RecordType.choices,
+        default=RecordType.size,
+        max_length=200,
+    )
+
+    rule_display_1 = models.CharField(help_text="ex. 67 x 19 x 29 H", max_length=200)
+    rule_display_2 = models.CharField(
+        help_text="ex. / 2 STANDARD DRAWERS / 2 CABS ",
+        blank=True,
+        null=True,
+        default="",
+        max_length=200,
+    )
+
+    list_price = models.CharField(max_length=200)
+    net_price = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        help_text="This value will be calculated on record save.",
+    )
+
+    order = models.IntegerField(
+        help_text="The order number when this Price Record appears with others."
+    )
+
+    bin_id = models.IntegerField(
+        blank=True, null=True, help_text="This is the bin id number for the price rule"
+    )
+
+    class Meta:
+        ordering = ["order"]
+
+    def get_net_price(self):
+        try:
+            return (
+                str(int(int(self.list_price) * settings.NET_PRICE_MULTIPLIER))
+                if self.list_price is not None
+                else 0
+            )
+        except ValueError:
             return "Please make sure your LIST PRICE has an integer value."
 
     def __str__(self):
@@ -65,12 +141,19 @@ class PriceRecord(models.Model):
     def save(self, *args, **kwargs):
         self.net_price = self.get_net_price()
 
+        try:
+            order = int(self.list_price)
+        except ValueError:
+            order = 0
+
+        self.order = order
+
         if self.cat_series_item.tear_sheet is None:
             pass
         else:
             self.cat_series_item.tear_sheet.save()
 
-        super(PriceRecord, self).save(*args, **kwargs)
+        super(PriceListPriceRecord, self).save(*args, **kwargs)
 
 
 class FormulaPriceRecord(models.Model):
@@ -182,75 +265,6 @@ class FormulaPriceRecord(models.Model):
 
     def __str__(self):
         return f"{self.cat_series_item}: {self.cat_series_item.return_translation()}"
-
-
-class PriceListPriceRecord(models.Model):
-    class RecordType(models.TextChoices):
-        size = "SIZES", "SIZES"
-        finish = "FINISH", "FINISH"
-        any = "ANY", "ANY"
-
-    cat_series_item = models.ForeignKey(
-        "products.CatSeriesItem", blank=False, null=False, on_delete=models.CASCADE
-    )
-
-    rule_type = models.CharField(
-        help_text="What kind of price record is this?",
-        choices=RecordType.choices,
-        default=RecordType.size,
-        max_length=200,
-    )
-
-    rule_display_1 = models.CharField(help_text="ex. 67 x 19 x 29 H", max_length=200)
-    rule_display_2 = models.CharField(
-        help_text="ex. / 2 STANDARD DRAWERS / 2 CABS ",
-        blank=True,
-        null=True,
-        default="",
-        max_length=200,
-    )
-
-    list_price = models.CharField(max_length=200)
-    net_price = models.CharField(
-        max_length=200,
-        blank=True,
-        null=True,
-        help_text="This value will be calculated on record save.",
-    )
-
-    order = models.IntegerField(
-        help_text="The order number when this Price Record appears with others."
-    )
-
-    bin_id = models.IntegerField(
-        blank=True, null=True, help_text="This is the bin id number for the price rule"
-    )
-
-    class Meta:
-        ordering = ["order"]
-
-    def get_net_price(self):
-        try:
-            return (
-                str(int(int(self.list_price) * settings.NET_PRICE_MULTIPLIER))
-                if self.list_price is not None
-                else 0
-            )
-        except ValueError:
-            return "Please make sure your LIST PRICE has an integer value."
-
-    def __str__(self):
-        return f"{self.cat_series_item} PRICE RECORD"
-
-    def save(self, *args, **kwargs):
-        self.net_price = self.get_net_price()
-
-        if self.cat_series_item.tear_sheet is None:
-            pass
-        else:
-            self.cat_series_item.tear_sheet.save()
-
-        super(PriceListPriceRecord, self).save(*args, **kwargs)
 
 
 class FormulaPriceListPriceRecord(models.Model):
@@ -379,3 +393,6 @@ class FormulaPriceListPriceRecord(models.Model):
 
     def __str__(self):
         return f"{self.cat_series_item}: {self.cat_series_item.return_translation()}"
+
+    class Meta:
+        ordering = ["list_price"]

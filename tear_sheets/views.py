@@ -9,6 +9,8 @@ from products.models import CatSeriesItem
 from .helpers import return_details_by_title, return_price_records_by_rule_type
 from .models import ImageCaption, TearSheet, TearSheetDetail, TearSheetFooterDetail
 
+# to do: sort out footer spacing
+
 
 @login_required
 def list_view(request):
@@ -331,8 +333,11 @@ def detail_view_for_printing(request, pk):
     captions = ImageCaption.objects.filter(tear_sheet=tear_sheet)
     footer_details = TearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
 
-    number_of += len(captions) + len(footer_details)
+    # spacing size b/t records and footer
+    # we should actually perform a rational calculation here that
+    # includes getting the tearsheet.img.height value and sbtrcts
 
+    number_of += len(captions) + len(footer_details)
     spacing_px = 250 if number_of <= 10 else 100
 
     return render(
