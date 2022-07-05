@@ -254,7 +254,11 @@ def create_detail_hx(request, pk):
             else 1,
         )
 
-        return render(request, "hx/post/create/detail.html", {"detail": detail})
+        return render(
+            request,
+            "hx/post/create/detail.html",
+            {"detail": detail, "tearsheet": tear_sheet},
+        )
 
 
 @login_required
