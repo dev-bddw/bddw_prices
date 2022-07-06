@@ -47,7 +47,7 @@ class PriceRecord(models.Model):
     )
 
     class Meta:
-        ordering = ["order"]
+        ordering = ["order", "rule_display_1"]
 
     def get_net_price(self):
         try:
