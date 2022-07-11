@@ -58,6 +58,8 @@ class TearSheet(models.Model):
 
     updated_on = models.DateTimeField(auto_now=True)
 
+    footer_space = models.IntegerField(default=200, blank=True, null=True)
+
     def __str__(self):
         return self.title
 
