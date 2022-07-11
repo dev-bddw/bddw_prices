@@ -1,6 +1,7 @@
 # Create your models here.
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 
 # Create your models here.
@@ -121,6 +122,8 @@ class PriceListPriceRecord(models.Model):
     bin_id = models.IntegerField(
         blank=True, null=True, help_text="This is the bin id number for the price rule"
     )
+
+    updated_on = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         ordering = ["order"]
@@ -307,6 +310,8 @@ class FormulaPriceListPriceRecord(models.Model):
         max_length=200,
     )
 
+    updated_on = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
     list_price = models.CharField(null=True, blank=True, max_length=200)
     net_price = models.CharField(null=True, blank=True, max_length=200)
 
@@ -320,6 +325,8 @@ class FormulaPriceListPriceRecord(models.Model):
 
         else:
             self.cat_series_item.formula_tear_sheet.save()
+
+        self.updated_on = timezone.now()
 
         super(FormulaPriceListPriceRecord, self).save(*args, **kwargs)
 
@@ -392,7 +399,7 @@ class FormulaPriceListPriceRecord(models.Model):
             return 0
 
     def __str__(self):
-        return f"{self.cat_series_item}: {self.cat_series_item.return_translation()}"
+        return f"{self.cat_series_item}: {self.cat_series_item.return_translation()}".upper()
 
     class Meta:
         ordering = ["list_price"]

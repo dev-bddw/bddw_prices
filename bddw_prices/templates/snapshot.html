@@ -4,7 +4,7 @@
 
 <h2 class="pt-5">tearsheets snapshot</h2>
 <table class="table table-striped">
-  <caption>quick look at data in the tearsheets app</caption>
+  <caption>bddwsalestools.com data</caption>
   <thead>
     <th>data type</th>
     <th>number</th>
@@ -20,11 +20,11 @@
     <td>{{cat_series_items_with_formula | length}}</td>
     <td></td>
   </tr>
-  <tr>
+  {% comment %} <tr>
     <td class="text-center"><strong>NORMAL TEAR SHEETS</strong></td>
     <td></td>
     <td></td>
-  </tr>
+  </tr> {% endcomment %}
   <tr>
     <td>tear sheets</td>
     <td>{{tear_sheets |length}}</td>
@@ -35,11 +35,11 @@
     <td>{{price_records | length}}</td>
     <td></td>
   </tr>
-  <tr>
+  {% comment %} <tr>
     <td class="text-center"><strong>FORMULA TEAR SHEETS</strong></td>
     <td></td>
     <td></td>
-  </tr>
+  </tr> {% endcomment %}
   <tr>
     <td>formula tear sheets</td>
     <td>{{formula_tear_sheets |length}}</td>
@@ -49,6 +49,26 @@
     <td>formula tearsheet price records</td>
     <td>{{formula_tear_sheets__price_records | length}}</td>
     <td></td>
+  </tr>
+  {% comment %} <tr>
+    <td class="text-center"><strong>PRICE LIST RECORDS</strong></td>
+    <td></td>
+    <td></td>
+  </tr> {% endcomment %}
+  <tr>
+    <td>price list price records</td>
+    <td>{{pricelist_records |length}}</td>
+    <td>{{ pricelist_records__last_updated.updated_on }}</td>
+  </tr>
+  {% comment %} <tr>
+    <td class="text-center"><strong>FORMULA PRICE LIST RECORDS</strong></td>
+    <td></td>
+    <td></td>
+  </tr> {% endcomment %}
+  <tr>
+    <td>formula price list price records</td>
+    <td>{{formula_price_list__price_records |length}}</td>
+    <td>{{formula_price_list__last_updated.updated_on }}</td>
   </tr>
 </table>
 

@@ -2,7 +2,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from formula_tear_sheets.models import FormulaTearSheet
-from price_records.models import FormulaPriceRecord, PriceRecord
+from price_records.models import (
+    FormulaPriceListPriceRecord,
+    FormulaPriceRecord,
+    PriceListPriceRecord,
+    PriceRecord,
+)
 from products.models import CatSeriesItem
 from tear_sheets.models import TearSheet
 
@@ -28,5 +33,13 @@ def snapshot(request):
             .order_by("updated_on")
             .last(),
             "formula_tear_sheets__price_records": FormulaPriceRecord.objects.all(),
+            "pricelist_records": PriceListPriceRecord.objects.all(),
+            "pricelist_records__last_updated": PriceListPriceRecord.objects.all()
+            .order_by("updated_on")
+            .last(),
+            "formula_price_list__price_records": FormulaPriceListPriceRecord.objects.all(),
+            "formula_price_list__last_updated": FormulaPriceListPriceRecord.objects.all()
+            .order_by("updated_on")
+            .last(),
         },
     )
