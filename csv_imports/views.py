@@ -313,9 +313,9 @@ def price_records_template(request):
             "rule_type",
             "tearsheet_rule_display_1",
             "tearsheet_rule_display_2",
+            "price_list_include",
             "price_list_rule_display_1",
             "price_list_rule_display_2",
-            "price_list_include",
         ]
     )
 
@@ -370,7 +370,7 @@ def upload(request):
                     report.append(f"Created {cat_series_item}")
 
             # PRICE LIST PRICE RECORDS
-            if row[17] not in [0, "0", ""]:
+            if row[15] not in [0, "0", ""]:
                 category, cat_created = Category.objects.get_or_create(
                     name=row[1].upper()
                 )

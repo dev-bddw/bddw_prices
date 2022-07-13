@@ -37,8 +37,8 @@ price_list records are organized this way:
                 {% endif %}
                 <table class="table">
                 <thead>
-                    <th style="width:30%;"></th>
-                    <th style="width:50%;" class="text-end">{{lists.0.0.rule_type}}{{lists.1.0.rule_type}}</th>
+                    <th style="width:20%;"></th>
+                    <th style="width:60%;" class="text-end">{{lists.0.0.rule_type}} {{lists.1.0.rule_type}}</th>
                     <th style="width:10%;" class="text-end">list</th>
                     <th style="width:10%;" class="text-end">net</th>
                 </thead>
@@ -46,14 +46,14 @@ price_list records are organized this way:
                     {% if forloop.first %}
                     <tr>
                         <td>{{series_item_key}}</td>
-                        <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                        <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} / {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
                         <td class="text-end">${{price_record.list_price}}</td>
                         <td class="text-end">${{price_record.net_price}}</td>
                     </tr>
                     {% else %}
                 <tr>
                     <td></td>
-                    <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                    <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} / {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
                     <td class="text-end">${{price_record.list_price}}</td>
                     <td class="text-end">${{price_record.net_price}}</td>
                 </tr>

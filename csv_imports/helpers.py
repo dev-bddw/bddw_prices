@@ -3,57 +3,39 @@ from products.models import CatSeriesItem
 
 
 def return_updated_list(baseprice_record, this_record):
-    new_price = int(baseprice_record[0][8]) + int(this_record[10])
+
+    baseprice_value = baseprice_record[0][8] if baseprice_record[0][8] != "" else 0
+    this_record_value = this_record[10] if this_record[10] != "" else 0
+
+    new_price = int(baseprice_value) + int(this_record_value)
+
     this_record[8] = new_price
+
     return this_record
 
 
 def process_tear_sheets(TEAR_SHEET_FOR_PROCESSING):
     report = []
     for x, y in TEAR_SHEET_FOR_PROCESSING.items():
-        baseprice_record = [record for record in y if record[4] in ["any", "ANY"]]
-        non_baseprice_record = [
-            record for record in y if record[4] not in ["any", "ANY"]
-        ]
-        if baseprice_record != [] and non_baseprice_record != []:
-            z = [k for k in y if k not in baseprice_record]
-            p = [return_updated_list(baseprice_record, n) for n in z]
-            # now create records using baseprice + surcharge
-            for record in p:
-                (new_price_record, created) = PriceRecord.objects.update_or_create(
-                    bin_id=record[0],
-                    defaults={
-                        "cat_series_item": CatSeriesItem.objects.get(pk=x),
-                        "rule_type": record[12],
-                        "list_price": record[8],
-                        "rule_display_1": record[13],
-                        "rule_display_2": record[14],
-                        "order": 1,
-                    },
-                )
-                if created:
-                    report.append(f"Created {new_price_record} (Tearsheet)")
-                if not created:
-                    report.append(f"Updated {new_price_record} (Tearsheet)")
 
-        else:
-            # process records normally
-            for record in y:
-                (new_price_record, created) = PriceRecord.objects.update_or_create(
-                    bin_id=record[0],
-                    defaults={
-                        "cat_series_item": CatSeriesItem.objects.get(pk=x),
-                        "rule_type": record[12],
-                        "list_price": record[8],
-                        "rule_display_1": record[13],
-                        "rule_display_2": record[14],
-                        "order": 1,
-                    },
-                )
-                if created:
-                    report.append(f"Created {new_price_record} (Tearsheet)")
-                if not created:
-                    report.append(f"Updated {new_price_record} (Tearsheet)")
+        for record in y:
+            (new_price_record, created) = PriceRecord.objects.update_or_create(
+                bin_id=record[0],
+                defaults={
+                    "cat_series_item": CatSeriesItem.objects.get(pk=x),
+                    "rule_type": record[12],
+                    "list_price": record[8] if record[8] != "" else record[10],
+                    "rule_display_1": record[13],
+                    "rule_display_2": record[14],
+                    "order": 1,
+                },
+            )
+
+            if created:
+                report.append(f"Created {new_price_record} (Tearsheet)")
+            if not created:
+                report.append(f"Updated {new_price_record} (Tearsheet)")
+
     return report
 
 
@@ -61,53 +43,26 @@ def process_price_list(PRICE_LIST_FOR_PROCESSING):
     report = []
 
     for x, y in PRICE_LIST_FOR_PROCESSING.items():
-        baseprice_record = [record for record in y if record[4] in ["any", "ANY"]]
-        non_baseprice_record = [
-            record for record in y if record[4] not in ["any", "ANY"]
-        ]  # does it have more records than the any one?
-        if baseprice_record != [] and non_baseprice_record != []:
-            z = [k for k in y if k not in baseprice_record]
-            p = [return_updated_list(baseprice_record, n) for n in z]
-            for record in p:
-                (
-                    new_price_record,
-                    created,
-                ) = PriceListPriceRecord.objects.update_or_create(
-                    bin_id=record[0],
-                    defaults={
-                        "cat_series_item": CatSeriesItem.objects.get(pk=x),
-                        "rule_type": record[12],
-                        "list_price": record[8],
-                        "rule_display_1": record[15],
-                        "rule_display_2": record[16],
-                        "order": 1,
-                    },
-                )
-                if created:
-                    report.append(f"Created {new_price_record} (Pricelist)")
-                if not created:
-                    report.append(f"Updated {new_price_record} (Pricelist)")
 
-        else:
-            for record in y:
-                (
-                    new_price_record,
-                    created,
-                ) = PriceListPriceRecord.objects.update_or_create(
-                    bin_id=record[0],
-                    defaults={
-                        "cat_series_item": CatSeriesItem.objects.get(pk=x),
-                        "rule_type": record[12],
-                        "list_price": record[8],
-                        "rule_display_1": record[15],
-                        "rule_display_2": record[16],
-                        "order": 1,
-                    },
-                )
+        for record in y:
+            (
+                new_price_record,
+                created,
+            ) = PriceListPriceRecord.objects.update_or_create(
+                bin_id=record[0],
+                defaults={
+                    "cat_series_item": CatSeriesItem.objects.get(pk=x),
+                    "rule_type": record[12],
+                    "list_price": record[8] if record[8] != "" else record[10],
+                    "rule_display_1": record[16],
+                    "rule_display_2": record[17],
+                    "order": 1,
+                },
+            )
 
-                if created:
-                    report.append(f"Created {new_price_record} (Pricelist)")
-                if not created:
-                    report.append(f"Updated {new_price_record} (Pricelist)")
+            if created:
+                report.append(f"Created {new_price_record} (Pricelist)")
+            if not created:
+                report.append(f"Updated {new_price_record} (Pricelist)")
 
     return report
