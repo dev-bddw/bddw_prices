@@ -74,6 +74,18 @@ def edit_view(request, pk):
 
 
 @login_required
+def change_template_hx(request, pk):
+
+    tearsheet = TearSheet.objects.get(pk=pk)
+
+    if request.method == "POST":
+        tearsheet.template = request.POST.get("template")
+        tearsheet.save()
+
+    return render(request, "hx/post/edit/template.html", {"tearsheet": tearsheet})
+
+
+@login_required
 def change_title_hx(request, pk):
 
     tearsheet = TearSheet.objects.get(pk=pk)

@@ -6,6 +6,7 @@ from .views import (
     change_footer_detail_hx,
     change_image_hx,
     change_price_record_hx,
+    change_template_hx,
     change_title_hx,
     create_caption_hx,
     create_detail_hx,
@@ -28,6 +29,7 @@ urlpatterns = [
     path("change-image-detail/<pk>", view=change_image_hx, name="change_image"),
     path("change-caption/<pk>", view=change_caption_hx, name="change_caption"),
     path("change-detail/<pk>", view=change_detail_hx, name="change_detail"),
+    path("change-template/<pk>", view=change_template_hx, name="change_template"),
     path(
         "change-price-record/<pk>",
         view=change_price_record_hx,

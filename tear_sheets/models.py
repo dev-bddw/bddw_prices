@@ -41,6 +41,15 @@ class TearSheetFooterDetail(Detail):
 
 
 class TearSheet(models.Model):
+    class TearSheetTemplate(models.TextChoices):
+        a = "A", "Template A"
+        b = "B", "Template B"
+        c = "C", "Template C"
+
+    template = models.CharField(
+        choices=TearSheetTemplate.choices, default=TearSheetTemplate.b, max_length=1000
+    )
+
     title = models.CharField(
         help_text="This will appear at the top of the tearsheet.",
         blank=True,

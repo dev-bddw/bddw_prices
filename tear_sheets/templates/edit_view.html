@@ -43,7 +43,7 @@
       }
 </style>
 
-<div style="font-size: 8px; width: 816px;">
+<div style="font-size: 9px; width: 816px;">
 
 
     <div style="margin-left:75px; margin-right:75px;">
@@ -65,6 +65,17 @@
                 hx-target="#this"
                 >
             </h3>
+            <div id="template">
+                <label >TEMPLATE</label>
+                <select name="template" hx-post="{% url 'tearsheets:change_template' tearsheet.pk %}" hx-swapping="outerHTML" hx-target="#template">
+                    <option value="{{tearsheet.template}}">Template {{tearsheet.template}}</option>
+                  {% for value,label in tearsheet.TearSheetTemplate.choices  %}
+                    {% if value != tearsheet.template %}
+                    <option value="{{value}}">{{label}}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+            </div>
         </div>
         <div class="image-container">
             <form enctype="multipart/form-data" action="{% url 'tearsheets:change_image' tearsheet.pk %}" method="POST">
@@ -312,7 +323,7 @@
 
         <!-- ADDRESS FOOTER-->
         <div class='text-center'>
-            <p class="pt-5 pb-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
+            <p style="letter-spacing: .21em;" class="pt-5 pb-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
         </div>
 
     </div>
