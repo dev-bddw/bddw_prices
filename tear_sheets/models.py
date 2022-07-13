@@ -47,7 +47,7 @@ class TearSheet(models.Model):
         c = "C", "Template C"
 
     template = models.CharField(
-        choices=TearSheetTemplate.choices, default=TearSheetTemplate.b, max_length=1000
+        choices=TearSheetTemplate.choices, default="B", max_length=1000
     )
 
     title = models.CharField(
