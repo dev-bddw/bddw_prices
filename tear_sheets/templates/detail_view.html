@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div style="font-size: 9px; width: 816px;">
+<div style="font-size: 10px; width: 816px;">
 
 
     <div style="margin-left:75px; margin-right:75px;">
@@ -32,7 +32,7 @@
 
         <!-- CAPTIONS -->
         {% if captions %}
-        <div class="pt-4">
+        <div class="pt-2">
             {% for caption in captions  %}
             <div class="row">
                 <div class="col-2">
@@ -49,7 +49,7 @@
 
         <!-- DETAILS -->
         {% if details %}
-        <div class="pt-4">
+        <div class="pt-2">
             {% for detail_dictionary in details  %}
             {% for name,detail in detail_dictionary.items  %}
             <div style="padding-bottom: -20px;" class="row">
@@ -63,7 +63,7 @@
                 </div>
             </div>
             {% else %}
-            <div style="padding-bottom: -20px;" class="row">
+            <div style="padding-bottom: -20px;" class=" row">
                 <div class="col-2">
                    {% comment %} SKIP {% endcomment %}
                 </div>
@@ -90,7 +90,7 @@
         {% if tearsheet.template == 'A' %}
 
         <!--TEMPLATE A RULES -->
-        <div class="row pt-3 pb-1">
+        <div class="row pt-2 pb-1">
             {% comment %} <div class="col-2 text-end">
             </div> {% endcomment %}
             <div class="col-8">
@@ -98,14 +98,14 @@
             <div class="col-2 text-end">
                 LIST
             </div>
-            <div class="col-2 text-start">
+            <div class="col-2 text-end">
                 NET
             </div>
         </div>
 
         {% for dictionary in price_records  %}
         {% for group,rules in dictionary.items %}
-        <div style="" class="row">
+        <div style="" class="pt-2 row">
             <div class="col-1 text-start">
                 {{group}}
             </div>
@@ -119,7 +119,7 @@
             <div class="col-2 text-end">
                 ${{item.list_price}}
             </div>
-            <div class="col-2 text-start">
+            <div class="col-2 text-end">
                 ${{item.net_price}}
             </div>
         </div>
@@ -152,7 +152,7 @@
         {% elif tearsheet.template == 'B' %}
 
         <!-- TEMPlATE B RULES -->
-        <div class="row pt-3 pb-1">
+        <div class="row pt-2 pb-1">
             {% comment %} <div class="col-2 text-end">
             </div> {% endcomment %}
             <div class="col-8">
@@ -160,14 +160,14 @@
             <div class="col-2 text-end">
                 LIST
             </div>
-            <div class="col-2 text-start">
+            <div class="col-2 text-end">
                 NET
             </div>
         </div>
 
         {% for dictionary in price_records  %}
         {% for group,rules in dictionary.items %}
-        <div style="" class="row">
+        <div style="" class="pt-3 row">
             <div class="col-1 text-start">
                 {{group}}
             </div>
@@ -186,13 +186,13 @@
             <div class="col-2 text-end">
                 ${{item.list_price}}
             </div>
-            <div class="col-2 text-start">
+            <div class="col-2 text-end">
                 ${{item.net_price}}
             </div>
         </div>
             {% else %}
 
-        <div style="" class="row">
+        <div style="padding-top: 3px;" class="row">
             <div class="col-1 text-end">
             </div>
             <div class="col-1 text-end">
@@ -210,7 +210,7 @@
             <div class="col-2 text-end">
                 ${{item.list_price}}
             </div>
-            <div class="col-2 text-start">
+            <div class="col-2 text-end">
                 ${{item.net_price}}
             </div>
         </div>
@@ -225,7 +225,7 @@
         <!--TEMPLATE C RULES-->
         {% for dictionary in price_records  %}
         {% for group,rules in dictionary.items %}
-        <div class="row pt-3 pb-1">
+        <div class="row pt-2 pb-1">
             <div class="col-2 text-start">
             {{group}}
             </div>
@@ -234,7 +234,7 @@
             <div class="col-2 text-end">
                 LIST
             </div>
-            <div class="col-2 text-start">
+            <div class="col-2 text-end">
                 NET
             </div>
             <div class="col-2 text-start">
@@ -243,7 +243,7 @@
 
         {% for item in rules %}
 
-        <div style="" class="row">
+        <div  class="row">
             <div class="col-3">
                 {{item.rule_display_1}}
             </div>
@@ -255,7 +255,7 @@
             <div class="col-2 text-end">
                 ${{item.list_price}}
             </div>
-            <div class="col-2 text-start">
+            <div class="col-2 text-end">
                 ${{item.net_price}}
             </div>
             <div class="col-2 text-start">
@@ -272,7 +272,7 @@
 
         <!-- FOOTER DETAILS -->
         {% if footer_details %}
-        <div class="pt-4">
+        <div class="pt-2">
             {% regroup footer_details by name as footer_detail_list %}
             {% for footer_detail in footer_detail_list  %}
             <div style="padding-bottom: -20px;" class="row">
@@ -303,7 +303,7 @@
         </div>
         <!-- ADDRESS FOOTER-->
         <div class='text-center'>
-            <p style="letter-spacing: .21em;" class="pt-5 pb-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
+            <p style="letter-spacing: .15em;" class="pt-5 pb-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
         </div>
 
     </div>
