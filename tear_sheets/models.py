@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 
 
 def image_upload_to(instance, filename):
@@ -80,6 +81,14 @@ class TearSheet(models.Model):
 
     def get_printing_url(self):
         return reverse("tearsheets:detail-view-for-print", kwargs={"pk": self.pk})
+
+    def get_printing_url_no_list(self):
+        return reverse(
+            "tearsheets:detail-view-for-print-no-list", kwargs={"pk": self.pk}
+        )
+
+    def get_slug_title(self):
+        return slugify(self.title)
 
 
 class ImageCaption(models.Model):

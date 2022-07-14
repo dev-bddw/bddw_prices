@@ -14,9 +14,11 @@ from .views import (
     create_price_record_hx,
     detail_view,
     detail_view_for_printing,
-    detail_view_to_pdf,
+    detail_view_for_printing_no_list,
     edit_view,
     list_view,
+    redirect_detail_view_to_pdf,
+    redirect_detail_view_to_pdf_no_list,
 )
 
 app_name = "tearsheets"
@@ -40,11 +42,21 @@ urlpatterns = [
         view=change_footer_detail_hx,
         name="change_footer_detail",
     ),
-    path("print-detail/<pk>", view=detail_view_to_pdf, name="print"),
+    path("print-redirect/<pk>", view=redirect_detail_view_to_pdf, name="print"),
+    path(
+        "print-redirect-no-list/<pk>",
+        view=redirect_detail_view_to_pdf_no_list,
+        name="print-no-list",
+    ),
     path(
         "detail-for-print/<pk>",
         view=detail_view_for_printing,
         name="detail-view-for-print",
+    ),
+    path(
+        "detail-for-print-no-list/<pk>",
+        view=detail_view_for_printing_no_list,
+        name="detail-view-for-print-no-list",
     ),
     path("create-caption/<pk>", view=create_caption_hx, name="create_caption"),
     path("create-detail/<pk>", view=create_detail_hx, name="create_detail"),

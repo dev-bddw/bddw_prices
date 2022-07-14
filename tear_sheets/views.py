@@ -350,23 +350,21 @@ def detail_view_for_printing(request, pk):
     # includes getting the tearsheet.img.height value and sbtrcts
 
     number_of += len(captions) + len(footer_details)
-    spacing_px = 250 if number_of <= 10 else 100
 
     return render(
         request,
-        "detail_view_for_pdf.html",
+        "print_views/detail_view_for_pdf.html",
         {
             "tearsheet": tear_sheet,
             "details": return_details_by_title(pk),
             "captions": captions,
             "footer_details": footer_details,
             "price_records": return_price_records_by_rule_type(pk),
-            "spacing": spacing_px,
         },
     )
 
 
-def detail_view_to_pdf(request, pk):
+def redirect_detail_view_to_pdf(request, pk):
 
     tear_sheet = TearSheet.objects.get(pk=pk)
 
@@ -376,4 +374,54 @@ def detail_view_to_pdf(request, pk):
 
     url_string += tear_sheet.get_printing_url()
 
+    parameter = (
+        f"&attachmentName={tear_sheet.get_slug_title()}.pdf"
+        if request.GET.get("justDownload") == "True"
+        else ""
+    )
+
+    url_string += parameter
+
     return redirect(url_string)
+
+
+def redirect_detail_view_to_pdf_no_list(request, pk):
+
+    tear_sheet = TearSheet.objects.get(pk=pk)
+
+    url_string = (
+        "https://bddw-pdf-api.herokuapp.com/api/render?url=https://bddwsalestools.com"
+    )
+
+    url_string += tear_sheet.get_printing_url_no_list()
+
+    parameter = (
+        f"&attachmentName={tear_sheet.get_slug_title()}-NET.pdf"
+        if request.GET.get("justDownload") == "True"
+        else ""
+    )
+
+    url_string += parameter
+
+    print(url_string)
+
+    return redirect(url_string)
+
+
+def detail_view_for_printing_no_list(request, pk):
+
+    tear_sheet = TearSheet.objects.get(pk=pk)
+    captions = ImageCaption.objects.filter(tear_sheet=tear_sheet)
+    footer_details = TearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
+
+    return render(
+        request,
+        "print_views/detail_view_for_pdf_no_list.html",
+        {
+            "tearsheet": tear_sheet,
+            "details": return_details_by_title(pk),
+            "captions": captions,
+            "footer_details": footer_details,
+            "price_records": return_price_records_by_rule_type(pk),
+        },
+    )
