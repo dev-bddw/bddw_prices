@@ -1,7 +1,15 @@
 <div id="template">
     <label >TEMPLATE</label>
     <select name="template" hx-post="{% url 'tearsheets:change_template' tearsheet.pk %}" hx-swapping="outerHTML" hx-target="#template">
-        <option value="{{tearsheet.template}}">Template {{tearsheet.template}}</option>
+      <option value="{{tearsheet.template}}">
+        {% if tearsheet.template == 'A' %}
+        ONE COLUMN DISPLAY
+        {% elif tearsheet.template == 'B' %}
+        TWO COLUMN DISPLAY
+        {% elif tearsheet.template == 'C' %}
+        RULE DISPLAY ABOVE
+        {% endif %}
+        </option>
       {% for value,label in tearsheet.TearSheetTemplate.choices  %}
         {% if value != tearsheet.template %}
         <option value="{{value}}">{{label}}</option>

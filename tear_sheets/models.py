@@ -42,9 +42,9 @@ class TearSheetFooterDetail(Detail):
 
 class TearSheet(models.Model):
     class TearSheetTemplate(models.TextChoices):
-        a = "A", "Template A"
-        b = "B", "Template B"
-        c = "C", "Template C"
+        a = "A", "ONE COLUMN DISPLAY"
+        b = "B", "TWO COLUMN DISPLAY"
+        c = "C", "RULE TYPE ABOVE"
 
     template = models.CharField(
         choices=TearSheetTemplate.choices, default="B", max_length=1000
