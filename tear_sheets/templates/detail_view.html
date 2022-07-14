@@ -16,13 +16,13 @@
                     <h3 style="line-height: 100%;">{{tearsheet}}</h3>
                 </div>
                 <div class="col-4 text-end">
-                    <a style="text-decoration: none;" href="{% url 'tearsheets:print' tearsheet.pk %}">
+                    <a style="text-decoration: none;" href="{% url 'tearsheets:print' tearsheet.pk %}" target="_blank">
                         <img height="20px" src="{% static 'images/pdf.png' %}">
                     </a>
                     <a style="text-decoration: none;" href="{% url 'tearsheets:print' tearsheet.pk %}?justDownload=True">
                         <img height="20px" src="{% static 'images/down.png' %}">
                     </a>
-                    <a style="text-decoration: none;" href="{% url 'tearsheets:print-list' tearsheet.pk %}">
+                    <a style="text-decoration: none;" href="{% url 'tearsheets:print-list' tearsheet.pk %}" target="_blank">
                         <img height="20px" src="{% static 'images/pdf.png' %}">
                     </a>
                     <a style="text-decoration: none;" href="{% url 'tearsheets:print-list' tearsheet.pk %}?justDownload=True">
