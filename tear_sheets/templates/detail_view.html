@@ -34,7 +34,7 @@
         {% if captions %}
         <div class="pt-2">
             {% for caption in captions  %}
-            <div class="row">
+            <div style="padding-top: 3px;" class="row">
                 <div class="col-2">
                     {{caption.caption_title}}
                 </div>
@@ -52,7 +52,7 @@
         <div class="pt-2">
             {% for detail_dictionary in details  %}
             {% for name,detail in detail_dictionary.items  %}
-            <div style="padding-bottom: -20px;" class="row">
+            <div style="padding-top: 3px; padding-bottom: -20px;" class="row">
                 <div class="col-2">
                     {{name}}
                 </div>
@@ -243,7 +243,7 @@
 
         {% for item in rules %}
 
-        <div  class="row">
+        <div style="padding-top: 3px;" class="row">
             <div class="col-3">
                 {{item.rule_display_1}}
             </div>
@@ -299,10 +299,10 @@
         </div>
         {% endif %}
         <!-- FOOTER DETAILS -->
-        <div style="height: {{tearsheet.footer_space}}px">
+        <div style="padding-top: 3px;" style="height: {{tearsheet.footer_space}}px">
         </div>
         <!-- ADDRESS FOOTER-->
-        <div class='text-center'>
+        <div style="padding-top: 3px;" class='text-center'>
             <p style="letter-spacing: .15em;" class="pt-5 pb-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
         </div>
 
