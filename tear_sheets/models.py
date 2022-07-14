@@ -83,9 +83,7 @@ class TearSheet(models.Model):
         return reverse("tearsheets:detail-view-for-print", kwargs={"pk": self.pk})
 
     def get_printing_url_no_list(self):
-        return reverse(
-            "tearsheets:detail-view-for-print-no-list", kwargs={"pk": self.pk}
-        )
+        return reverse("tearsheets:detail-view-for-print-list", kwargs={"pk": self.pk})
 
     def get_slug_title(self):
         return slugify(self.title)

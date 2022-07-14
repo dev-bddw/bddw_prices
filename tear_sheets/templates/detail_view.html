@@ -22,10 +22,10 @@
                     <a style="text-decoration: none;" href="{% url 'tearsheets:print' tearsheet.pk %}?justDownload=True">
                         <img height="20px" src="{% static 'images/down.png' %}">
                     </a>
-                    <a style="text-decoration: none;" href="{% url 'tearsheets:print-no-list' tearsheet.pk %}">
+                    <a style="text-decoration: none;" href="{% url 'tearsheets:print-list' tearsheet.pk %}">
                         <img height="20px" src="{% static 'images/pdf.png' %}">
                     </a>
-                    <a style="text-decoration: none;" href="{% url 'tearsheets:print-no-list' tearsheet.pk %}?justDownload=True">
+                    <a style="text-decoration: none;" href="{% url 'tearsheets:print-list' tearsheet.pk %}?justDownload=True">
                         <img height="20px" src="{% static 'images/down.png' %}">
                     </a>
                     <a style="text-decoration: none;"  href="{% url 'tearsheets:edit' tearsheet.pk %}">

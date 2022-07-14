@@ -110,7 +110,7 @@
             <div class="col-8">
             </div>
             <div class="col-2 text-end">
-                {% comment %} LIST {% endcomment %}
+                LIST
             </div>
             <div class="col-2 text-end">
                 NET
@@ -131,9 +131,10 @@
                 {{item.rule_display_1}}
             </div>
             <div class="col-2 text-end">
+                ${{item.list_price}}
             </div>
             <div class="col-2 text-end">
-                ${{item.net_price}}
+                {% comment %} ${{item.net_price}} {% endcomment %}
             </div>
         </div>
             {% else %}
@@ -148,10 +149,10 @@
                 {{item.rule_display_1}}
             </div>
             <div class="col-2 text-end">
-
+                ${{item.list_price}}
             </div>
             <div class="col-2 text-end">
-                ${{item.net_price}}
+                {% comment %} ${{item.net_price}} {% endcomment %}
             </div>
         </div>
         {% endif %}
@@ -171,7 +172,7 @@
             <div class="col-8">
             </div>
             <div class="col-2 text-end">
-                {% comment %} LIST {% endcomment %}
+                LIST
             </div>
             <div class="col-2 text-end">
                 NET
@@ -197,10 +198,10 @@
             {% comment %} <div class="col-1">
             </div> {% endcomment %}
             <div class="col-2 text-end">
-
+                ${{item.list_price}}
             </div>
             <div class="col-2 text-end">
-                ${{item.net_price}}
+                {% comment %} ${{item.net_price}} {% endcomment %}
             </div>
         </div>
             {% else %}
@@ -221,10 +222,10 @@
             <div class="col-1">
             </div>
             <div class="col-2 text-end">
-
+                ${{item.list_price}}
             </div>
             <div class="col-2 text-end">
-                ${{item.net_price}}
+                {% comment %} ${{item.net_price}} {% endcomment %}
             </div>
         </div>
         {% endif %}
@@ -245,7 +246,7 @@
             <div class="col-4">
             </div>
             <div class="col-2 text-end">
-                {% comment %} LIST {% endcomment %}
+                LIST
             </div>
             <div class="col-2 text-end">
                 NET
@@ -266,10 +267,10 @@
             {% comment %} <div class="col-1">
             </div> {% endcomment %}
             <div class="col-2 text-end">
-
+                ${{item.list_price}}
             </div>
             <div class="col-2 text-end">
-                ${{item.net_price}}
+                {% comment %} ${{item.net_price}} {% endcomment %}
             </div>
             <div class="col-2 text-start">
             </div>
