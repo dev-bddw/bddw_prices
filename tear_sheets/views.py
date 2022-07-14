@@ -398,7 +398,7 @@ def redirect_detail_view_to_pdf_list(request, pk):
     url_string += tear_sheet.get_printing_url_no_list()
 
     parameter = (
-        f"&attachmentName={tear_sheet.get_slug_title().upper()}-{year}.pdf"
+        f"&attachmentName={tear_sheet.get_slug_title().upper()}-TEAR-SHEET-{year}.pdf"
         if request.GET.get("justDownload") == "True"
         else ""
     )
