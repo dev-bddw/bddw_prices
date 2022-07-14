@@ -1,4 +1,3 @@
-from datetime import datetime
 from sqlite3 import IntegrityError
 
 from django.contrib.auth.decorators import login_required
@@ -366,7 +365,6 @@ def detail_view_for_printing(request, pk):
 
 
 def redirect_detail_view_to_pdf(request, pk):
-    year = datetime.now().strftime("%Y")
     tear_sheet = TearSheet.objects.get(pk=pk)
 
     url_string = (
@@ -376,7 +374,7 @@ def redirect_detail_view_to_pdf(request, pk):
     url_string += tear_sheet.get_printing_url()
 
     parameter = (
-        f"&attachmentName={tear_sheet.get_slug_title().upper()}-NET-{year}.pdf"
+        f"&attachmentName={tear_sheet.get_slug_title().upper()}-NET.pdf"
         if request.GET.get("justDownload") == "True"
         else ""
     )
@@ -387,7 +385,6 @@ def redirect_detail_view_to_pdf(request, pk):
 
 
 def redirect_detail_view_to_pdf_list(request, pk):
-    year = datetime.now().strftime("%Y")
 
     tear_sheet = TearSheet.objects.get(pk=pk)
 
@@ -398,7 +395,7 @@ def redirect_detail_view_to_pdf_list(request, pk):
     url_string += tear_sheet.get_printing_url_no_list()
 
     parameter = (
-        f"&attachmentName={tear_sheet.get_slug_title().upper()}-TEAR-SHEET-{year}.pdf"
+        f"&attachmentName={tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
         if request.GET.get("justDownload") == "True"
         else ""
     )
