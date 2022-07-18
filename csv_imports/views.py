@@ -184,10 +184,10 @@ def export_all_formula_price_records(request):
             "series",
             "item",
             "rule_type",
-            "tearsheet_include",
-            "price_list_include",
             "rule_display_1",
             "rule_display_2",
+            "tearsheet_include",
+            "price_list_include",
             "depth",
             "length",
             "width",
@@ -211,8 +211,8 @@ def export_all_formula_price_records(request):
         record.insert(1, this_record.cat_series_item.series.name)
         record.insert(1, this_record.cat_series_item.category.name)
 
-        record.insert(5, "")
-        record.insert(5, "")
+        record.insert(7, 1)
+        record.insert(8, "")
 
         for i in range(len(record)):
             if record[i] == 0:
@@ -227,8 +227,8 @@ def export_all_formula_price_records(request):
         price_list_record.insert(1, this_record.cat_series_item.series.name)
         price_list_record.insert(1, this_record.cat_series_item.category.name)
 
-        price_list_record.insert(5, "")
-        price_list_record.insert(5, "")
+        price_list_record.insert(7, "")
+        price_list_record.insert(8, 1)
 
         for i in range(len(price_list_record)):
             if price_list_record[i] == 0:

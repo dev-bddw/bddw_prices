@@ -329,7 +329,7 @@ class FormulaPriceListPriceRecord(models.Model):
     def save(self, *args, **kwargs):
         self.list_price = self.get_price()
         self.net_price = self.get_net_price()
-        # self.rule_display_1 = self.return_display_rule()
+        self.rule_display_1 = self.return_rule_display_1()
 
         if self.cat_series_item.formula_tear_sheet is None:
             pass
