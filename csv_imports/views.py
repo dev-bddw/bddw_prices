@@ -38,7 +38,7 @@ def upload_formula_price_records(request):
                 item=item.pk, category=category.pk, series=series.pk
             )
 
-            if row[5] in [1, "1"]:
+            if row[7] in [1, "1"]:
 
                 (
                     tearsheet_record,
@@ -53,8 +53,8 @@ def upload_formula_price_records(request):
                         "rule_type": row[4] if row[4] != "" else "SIZES",
                         # "tearsheet_record": int(row[5]) if row[5] != "" else 0,
                         # "price_list_record": int(row[6]) if row[6] != "" else 0,
-                        "rule_display_1": row[7] if row[7] != "" else "",
-                        "rule_display_2": row[8] if row[8] != "" else "",
+                        "rule_display_1": row[5] if row[5] != "" else "",
+                        "rule_display_2": row[6] if row[6] != "" else "",
                         "depth": int(row[9]) if row[9] != "" else 0,
                         "length": int(row[10]) if row[10] != "" else 0,
                         "width": int(row[11]) if row[11] != "" else 0,
@@ -75,7 +75,7 @@ def upload_formula_price_records(request):
                 else:
                     report.append(f"Updated formula price record: {tearsheet_record}")
 
-            if row[6] in [1, "1"]:
+            if row[8] in [1, "1"]:
 
                 (
                     pricelist_record,
@@ -88,10 +88,10 @@ def upload_formula_price_records(request):
                         # skip id
                         "cat_series_item": cat_series_item,
                         "rule_type": row[4] if row[4] != "" else "SIZES",
-                        # "tearsheet_record": int(row[5]) if row[5] != "" else 0,
-                        # "price_list_record": int(row[6]) if row[6] != "" else 0,
-                        "rule_display_1": row[7] if row[7] != "" else "",
-                        "rule_display_2": row[8] if row[8] != "" else "",
+                        "rule_display_1": row[5] if row[5] != "" else "",
+                        "rule_display_2": row[6] if row[6] != "" else "",
+                        # "tearsheet_record": int(row[7]) if row[8] != "" else 0,
+                        # "price_list_record": int(row[8]) if row[8] != "" else 0,
                         "depth": int(row[9]) if row[9] != "" else 0,
                         "length": int(row[10]) if row[10] != "" else 0,
                         "width": int(row[11]) if row[11] != "" else 0,
@@ -211,8 +211,8 @@ def export_all_formula_price_records(request):
         record.insert(1, this_record.cat_series_item.series.name)
         record.insert(1, this_record.cat_series_item.category.name)
 
-        record.insert(5, 1)
-        record.insert(5, 0)
+        record.insert(5, "")
+        record.insert(5, "")
 
         for i in range(len(record)):
             if record[i] == 0:
@@ -227,8 +227,8 @@ def export_all_formula_price_records(request):
         price_list_record.insert(1, this_record.cat_series_item.series.name)
         price_list_record.insert(1, this_record.cat_series_item.category.name)
 
-        price_list_record.insert(5, 0)
-        price_list_record.insert(5, 1)
+        price_list_record.insert(5, "")
+        price_list_record.insert(5, "")
 
         for i in range(len(price_list_record)):
             if price_list_record[i] == 0:

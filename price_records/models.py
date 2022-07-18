@@ -200,7 +200,7 @@ class FormulaPriceRecord(models.Model):
     def save(self, *args, **kwargs):
         self.list_price = self.get_price()
         self.net_price = self.get_net_price()
-        self.rule_display_1 = self.return_display_rule()
+        self.rule_display_1 = self.return_rule_display_1()
 
         if self.cat_series_item.formula_tear_sheet is None:
             pass
@@ -236,20 +236,32 @@ class FormulaPriceRecord(models.Model):
         except ValueError:
             return "Please make sure your LIST PRICE has an integer value."
 
-    def return_display_rule(self):
-        st = ""
-        for key, value in self.return_value_dict().items():
-            if value not in [0, None, ""]:
-                st += f"{value} {key.upper()[0]} X "
-        st = st[:-2]
-        return st
-
     def evaluate(self):
         return (
             eval(self.cat_series_item.return_translation(), self.return_value_dict())
             if self.cat_series_item != ""
             else 0
         )
+
+    def return_rule_display_1_translation(self):
+
+        f = self.rule_display_1.replace("[", "{").replace("]", "}")
+
+        import re
+
+        rule_display_1 = re.sub("([a-z])\s([a-z])", "\\1_\\2", f)
+
+        return rule_display_1
+
+    def return_rule_display_1(self):
+        if "[" in self.rule_display_1:
+
+            template = self.return_rule_display_1_translation()
+            variables = self.return_value_dict()
+            return template.format(**variables)
+
+        else:
+            return self.rule_display_1
 
     def get_price(self):
         if self.cat_series_item.has_formula():

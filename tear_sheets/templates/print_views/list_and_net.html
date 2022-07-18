@@ -236,14 +236,14 @@
 
         {% elif tearsheet.template == 'C' %}
 
-        <!--TEMPLATE C RULES-->
+        <!--TEMPLATE C RULE DISPLAY ABOVE RULES-->
         {% for dictionary in price_records  %}
         {% for group,rules in dictionary.items %}
         <div class="row pt-2 pb-1">
             <div class="col-2 text-start">
             {{group}}
             </div>
-            <div class="col-4">
+            <div class="col-6">
             </div>
             <div class="col-2 text-end">
                 LIST
@@ -251,17 +251,15 @@
             <div class="col-2 text-end">
                 NET
             </div>
-            <div class="col-2 text-start">
-            </div>
         </div>
 
         {% for item in rules %}
 
-        <div  class="row">
+        <div style="padding-top: 3px;" class="row">
             <div class="col-3">
                 {{item.rule_display_1}}
             </div>
-            <div class="col-3">
+            <div class="col-5">
                 {{item.rule_display_2}}
             </div>
             {% comment %} <div class="col-1">
@@ -271,8 +269,6 @@
             </div>
             <div class="col-2 text-end">
                 ${{item.net_price}}
-            </div>
-            <div class="col-2 text-start">
             </div>
         </div>
         {% endfor %}

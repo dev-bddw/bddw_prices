@@ -162,8 +162,7 @@
 
         <!-- TEMPlATE B RULES -->
         <div class="row pt-2 pb-1">
-            {% comment %} <div class="col-2 text-end">
-            </div> {% endcomment %}
+
             <div class="col-8">
             </div>
             <div class="col-2 text-end">
@@ -190,8 +189,6 @@
             <div class="col-3">
                 {{item.rule_display_2}}
             </div>
-            {% comment %} <div class="col-1">
-            </div> {% endcomment %}
             <div class="col-2 text-end">
                 ${{item.list_price}}
             </div>
@@ -231,22 +228,20 @@
 
         {% elif tearsheet.template == 'C' %}
 
-        <!--TEMPLATE C RULES-->
+        <!--TEMPLATE C RULE DISPLAY ABOVE RULES-->
         {% for dictionary in price_records  %}
         {% for group,rules in dictionary.items %}
         <div class="row pt-2 pb-1">
             <div class="col-2 text-start">
             {{group}}
             </div>
-            <div class="col-4">
+            <div class="col-6">
             </div>
             <div class="col-2 text-end">
                 LIST
             </div>
             <div class="col-2 text-end">
                 NET
-            </div>
-            <div class="col-2 text-start">
             </div>
         </div>
 
@@ -256,7 +251,7 @@
             <div class="col-3">
                 {{item.rule_display_1}}
             </div>
-            <div class="col-3">
+            <div class="col-5">
                 {{item.rule_display_2}}
             </div>
             {% comment %} <div class="col-1">
@@ -266,8 +261,6 @@
             </div>
             <div class="col-2 text-end">
                 ${{item.net_price}}
-            </div>
-            <div class="col-2 text-start">
             </div>
         </div>
         {% endfor %}
@@ -308,8 +301,12 @@
         </div>
         {% endif %}
         <!-- FOOTER DETAILS -->
-        <div style="padding-top: 3px;" style="height: {{tearsheet.footer_space}}px">
+
+        <!-- FOOTER SPACING -->
+        <div style="height: {{tearsheet.footer_space}}px">
         </div>
+        <!-- FOOTER SPACING -->
+
         <!-- ADDRESS FOOTER-->
         <div style="padding-top: 3px;" class='text-center'>
             <p style="letter-spacing: .15em;" class="pt-5 pb-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
