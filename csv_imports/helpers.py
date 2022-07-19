@@ -57,6 +57,7 @@ def process_price_list(PRICE_LIST_FOR_PROCESSING):
                     "rule_display_1": record[16],
                     "rule_display_2": record[17],
                     "order": 1,
+                    "is_surcharge": False if record[10] == "" else True,
                 },
             )
 

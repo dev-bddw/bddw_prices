@@ -46,6 +46,8 @@ class PriceRecord(models.Model):
         blank=True, null=True, help_text="This is the bin id number for the price rule"
     )
 
+    is_surcharge = models.BooleanField(default=False)
+
     class Meta:
         ordering = ["order", "rule_display_1"]
 
@@ -97,7 +99,7 @@ class PriceListPriceRecord(models.Model):
         max_length=200,
     )
 
-    rule_display_1 = models.CharField(help_text="ex. 67 x 19 x 29 H", max_length=200)
+    rule_display_1 = models.CharField(help_text="ex. [depth] D x 29 H", max_length=200)
     rule_display_2 = models.CharField(
         help_text="ex. / 2 STANDARD DRAWERS / 2 CABS ",
         blank=True,
@@ -124,8 +126,10 @@ class PriceListPriceRecord(models.Model):
 
     updated_on = models.DateTimeField(auto_now=True, blank=True, null=True)
 
+    is_surcharge = models.BooleanField(default=False)
+
     class Meta:
-        ordering = ["order"]
+        ordering = ["is_surcharge", "order"]
 
     def get_net_price(self):
         try:
