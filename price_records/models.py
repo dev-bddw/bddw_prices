@@ -129,7 +129,7 @@ class PriceListPriceRecord(models.Model):
     is_surcharge = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ["is_surcharge", "order"]
+        ordering = ["is_surcharge", "rule_type", "order"]
 
     def get_net_price(self):
         try:
@@ -415,4 +415,4 @@ class FormulaPriceListPriceRecord(models.Model):
         return f"{self.cat_series_item}: {self.cat_series_item.return_translation()}".upper()
 
     class Meta:
-        ordering = ["list_price"]
+        ordering = ["rule_type", "list_price"]
