@@ -54,7 +54,6 @@ def print(request):
 
     new_dict = {}
 
-    # we need to fix the Category sorting here in some way
     for category in Category.objects.filter(pricelist_ignore=False):
 
         new_dict.update({f"{category}": {}})
