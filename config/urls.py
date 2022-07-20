@@ -8,14 +8,13 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
 from bddw_prices.views import snapshot
-from price_lists.views import price_list
 
 urlpatterns = [
     path("", view=snapshot, name="home"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),
-    path("price-list/", view=price_list, name="price-list"),
+    path("pricelists/", include("price_lists.urls", namespace="pricelists")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

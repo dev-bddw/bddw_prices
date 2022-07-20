@@ -4,6 +4,10 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(unique=True, blank=True, null=True, max_length=200)
     order = models.IntegerField(blank=True, null=True)
+    pricelist_ignore = models.BooleanField(
+        default=False,
+        help_text="If selected (true) rules for this category will not show up in pricelist",
+    )
 
     class Meta:
         verbose_name_plural = "Categories"
