@@ -44,7 +44,8 @@ def list(request):
         {
             "price_list_records": final_tuples,
             "print_url": "https://bddw-pdf-api.herokuapp.com/api/render?url=https://bddwsalestools.com"
-            + reverse("pricelists:print"),
+            + reverse("pricelists:print")
+            + "&pdf.margin.bottom=75px&pdf.margin.top=75px",
         },
     )
 

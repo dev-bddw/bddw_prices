@@ -37,7 +37,7 @@
   </head>
 
   <body style="text-transform: uppercase; font-family: 'Source Sans Pro', sans-serif; letter-spacing: 0.05em; font-size: 12px; color: #8B8A86">
-    <div class="">
+    <div style="margin-left:75px; margin-right:75px;">
         <div style="font-weight: lighter; font-size: 11px; width: 816px;">
 
             <div style="height: 100px;"></div>
@@ -48,7 +48,7 @@
             </ul>
 
             {% for category,series_item_dict in price_list_records   %}
-            <div style="width: 1000px">
+            <div>
                 <div class='pt-3' id="{{category| cut:" "}}">
                     <div class="mt-3" style="background-color: white;">
                             {% for series_item_key,lists in series_item_dict.items  %}
