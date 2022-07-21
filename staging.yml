@@ -1,16 +1,16 @@
 version: '3'
 
 volumes:
-  production_postgres_data: {}
-  production_postgres_data_backups: {}
-  production_traefik: {}
+  staging_postgres_data: {}
+  staging_postgres_data_backups: {}
+  staging_traefik: {}
 
 services:
   django:
     build:
       context: .
       dockerfile: ./compose/staging/django/Dockerfile
-    image: bddw_prices_production_django
+    image: bddw_prices_staging_django
     platform: linux/x86_64
     depends_on:
       - postgres
@@ -24,10 +24,10 @@ services:
     build:
       context: .
       dockerfile: ./compose/staging/postgres/Dockerfile
-    image: bddw_prices_production_postgres
+    image: bddw_prices_staging_postgres
     volumes:
-      - production_postgres_data:/var/lib/postgresql/data:Z
-      - production_postgres_data_backups:/backups:z
+      - staging_postgres_data:/var/lib/postgresql/data:Z
+      - staging_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.staging/.postgres
 
@@ -35,11 +35,11 @@ services:
     build:
       context: .
       dockerfile: ./compose/staging/traefik/Dockerfile
-    image: bddw_prices_production_traefik
+    image: bddw_prices_staging_traefik
     depends_on:
       - django
     volumes:
-      - production_traefik:/etc/traefik/acme:z
+      - staging_traefik:/etc/traefik/acme:z
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
@@ -54,4 +54,4 @@ services:
     env_file:
       - ./.envs/.staging/.django
     volumes:
-      - production_postgres_data_backups:/backups:z
+      - staging_postgres_data_backups:/backups:z
