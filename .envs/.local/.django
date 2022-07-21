@@ -2,3 +2,6 @@
 # ------------------------------------------------------------------------------
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
+
+SITE_URL=https://test.bddwsalestools.com
+PDF_APP_URL=https://bddw-pdf-api.herokuapp.com/api/render?url=

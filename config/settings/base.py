@@ -307,7 +307,10 @@ SPECTACULAR_SETTINGS = {
 
 # Your stuff...
 # ------------------------------------------------------------------------------
-PDF_APP_URL = "https://bddw-pdf-api.herokuapp.com/"
+
+
+PDF_APP_URL = env("PDF_APP_URL", default='https://bddw-pdf-api.herokuapp.com/')
+SITE_URL = env("SITE_URL", default='https://www.bddwsalestools.com')
 
 
 NET_PRICE_MULTIPLIER = 0.85

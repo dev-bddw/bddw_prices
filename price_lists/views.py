@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.conf import settings
 # Create your views here.
 from products.models import Category, CatSeriesItem
 
@@ -38,12 +38,14 @@ def list(request):
 
     final_tuples = new_dict.items()
 
+    url_string = settings.PDF_APP_URL + settings.SITE_URL
+
     return render(
         request,
         "price_list.html",
         {
             "price_list_records": final_tuples,
-            "print_url": "https://bddw-pdf-api.herokuapp.com/api/render?url=https://bddwsalestools.com"
+            "print_url": url_string
             + reverse("pricelists:print")
             + "&pdf.margin.bottom=75px&pdf.margin.top=75px&pdf.margin.right=55px",
         },

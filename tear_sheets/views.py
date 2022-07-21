@@ -2,6 +2,7 @@ from sqlite3 import IntegrityError
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, redirect, render
+from django.conf import settings
 
 from price_records.models import PriceRecord
 from products.models import CatSeriesItem
@@ -367,11 +368,7 @@ def detail_view_for_printing(request, pk):
 def redirect_detail_view_to_pdf(request, pk):
     tear_sheet = TearSheet.objects.get(pk=pk)
 
-    url_string = (
-        "https://bddw-pdf-api.herokuapp.com/api/render?url=https://bddwsalestools.com"
-    )
-
-    url_string += tear_sheet.get_printing_url()
+    url_string = settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
 
     parameter = (
         f"&attachmentName={tear_sheet.get_slug_title().upper()}-NET.pdf"
@@ -388,11 +385,7 @@ def redirect_detail_view_to_pdf_list(request, pk):
 
     tear_sheet = TearSheet.objects.get(pk=pk)
 
-    url_string = (
-        "https://bddw-pdf-api.herokuapp.com/api/render?url=https://bddwsalestools.com"
-    )
-
-    url_string += tear_sheet.get_printing_url_no_list()
+    url_string = settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url_no_list()
 
     parameter = (
         f"&attachmentName={tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
