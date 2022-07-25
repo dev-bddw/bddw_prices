@@ -24,11 +24,13 @@ price_list records are organized this way:
     {% for category,series_item_dict in price_list_records  %}
     <li><a href="#{{category| cut:" "}}">{{category}}</a></li>
     {% endfor %}
+    {% if price_list_records %}
     <li class="pt-2">
     <a href="{{print_url}}">
         <img height="25px" src="{% static 'images/pdf.png' %}">
     </a>
     </li>
+    {% endif %}
 </ul>
 
 {% for category,series_item_dict in price_list_records   %}
