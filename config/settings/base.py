@@ -328,7 +328,7 @@ JAZZMIN_UI_TWEAKS = {
     "body_small_text": False,
     "brand_small_text": False,
     "brand_colour": False,
-    "accent": "accent-primary",
+    "accent": "accent-lightblue",
     "navbar": "navbar-dark",
     "no_navbar_border": False,
     "navbar_fixed": False,
