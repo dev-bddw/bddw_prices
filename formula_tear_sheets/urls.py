@@ -1,11 +1,12 @@
 from django.urls import path
 
-from .views import (
+from .views import (  # views; edit views; pdf printing views
     change_caption_hx,
     change_detail_hx,
     change_footer_detail_hx,
     change_image_hx,
     change_price_record_hx,
+    change_template_hx,
     change_title_hx,
     create_caption_hx,
     create_detail_hx,
@@ -13,9 +14,11 @@ from .views import (
     create_price_record_hx,
     detail_view,
     detail_view_for_printing,
-    detail_view_to_pdf,
+    detail_view_for_printing_list,
     edit_view,
     list_view,
+    redirect_detail_view_to_pdf,
+    redirect_detail_view_to_pdf_list,
 )
 
 app_name = "formula_tearsheets"
@@ -28,6 +31,22 @@ urlpatterns = [
     path("change-image-detail/<pk>", view=change_image_hx, name="change_image"),
     path("change-caption/<pk>", view=change_caption_hx, name="change_caption"),
     path("change-detail/<pk>", view=change_detail_hx, name="change_detail"),
+    path("print-redirect/<pk>", view=redirect_detail_view_to_pdf, name="print"),
+    path(
+        "print-redirect-list/<pk>",
+        view=redirect_detail_view_to_pdf_list,
+        name="print-list",
+    ),
+    path(
+        "detail-for-print/<pk>",
+        view=detail_view_for_printing,
+        name="detail-view-for-print",
+    ),
+    path(
+        "detail-for-print-list/<pk>",
+        view=detail_view_for_printing_list,
+        name="detail-view-for-print-list",
+    ),
     path(
         "change-price-record/<pk>",
         view=change_price_record_hx,
@@ -38,7 +57,6 @@ urlpatterns = [
         view=change_footer_detail_hx,
         name="change_footer_detail",
     ),
-    path("print-detail/<pk>", view=detail_view_to_pdf, name="print"),
     path(
         "detail-for-print/<pk>",
         view=detail_view_for_printing,
@@ -56,4 +74,5 @@ urlpatterns = [
         view=create_footer_detail_hx,
         name="create_footer_detail",
     ),
+    path("change-template/<pk>", view=change_template_hx, name="change_template"),
 ]

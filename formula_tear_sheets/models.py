@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 
 
 def image_upload_to(instance, filename):
@@ -7,6 +8,15 @@ def image_upload_to(instance, filename):
 
 
 class FormulaTearSheet(models.Model):
+    class TearSheetTemplate(models.TextChoices):
+        a = "A", "ONE COLUMN DISPLAY"
+        b = "B", "TWO COLUMN DISPLAY"
+        c = "C", "RULE TYPE ABOVE"
+
+    template = models.CharField(
+        choices=TearSheetTemplate.choices, default="B", max_length=1000
+    )
+
     title = models.CharField(
         help_text="This will appear at the top of the tearsheet.",
         blank=True,
@@ -39,6 +49,14 @@ class FormulaTearSheet(models.Model):
         return reverse(
             "formula_tearsheets:detail-view-for-print", kwargs={"pk": self.pk}
         )
+
+    def get_printing_url_no_list(self):
+        return reverse(
+            "formula_tearsheets:detail-view-for-print-list", kwargs={"pk": self.pk}
+        )
+
+    def get_slug_title(self):
+        return slugify(self.title)
 
 
 class FormulaTearSheetDetail(models.Model):

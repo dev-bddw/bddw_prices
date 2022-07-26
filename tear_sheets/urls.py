@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (
+from .views import (  # views; edit views; pdf printing views
     change_caption_hx,
     change_detail_hx,
     change_footer_detail_hx,

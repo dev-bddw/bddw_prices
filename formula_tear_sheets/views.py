@@ -1,5 +1,6 @@
 from sqlite3 import IntegrityError
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, redirect, render
 
@@ -386,15 +387,39 @@ def create_footer_detail_hx(request, pk):
         )
 
 
+@login_required
+def change_template_hx(request, pk):
+
+    tearsheet = FormulaTearSheet.objects.get(pk=pk)
+
+    if request.method == "POST":
+        tearsheet.template = request.POST.get("template")
+        tearsheet.save()
+
+    return render(
+        request,
+        "formula_tear_sheets/hx/post/edit/template.html",
+        {"tearsheet": tearsheet},
+    )
+
+
 def detail_view_for_printing(request, pk):
+
+    number_of = 0
 
     tear_sheet = FormulaTearSheet.objects.get(pk=pk)
     captions = FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
     footer_details = FormulaTearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
 
+    # spacing size b/t records and footer
+    # we should actually perform a rational calculation here that
+    # includes getting the tearsheet.img.height value and sbtrcts
+
+    number_of += len(captions) + len(footer_details)
+
     return render(
         request,
-        "formula_tear_sheets/detail_view_for_pdf.html",
+        "formula_tear_sheets/print_views/list_and_net.html",
         {
             "tearsheet": tear_sheet,
             "details": return_details_by_title(pk),
@@ -405,14 +430,59 @@ def detail_view_for_printing(request, pk):
     )
 
 
-def detail_view_to_pdf(request, pk):
+def redirect_detail_view_to_pdf(request, pk):
+    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
+
+    url_string = (
+        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+    )
+
+    parameter = (
+        f"&attachmentName={tear_sheet.get_slug_title().upper()}-NET.pdf"
+        if request.GET.get("justDownload") == "True"
+        else ""
+    )
+
+    url_string += parameter
+
+    return redirect(url_string)
+
+
+def redirect_detail_view_to_pdf_list(request, pk):
 
     tear_sheet = FormulaTearSheet.objects.get(pk=pk)
 
     url_string = (
-        "https://bddw-pdf-api.herokuapp.com/api/render?url=https://bddwsalestools.com"
+        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url_no_list()
     )
 
-    url_string += tear_sheet.get_printing_url()
+    parameter = (
+        f"&attachmentName={tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
+        if request.GET.get("justDownload") == "True"
+        else ""
+    )
+
+    url_string += parameter
+
+    print(url_string)
 
     return redirect(url_string)
+
+
+def detail_view_for_printing_list(request, pk):
+
+    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
+    captions = FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
+    footer_details = FormulaTearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
+
+    return render(
+        request,
+        "formula_tear_sheets/print_views/list_only.html",
+        {
+            "tearsheet": tear_sheet,
+            "details": return_details_by_title(pk),
+            "captions": captions,
+            "footer_details": footer_details,
+            "price_records": return_price_records_by_rule_type(pk),
+        },
+    )
