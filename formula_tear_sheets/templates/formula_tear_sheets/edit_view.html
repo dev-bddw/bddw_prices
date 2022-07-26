@@ -209,45 +209,26 @@
             </div>
         </div>
 
-        {% for dictionary in price_records  %}
-        {% for group,rules in dictionary.items %}
-        <div class="row">
+        {% for price_record in price_records  %}
+        <div id="price-record-{{price_record.pk}}" class="row">
             <div class="col-2 text-start">
-                {{group}}
+                {{price_record.rule_type}}
             </div>
-                {% for item in rules %}
-                {% if forloop.first %}
-            <div class="col-7">
-                {{item.rule_display_1}}
-                {{item.rule_display_2}}
-            </div>
-            <div class="col-1">
-                ${{item.list_price}}
-            </div>
-            <div class="col-2">
-                ${{item.net_price}}
-            </div>
-        </div>
-            {% else %}
 
-        <div class="row">
-            <div class="col-2 text-end">
-                {% comment %} SKIP {% endcomment %}
-            </div>
             <div class="col-7">
-                {{item.rule_display_1}}
-                {{item.rule_display_2}}
+                {{price_record.rule_display_1}}
+                {{price_record.rule_display_2}}
             </div>
             <div class="col-1">
-                ${{item.list_price}}
+                ${{price_record.list_price}}
             </div>
-            <div class="col-2">
-                ${{item.net_price}}
+            <div class="col-1">
+                ${{price_record.net_price}}
+            </div>
+            <div class="text-end col-1">
+
             </div>
         </div>
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
         {% endfor %}
         <!--RULES -->
 
