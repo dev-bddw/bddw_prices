@@ -53,7 +53,7 @@ def print_all(request):
 
         # synthesize a full file path; note that we included the filename
         file_path_within_bucket = os.path.join(
-            file_directory_within_bucket, file_obj.name
+            file_directory_within_bucket, tear_sheet.get_slug_title() + ".pdf"
         )
 
         media_storage = default_storage()
