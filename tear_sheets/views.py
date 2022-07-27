@@ -43,7 +43,7 @@ def print_all(request):
 
         response = requests.get(url)
 
-        file_obj = File(response.content)
+        file_obj = File(response.content, name=tear_sheet.get_slug_title() + ".pdf")
 
         # do your validation here e.g. file size/type check
 
@@ -54,7 +54,7 @@ def print_all(request):
 
         # synthesize a full file path; note that we included the filename
         file_path_within_bucket = os.path.join(
-            file_directory_within_bucket, tear_sheet.get_slug_title() + ".pdf"
+            file_directory_within_bucket, file_obj.name
         )
 
         media_storage = default_storage()
