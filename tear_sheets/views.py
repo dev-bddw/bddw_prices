@@ -36,12 +36,10 @@ def print_all(request):
 
     folder_path = os.path.join(settings.MEDIA_ROOT, "pdf_files", batch_name)
 
-    try:
-        os.mkdir(os.path.join(settings.MEDIA_ROOT, "pdf_files"))
-        os.mkdir(folder_path)
+    print(folder_path)
 
-    except Exception:
-        pass
+    os.makedirs(os.path.join(settings.MEDIA_ROOT, "pdf_files"), exist_ok=True)
+    os.mkdir(folder_path)
 
     for tear_sheet in tear_sheets:
 
@@ -50,7 +48,8 @@ def print_all(request):
         response = requests.get(url)
 
         open(
-            folder_path + "/" + f"{tear_sheet.get_slug_title().upper()}.pdf", "wb"
+            os.path.join(folder_path, f"{tear_sheet.get_slug_title().upper()}.pdf"),
+            "wb",
         ).write(response.content)
 
     zip_path = os.path.join(settings.MEDIA_ROOT, "zip_files")
@@ -65,7 +64,9 @@ def print_all(request):
     )
 
     return render(
-        request, "zip_download.html", {"file_name": "zip_files/BDDW_PDFS_ALL.zip"}
+        request,
+        "zip_download.html",
+        {"file_name": f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"},
     )
 
 
