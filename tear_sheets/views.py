@@ -5,7 +5,7 @@ from sqlite3 import IntegrityError
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.files.storage import default_storage
+from django.core.files.storage import get_storage_class
 from django.shortcuts import HttpResponse, redirect, render
 
 from price_records.models import PriceRecord
@@ -30,6 +30,10 @@ def list_view(request):
 @login_required
 def print_all(request):
 
+    default_storage = get_storage_class()
+
+    default_storage = default_storage()
+
     tear_sheets = TearSheet.objects.all()
 
     batch_name = str(random.randrange(1000000))
@@ -46,7 +50,7 @@ def print_all(request):
         response = requests.get(url)
 
         with default_storage.open(
-            folder_path + f"/{tear_sheet.get_slug_title().upper()}.pdf", mode="wb"
+            name=folder_path + f"/{tear_sheet.get_slug_title().upper()}.pdf", mode="wb"
         ) as s3file:
             s3file.write(response.content)
 
