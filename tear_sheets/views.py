@@ -1,5 +1,9 @@
+import os
+import random
+import shutil
 from sqlite3 import IntegrityError
 
+import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, redirect, render
@@ -9,8 +13,6 @@ from products.models import CatSeriesItem
 
 from .helpers import return_details_by_title, return_price_records_by_rule_type
 from .models import ImageCaption, TearSheet, TearSheetDetail, TearSheetFooterDetail
-
-# to do: sort out footer spacing
 
 
 @login_required
@@ -27,17 +29,15 @@ def list_view(request):
 
 @login_required
 def print_all(request):
-    import os
-    import random
-
-    import requests
 
     tear_sheets = TearSheet.objects.all()
-    folder_name = str(random.randrange(1000000))
-    folder_path = settings.MEDIA_ROOT + "/" + "pdf_files" + "/" + folder_name
+
+    batch_name = str(random.randrange(1000000))
+
+    folder_path = os.path.join(settings.MEDIA_ROOT, "pdf_files", batch_name)
 
     try:
-        os.mkdir(settings.MEDIA_ROOT + "/" + "pdf_files")
+        os.mkdir(os.path.join(settings.MEDIA_ROOT, "pdf_files"))
         os.mkdir(folder_path)
 
     except Exception:
@@ -53,9 +53,7 @@ def print_all(request):
             folder_path + "/" + f"{tear_sheet.get_slug_title().upper()}.pdf", "wb"
         ).write(response.content)
 
-    import shutil
-
-    zip_path = settings.MEDIA_ROOT + "/" + "zip_files"
+    zip_path = os.path.join(settings.MEDIA_ROOT, "zip_files")
 
     try:
         os.mkdir(zip_path)
@@ -63,7 +61,7 @@ def print_all(request):
         pass
 
     shutil.make_archive(
-        zip_path + "/" + f"BDDW_PDFS_ALL-{folder_name}", "zip", folder_path
+        zip_path + "/" + f"BDDW_PDFS_ALL-{batch_name}", "zip", folder_path
     )
 
     return render(
