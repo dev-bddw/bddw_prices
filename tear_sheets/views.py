@@ -35,7 +35,7 @@ def print_all(request):
 
     batch_name = str(random.randrange(1000000))
 
-    folder_path = os.path.join("media", "pdf_files", batch_name)
+    folder_path = os.path.join(settings.MEDIA_ROOT, "pdf_files", batch_name)
 
     os.makedirs(os.path.join(settings.MEDIA_ROOT, "pdf_files"), exist_ok=True)
     os.makedirs(folder_path)
