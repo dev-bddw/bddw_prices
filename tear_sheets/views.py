@@ -54,7 +54,7 @@ def print_all(request):
     zip_path = os.path.join(settings.MEDIA_ROOT, "zip_files")
 
     try:
-        os.mkdir(zip_path)
+        os.makedirs(zip_path, exist_ok=True)
     except Exception:
         pass
 
