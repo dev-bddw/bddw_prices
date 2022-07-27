@@ -1,6 +1,5 @@
 import os
 import random
-import shutil
 from sqlite3 import IntegrityError
 
 import requests
@@ -46,34 +45,36 @@ def print_all(request):
 
         response = requests.get(url)
 
-        open(
-            os.path.join(folder_path, f"{tear_sheet.get_slug_title().upper()}.pdf"),
-            "wb",
-        ).write(response.content)
+        with default_storage.open(
+            folder_path + f"/{tear_sheet.get_slug_title().upper()}.pdf", mode="wb"
+        ) as s3file:
+            s3file.write(response.content)
 
-    zip_path = os.path.join(settings.MEDIA_ROOT, "zip_files")
+    return HttpResponse(f"<p>All Done {batch_name}<p>")
 
-    try:
-        os.makedirs(zip_path, exist_ok=True)
-    except Exception:
-        pass
+    # zip_path = os.path.join(settings.MEDIA_ROOT, "zip_files")
 
-    archive = shutil.make_archive(
-        zip_path + "/" + f"BDDW_PDFS_ALL-{batch_name}", "zip", folder_path
-    )
+    # try:
+    #     os.makedirs(zip_path, exist_ok=True)
+    # except Exception:
+    #     pass
 
-    file_obj = default_storage.open(archive)
+    # archive = shutil.make_archive(
+    #     zip_path + "/" + f"BDDW_PDFS_ALL-{batch_name}", "zip", folder_path
+    # )
 
-    default_storage.save(
-        os.path.join(settings.MEDIA_ROOT, f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"),
-        file_obj,
-    )
+    # file_obj = default_storage.open(archive)
 
-    return render(
-        request,
-        "zip_download.html",
-        {"file_url": settings.MEDIA_URL + f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"},
-    )
+    # default_storage.save(
+    #     os.path.join(settings.MEDIA_ROOT, f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"),
+    #     file_obj,
+    # )
+
+    # return render(
+    #     request,
+    #     "zip_download.html",
+    #     {"file_url": settings.MEDIA_URL + f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"},
+    # )
 
 
 def detail_view(request, pk):
