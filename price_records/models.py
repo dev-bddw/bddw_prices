@@ -188,7 +188,10 @@ class FormulaPriceRecord(models.Model):
     inset = models.IntegerField(null=True, blank=True)
 
     rule_display_1 = models.CharField(
-        blank=True, null=True, help_text="ex. 67 x 19 x 29 H", max_length=200
+        blank=True,
+        null=True,
+        help_text="Will convert [LENGTH] L x [DEPTH] D or you can just manually ",
+        max_length=200,
     )
     rule_display_2 = models.CharField(
         help_text="ex. / 2 STANDARD DRAWERS / 2 CABS",
