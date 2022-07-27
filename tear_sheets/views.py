@@ -66,7 +66,7 @@ def print_all(request):
     return render(
         request,
         "zip_download.html",
-        {"file_name": f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"},
+        {"file_url": settings.MEDIA_URL + f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"},
     )
 
 
