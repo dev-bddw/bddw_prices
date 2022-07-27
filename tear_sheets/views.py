@@ -41,9 +41,9 @@ def print_all(request):
 
         url = settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
 
-        response = requests.get(url)
+        requests.get(url)
 
-        file_obj = File(response.content, name=tear_sheet.get_slug_title() + ".pdf")
+        file_obj = File(b"hi how are you", name=tear_sheet.get_slug_title() + ".pdf")
 
         # do your validation here e.g. file size/type check
 
