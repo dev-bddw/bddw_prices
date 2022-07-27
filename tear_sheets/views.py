@@ -5,6 +5,7 @@ from sqlite3 import IntegrityError
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.files.base import File
 from django.core.files.storage import get_storage_class
 from django.shortcuts import HttpResponse, redirect, render
 
@@ -42,7 +43,7 @@ def print_all(request):
 
         response = requests.get(url)
 
-        file_obj = response.content
+        file_obj = File(response.content)
 
         # do your validation here e.g. file size/type check
 
