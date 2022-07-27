@@ -32,16 +32,9 @@ def print_all(request):
 
     default_storage = get_storage_class()
 
-    default_storage = default_storage()
-
     tear_sheets = TearSheet.objects.all()
 
     batch_name = str(random.randrange(1000000))
-
-    folder_path = os.path.join(settings.MEDIA_ROOT, "pdf_files", batch_name)
-
-    os.makedirs(os.path.join(settings.MEDIA_ROOT, "pdf_files"), exist_ok=True)
-    os.makedirs(folder_path)
 
     for tear_sheet in tear_sheets:
 
@@ -49,10 +42,23 @@ def print_all(request):
 
         response = requests.get(url)
 
-        with default_storage.open(
-            name=folder_path + f"/{tear_sheet.get_slug_title().upper()}.pdf", mode="wb"
-        ) as s3file:
-            s3file.write(response.content)
+        file_obj = response.content
+
+        # do your validation here e.g. file size/type check
+
+        # organize a path for the file in bucket
+        file_directory_within_bucket = "user_upload_files/{username}".format(
+            username=requests.user
+        )
+
+        # synthesize a full file path; note that we included the filename
+        file_path_within_bucket = os.path.join(
+            file_directory_within_bucket, file_obj.name
+        )
+
+        media_storage = default_storage()
+
+        media_storage.save(file_path_within_bucket, file_obj)
 
     return HttpResponse(f"<p>All Done {batch_name}<p>")
 
