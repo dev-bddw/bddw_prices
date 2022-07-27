@@ -6,6 +6,7 @@ from sqlite3 import IntegrityError
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import default_storage
 from django.shortcuts import HttpResponse, redirect, render
 
 from price_records.models import PriceRecord
@@ -34,12 +35,10 @@ def print_all(request):
 
     batch_name = str(random.randrange(1000000))
 
-    folder_path = os.path.join(settings.MEDIA_ROOT, "pdf_files", batch_name)
-
-    print(folder_path)
+    folder_path = os.path.join("media", "pdf_files", batch_name)
 
     os.makedirs(os.path.join(settings.MEDIA_ROOT, "pdf_files"), exist_ok=True)
-    os.mkdir(folder_path)
+    os.makedirs(folder_path)
 
     for tear_sheet in tear_sheets:
 
@@ -59,8 +58,15 @@ def print_all(request):
     except Exception:
         pass
 
-    shutil.make_archive(
+    archive = shutil.make_archive(
         zip_path + "/" + f"BDDW_PDFS_ALL-{batch_name}", "zip", folder_path
+    )
+
+    file_obj = default_storage.open(archive)
+
+    default_storage.save(
+        os.path.join(settings.MEDIA_ROOT, f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"),
+        file_obj,
     )
 
     return render(
