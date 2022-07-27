@@ -48,7 +48,7 @@ def print_all(request):
 
         # organize a path for the file in bucket
         file_directory_within_bucket = "user_upload_files/{username}".format(
-            username=requests.user
+            username=request.user
         )
 
         # synthesize a full file path; note that we included the filename
