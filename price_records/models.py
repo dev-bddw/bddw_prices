@@ -188,8 +188,8 @@ class FormulaPriceRecord(models.Model):
     inset = models.IntegerField(null=True, blank=True)
 
     rule_display_1 = models.CharField(
-        blank=True,
-        null=True,
+        blank=False,
+        null=False,
         help_text="Will convert [LENGTH] L x [DEPTH] D or you can just manually ",
         max_length=200,
     )

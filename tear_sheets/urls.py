@@ -17,6 +17,7 @@ from .views import (  # views; edit views; pdf printing views
     detail_view_for_printing_list,
     edit_view,
     list_view,
+    print_all,
     redirect_detail_view_to_pdf,
     redirect_detail_view_to_pdf_list,
 )
@@ -69,5 +70,10 @@ urlpatterns = [
         "create-footer-detail/<pk>",
         view=create_footer_detail_hx,
         name="create_footer_detail",
+    ),
+    path(
+        "print_all",
+        view=print_all,
+        name="print_all",
     ),
 ]

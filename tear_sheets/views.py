@@ -1,8 +1,8 @@
 from sqlite3 import IntegrityError
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, redirect, render
-from django.conf import settings
 
 from price_records.models import PriceRecord
 from products.models import CatSeriesItem
@@ -22,6 +22,51 @@ def list_view(request):
         {
             "tearsheets": TearSheet.objects.all().order_by("-updated_on"),
         },
+    )
+
+
+@login_required
+def print_all(request):
+    import os
+    import random
+
+    import requests
+
+    tear_sheets = TearSheet.objects.all()
+    folder_name = str(random.randrange(1000000))
+    folder_path = settings.MEDIA_ROOT + "/" + "pdf_files" + "/" + folder_name
+
+    try:
+        os.mkdir(folder_path)
+
+    except FileNotFoundError:
+        os.mkdir(settings.MEDIA_ROOT + "/" + "pdf_files")
+
+    for tear_sheet in tear_sheets:
+
+        url = settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+
+        response = requests.get(url)
+
+        open(
+            folder_path + "/" + f"{tear_sheet.get_slug_title().upper()}.pdf", "wb"
+        ).write(response.content)
+
+    import shutil
+
+    zip_path = settings.MEDIA_ROOT + "/" + "zip_files"
+
+    try:
+        os.mkdir(zip_path)
+    except Exception:
+        pass
+
+    shutil.make_archive(
+        zip_path + "/" + f"BDDW_PDFS_ALL-{folder_name}", "zip", folder_path
+    )
+
+    return render(
+        request, "zip_download.html", {"file_name": "zip_files/BDDW_PDFS_ALL.zip"}
     )
 
 
@@ -368,7 +413,9 @@ def detail_view_for_printing(request, pk):
 def redirect_detail_view_to_pdf(request, pk):
     tear_sheet = TearSheet.objects.get(pk=pk)
 
-    url_string = settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+    url_string = (
+        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+    )
 
     parameter = (
         f"&attachmentName={tear_sheet.get_slug_title().upper()}-NET.pdf"
@@ -385,7 +432,9 @@ def redirect_detail_view_to_pdf_list(request, pk):
 
     tear_sheet = TearSheet.objects.get(pk=pk)
 
-    url_string = settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url_no_list()
+    url_string = (
+        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url_no_list()
+    )
 
     parameter = (
         f"&attachmentName={tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
