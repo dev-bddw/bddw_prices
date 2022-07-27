@@ -37,10 +37,11 @@ def print_all(request):
     folder_path = settings.MEDIA_ROOT + "/" + "pdf_files" + "/" + folder_name
 
     try:
+        os.mkdir(settings.MEDIA_ROOT + "/" + "pdf_files")
         os.mkdir(folder_path)
 
-    except FileNotFoundError:
-        os.mkdir(settings.MEDIA_ROOT + "/" + "pdf_files")
+    except Exception:
+        pass
 
     for tear_sheet in tear_sheets:
 
