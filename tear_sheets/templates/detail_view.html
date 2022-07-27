@@ -12,24 +12,28 @@
                 <a href="{% url 'tearsheets:list' %}"><< list view</a>
             </div>
             <div class="pt-3 row">
-                <div class="col-8">
+                <div class="col-4">
                     <h3 style="line-height: 100%;">{{tearsheet}}</h3>
                 </div>
-                <div class="col-4 text-end">
-                    <a style="text-decoration: none;" href="{% url 'tearsheets:print' tearsheet.pk %}" target="_blank">
-                        <img height="20px" src="{% static 'images/pdf.png' %}">
+                <div class="col-8 text-end">
+                    <a style="" href="{% url 'tearsheets:print' tearsheet.pk %}" target="_blank">
+                        view pdf
                     </a>
-                    <a style="text-decoration: none;" href="{% url 'tearsheets:print' tearsheet.pk %}?justDownload=True">
-                        <img height="20px" src="{% static 'images/down.png' %}">
+                    -
+                    <a style="" href="{% url 'tearsheets:print' tearsheet.pk %}?justDownload=True">
+                        download pdf
                     </a>
-                    <a style="text-decoration: none;" href="{% url 'tearsheets:print-list' tearsheet.pk %}" target="_blank">
-                        <img height="20px" src="{% static 'images/pdf.png' %}">
+                    -
+                    <a style="" href="{% url 'tearsheets:print-list' tearsheet.pk %}" target="_blank">
+                        view list pdf
                     </a>
-                    <a style="text-decoration: none;" href="{% url 'tearsheets:print-list' tearsheet.pk %}?justDownload=True">
-                        <img height="20px" src="{% static 'images/down.png' %}">
+                    -
+                    <a style="" href="{% url 'tearsheets:print-list' tearsheet.pk %}?justDownload=True">
+                        download list pdf
                     </a>
-                    <a style="text-decoration: none;"  href="{% url 'tearsheets:edit' tearsheet.pk %}">
-                        <img height="20px" src="{% static 'images/edit.svg' %}">
+                    -
+                    <a style=""  href="{% url 'tearsheets:edit' tearsheet.pk %}">
+                        edit
                     </a>
                 </div>
             </div>
