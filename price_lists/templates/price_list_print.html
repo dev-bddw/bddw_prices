@@ -111,22 +111,22 @@
                                 {% for price_record in lists.1  %}
 
                                 {% if forloop.first %}
-
                                 <tr>
                                     <td>{{series_item_key}}</td>
-                                    <td style="font-size: 10px" class="text-end">{{price_record.return_rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                                    <td class="text-end">{{price_record.rule_type}}</td>
+                                    <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
                                     <td class="text-end">${{price_record.list_price}}</td>
                                     <td class="text-end">${{price_record.net_price}}</td>
                                 </tr>
-
                                 {% else %}
-
                             <tr>
                                 <td></td>
-                                <td style="font-size: 10px" class="text-end">{{price_record.return_rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
+                                <td class="text-end">{{price_record.rule_type}}</td>
+                                <td style="font-size: 10px" class="text-end">{{price_record.rule_display_1}} {% if price_record.rule_display_2 == None %}{% else %}{{price_record.rule_display_2}}{% endif %}</td>
                                 <td class="text-end">${{price_record.list_price}}</td>
                                 <td class="text-end">${{price_record.net_price}}</td>
                             </tr>
+
 
                                 {% endif %}
 
