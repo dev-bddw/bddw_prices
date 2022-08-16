@@ -4,19 +4,39 @@ from .models import ImageCaption, TearSheet, TearSheetDetail, TearSheetFooterDet
 
 
 class TearsheetAdmin(admin.ModelAdmin):
-    pass
+    search_fields = [
+        "cat_series_item__category__name",
+        "cat_series_item__series__name",
+        "cat_series_item__item__name",
+    ]
+    list_per_page = 10000
 
 
 class TearsheetDetailAdmin(admin.ModelAdmin):
-    pass
+    search_fields = [
+        "cat_series_item__category__name",
+        "cat_series_item__series__name",
+        "cat_series_item__item__name",
+    ]
+    list_per_page = 10000
 
 
 class ImageCaptionAdmin(admin.ModelAdmin):
-    pass
+    search_fields = [
+        "cat_series_item__category__name",
+        "cat_series_item__series__name",
+        "cat_series_item__item__name",
+    ]
+    list_per_page = 10000
 
 
 class TearSheetFooterDetailAdmin(admin.ModelAdmin):
-    pass
+    search_fields = [
+        "cat_series_item__category__name",
+        "cat_series_item__series__name",
+        "cat_series_item__item__name",
+    ]
+    list_per_page = 10000
 
 
 admin.site.register(ImageCaption, ImageCaptionAdmin)

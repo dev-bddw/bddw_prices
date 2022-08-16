@@ -4,19 +4,23 @@ from .models import Category, CatSeriesItem, Item, Series
 
 
 class CatSeriesItemAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ["series__name", "category__name", "item__name"]
+    list_per_page = 10000
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ["name"]
+    list_per_page = 10000
 
 
 class ItemAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ["name"]
+    list_per_page = 10000
 
 
 class SeriesAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ["name"]
+    list_per_page = 10000
 
 
 admin.site.register(CatSeriesItem, CatSeriesItemAdmin)
