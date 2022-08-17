@@ -63,6 +63,26 @@ def print_all(request):
 
         s3.upload_fileobj(bytes_container, bucket_name, object_name)
 
+        #### then for net versions
+
+        url_string = (
+            settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+        )
+
+        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-NET.pdf"
+
+        parameter = f"&attachmentName={pdf_file_name}"
+
+        url_string += parameter
+
+        response = requests.get(url_string)
+
+        bytes_container = BytesIO(response.content)
+
+        object_name = object_dir + pdf_file_name
+
+        s3.upload_fileobj(bytes_container, bucket_name, object_name)
+
     # default_storage = get_storage_class()
 
     # tear_sheets = TearSheet.objects.all()
@@ -93,7 +113,7 @@ def print_all(request):
 
     #     media_storage.save(file_path_within_bucket, file_obj)
 
-    return HttpResponse("<p>ALL DONE</p>")
+    return HttpResponse(f"<p>ALL DONE -- {batch_name}</p>")
 
     # zip_path = os.path.join(settings.MEDIA_ROOT, "zip_files")
 
