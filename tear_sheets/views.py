@@ -69,7 +69,7 @@ def print_all(request):
         for file_name, data in mem_list:
             zip_file.writestr(file_name, data.getvalue())
 
-        s3.upload_fileobj(zip_file, bucket_name, object_dir + "zip_file.zip")
+    s3.upload_fileobj(zip_buffer, bucket_name, object_dir + "zip_file.zip")
 
     #### then for net versions
 
