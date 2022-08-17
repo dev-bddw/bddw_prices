@@ -27,6 +27,7 @@ def list_view(request):
 def print_all(request):
 
     import random
+    import zipfile
     from io import BytesIO
 
     import boto3
@@ -37,6 +38,9 @@ def print_all(request):
         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
     )
+
+    zip_buffer = BytesIO()
+    mem_list = []
 
     batch_name = str(random.randrange(1000000))
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
@@ -59,85 +63,35 @@ def print_all(request):
 
         bytes_container = BytesIO(response.content)
 
-        object_name = object_dir + pdf_file_name
+        mem_list.append((pdf_file_name, bytes_container))
 
-        s3.upload_fileobj(bytes_container, bucket_name, object_name)
+    with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
+        for file_name, data in mem_list:
+            zip_file.writestr(file_name, data.getvalue())
 
-        #### then for net versions
+    s3.upload_fileobj(zip_file, bucket_name, object_dir + "zip_file.zip")
 
-        url_string = (
-            settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
-        )
+    #### then for net versions
 
-        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-NET.pdf"
+    # url_string = (
+    #     settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+    # )
 
-        parameter = f"&attachmentName={pdf_file_name}"
+    # pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-NET.pdf"
 
-        url_string += parameter
+    # parameter = f"&attachmentName={pdf_file_name}"
 
-        response = requests.get(url_string)
+    # url_string += parameter
 
-        bytes_container = BytesIO(response.content)
+    # response = requests.get(url_string)
 
-        object_name = object_dir + pdf_file_name
+    # bytes_container = BytesIO(response.content)
 
-        s3.upload_fileobj(bytes_container, bucket_name, object_name)
+    # object_name = object_dir + pdf_file_name
 
-    # default_storage = get_storage_class()
-
-    # tear_sheets = TearSheet.objects.all()
-
-    # batch_name = str(random.randrange(1000000))
-
-    # for tear_sheet in tear_sheets:
-
-    #     url = settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
-
-    #     requests.get(url)
-
-    #     file_obj = File(b"hi how are you", name=tear_sheet.get_slug_title() + ".pdf")
-
-    #     # do your validation here e.g. file size/type check
-
-    #     # organize a path for the file in bucket
-    #     file_directory_within_bucket = "user_upload_files/{username}".format(
-    #         username=request.user
-    #     )
-
-    #     # synthesize a full file path; note that we included the filename
-    #     file_path_within_bucket = os.path.join(
-    #         file_directory_within_bucket, file_obj.name
-    #     )
-
-    #     media_storage = default_storage()
-
-    #     media_storage.save(file_path_within_bucket, file_obj)
+    # s3.upload_fileobj(bytes_container, bucket_name, object_name)
 
     return HttpResponse(f"<p>ALL DONE -- {batch_name}</p>")
-
-    # zip_path = os.path.join(settings.MEDIA_ROOT, "zip_files")
-
-    # try:
-    #     os.makedirs(zip_path, exist_ok=True)
-    # except Exception:
-    #     pass
-
-    # archive = shutil.make_archive(
-    #     zip_path + "/" + f"BDDW_PDFS_ALL-{batch_name}", "zip", folder_path
-    # )
-
-    # file_obj = default_storage.open(archive)
-
-    # default_storage.save(
-    #     os.path.join(settings.MEDIA_ROOT, f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"),
-    #     file_obj,
-    # )
-
-    # return render(
-    #     request,
-    #     "zip_download.html",
-    #     {"file_url": settings.MEDIA_URL + f"zip_files/BDDW_PDFS_ALL-{batch_name}.zip"},
-    # )
 
 
 def detail_view(request, pk):
