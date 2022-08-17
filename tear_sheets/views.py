@@ -26,6 +26,33 @@ def list_view(request):
 @login_required
 def print_all(request):
 
+    import random
+    from io import BytesIO
+
+    import boto3
+    import requests
+
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    )
+
+    batch_name = str(random.randrange(1000000))
+    bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+    object_dir = f"media/test/{batch_name}/"
+    pdf_file_name = "pdf-test.pdf"
+
+    response = requests.get(
+        "https://bddwsalestools.com/tear-sheets/print-redirect/46?justDownload=True"
+    )
+
+    bytes_container = BytesIO(response.content)
+
+    object_name = object_dir + pdf_file_name
+
+    s3.upload_fileobj(bytes_container, bucket_name, object_name)
+
     # default_storage = get_storage_class()
 
     # tear_sheets = TearSheet.objects.all()
