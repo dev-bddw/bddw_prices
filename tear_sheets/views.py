@@ -68,7 +68,7 @@ def print_all(request):
     this = zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False)
 
     for file_name, data in mem_list:
-        this.writestr(file_name, data.getvalue())
+        this.writestr(zipfile.ZipInfo(file_name), data.getvalue())
 
     s3.upload_fileobj(this, bucket_name, object_dir + "zip_file.zip")
 
