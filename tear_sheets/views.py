@@ -41,17 +41,27 @@ def print_all(request):
     batch_name = str(random.randrange(1000000))
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
     object_dir = f"media/test/{batch_name}/"
-    pdf_file_name = "pdf-test.pdf"
 
-    response = requests.get(
-        "https://bddwsalestools.com/tear-sheets/print-redirect/46?justDownload=True"
-    )
+    for tear_sheet in TearSheet.objects.all():
+        url_string = (
+            settings.PDF_APP_URL
+            + settings.SITE_URL
+            + tear_sheet.get_printing_url_no_list()
+        )
 
-    bytes_container = BytesIO(response.content)
+        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
 
-    object_name = object_dir + pdf_file_name
+        parameter = f"&attachmentName={pdf_file_name}"
 
-    s3.upload_fileobj(bytes_container, bucket_name, object_name)
+        url_string += parameter
+
+        response = requests.get(url_string)
+
+        bytes_container = BytesIO(response.content)
+
+        object_name = object_dir + pdf_file_name
+
+        s3.upload_fileobj(bytes_container, bucket_name, object_name)
 
     # default_storage = get_storage_class()
 
