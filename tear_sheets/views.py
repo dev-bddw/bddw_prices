@@ -67,7 +67,7 @@ def print_all(request):
 
     with zipfile.ZipFile(zip_buffer, "w") as zip_file:
 
-        zip_file.write("eggs.txt")
+        zip_file.writestr("eggs.txt", b"this is a thing")
 
         # for file_name, data in mem_list:
         #     zip_file.writestr(file_name, data.getvalue())
