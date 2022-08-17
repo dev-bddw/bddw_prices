@@ -65,12 +65,12 @@ def print_all(request):
 
         mem_list.append((pdf_file_name, bytes_container))
 
-    this = zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False)
+    with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
 
-    for file_name, data in mem_list:
-        this.writestr(zipfile.ZipInfo(file_name), data.getvalue())
+        for file_name, data in mem_list:
+            zip_file.writestr(zipfile.ZipInfo(file_name), data.getvalue())
 
-    s3.upload_fileobj(this, bucket_name, object_dir + "zip_file.zip")
+        s3.upload_fileobj(zip_file, bucket_name, object_dir + "zip_file.zip")
 
     #### then for net versions
 
