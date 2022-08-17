@@ -40,7 +40,7 @@ def print_all(request):
 
     batch_name = str(random.randrange(1000000))
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    object_dir = f"media/test/{batch_name}/"
+    object_dir = f"media/tearsheet-batch-print/{batch_name}/"
 
     for tear_sheet in TearSheet.objects.all():
         url_string = (
