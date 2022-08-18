@@ -69,7 +69,7 @@ def print_all(request):
         with open(object_path, "wb") as pdf_file:
             pdf_file.write(bytes_container.getvalue())
 
-        pdf_list.append((object_path, bytes_container))
+        pdf_list.append((pdf_file_name, bytes_container))
 
     archive = BytesIO()
     s3_path = f"media/test/{batch_name}/" + "archive.zip"
