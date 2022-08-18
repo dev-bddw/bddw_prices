@@ -72,10 +72,12 @@ def print_all(request):
         pdf_list.append((pdf_file_name, bytes_container))
 
     archive = BytesIO()
-    s3_path = f"media/test/{batch_name}/" + "archive.zip"
+    s3_path = (
+        f"media/tearsheet-batch-print/{batch_name}/"
+        + f"TEARSHEET-ARCHIVE-{batch_name}.zip"
+    )
 
     with zipfile.ZipFile(archive, "w") as zip_archive:
-        # Create three files on zip archive
 
         for path, data in pdf_list:
 
@@ -86,7 +88,15 @@ def print_all(request):
         f.write(archive.getbuffer())
 
     archive.close()
+
     s3.upload_file(object_dir + "all-tearsheets.zip", bucket_name, s3_path)
+
+    with open(object_dir + "all-tearsheets.zip", "rb") as f:
+
+        from django.http import FileResponse
+
+        response = FileResponse(f)
+        return response
 
     # FOR TOMOROW
     # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
