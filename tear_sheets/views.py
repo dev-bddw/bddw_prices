@@ -92,7 +92,8 @@ def print_all(request):
     s3.upload_file(object_dir + "all-tearsheets.zip", bucket_name, s3_path)
 
     return HttpResponse(
-        f"<p>ALL DONE -- <a href='{settings.MEDIA_URL}/{s3_path}'>click here</a></p>"
+        f"<a href='{settings.MEDIA_URL}"
+        + f"/tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip'>click here</a>"
     )
 
 
