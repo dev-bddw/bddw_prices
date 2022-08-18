@@ -31,17 +31,17 @@ def print_all(request):
     import zipfile
     from io import BytesIO
 
-    # import boto3
+    import boto3
     import requests
 
-    # s3 = boto3.client(
-    #     "s3",
-    #     aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-    #     aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-    # )
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    )
 
     batch_name = str(random.randrange(1000000))
-    # bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+    bucket_name = settings.AWS_STORAGE_BUCKET_NAME
     object_dir = f"/var/tmp/{batch_name}/"
     pdf_list = []
 
@@ -72,10 +72,10 @@ def print_all(request):
         pdf_list.append((pdf_file_name, bytes_container))
 
     archive = BytesIO()
-    # s3_path = (
-    #     f"media/tearsheet-batch-print/{batch_name}/"
-    #     + f"TEARSHEET-ARCHIVE-{batch_name}.zip"
-    # )
+    s3_path = (
+        f"media/tearsheet-batch-print/{batch_name}/"
+        + f"TEARSHEET-ARCHIVE-{batch_name}.zip"
+    )
 
     with zipfile.ZipFile(archive, "w") as zip_archive:
 
@@ -89,14 +89,7 @@ def print_all(request):
 
     archive.close()
 
-    # s3.upload_file(object_dir + "all-tearsheets.zip", bucket_name, s3_path)
-
-    with open(object_dir + "all-tearsheets.zip", "rb") as p:
-
-        from django.http import FileResponse
-
-        response = FileResponse(p)
-        return response
+    s3.upload_file(object_dir + "all-tearsheets.zip", bucket_name, s3_path)
 
     # FOR TOMOROW
     # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
