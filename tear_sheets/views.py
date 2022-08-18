@@ -91,34 +91,9 @@ def print_all(request):
 
     s3.upload_file(object_dir + "all-tearsheets.zip", bucket_name, s3_path)
 
-    # FOR TOMOROW
-    # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
-
-    # then zip them up by looping through the list and send them to the s3 bucket
-
-    # then retun the file
-
-    #### then for net versions
-
-    # url_string = (
-    #     settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
-    # )
-
-    # pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-NET.pdf"
-
-    # parameter = f"&attachmentName={pdf_file_name}"
-
-    # url_string += parameter
-
-    # response = requests.get(url_string)
-
-    # bytes_container = BytesIO(response.content)
-
-    # object_name = object_dir + pdf_file_name
-
-    # s3.upload_fileobj(bytes_container, bucket_name, object_name)
-
-    return HttpResponse(f"<p>ALL DONE -- {batch_name}</p>")
+    return HttpResponse(
+        f"<p>ALL DONE -- <a href='{settings.MEDIA_URL}/{s3_path}'>click here</a></p>"
+    )
 
 
 def detail_view(request, pk):
