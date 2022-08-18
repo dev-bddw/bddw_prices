@@ -83,10 +83,10 @@ def print_all(request):
             zip_archive.writestr(file, data.getvalue())
 
     with open(object_dir + "all-tearsheets.zip", "wb") as f:
-        f.write(archive.getvalue())
-        s3.upload_fileobj(f, bucket_name, s3_path)
+        f.write(archive.getbuffer())
 
     archive.close()
+    s3.upload_fileobj(f, bucket_name, s3_path)
 
     # FOR TOMOROW
     # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
