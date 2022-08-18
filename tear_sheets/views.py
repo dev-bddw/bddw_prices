@@ -93,7 +93,7 @@ def print_all(request):
 
     return HttpResponse(
         f"<a href='{settings.MEDIA_URL}"
-        + f"/tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip'>click here</a>"
+        + f"tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip'>click here</a>"
     )
 
 
