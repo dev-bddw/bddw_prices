@@ -66,14 +66,13 @@ def print_all(request):
 
         object_path = object_dir + pdf_file_name
 
-        s3_path = f"media/test/{batch_name}/" + "archive.zip"
-
         with open(object_path, "wb") as pdf_file:
             pdf_file.write(bytes_container.getvalue())
 
         pdf_list.append((object_path, bytes_container))
 
     archive = BytesIO()
+    s3_path = f"media/test/{batch_name}/" + "archive.zip"
 
     with zipfile.ZipFile(archive, "w") as zip_archive:
         # Create three files on zip archive
@@ -84,7 +83,7 @@ def print_all(request):
             zip_archive.writestr(file, data.getvalue())
 
     with open(object_dir + "all-tearsheets.zip", "wb") as f:
-        f.write(archive.getbuffer())
+        f.write(archive.getvalue())
         s3.upload_fileobj(f, bucket_name, s3_path)
 
     archive.close()
