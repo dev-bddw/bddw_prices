@@ -69,7 +69,7 @@ def print_all(request):
         s3_path = f"media/test/{batch_name}" + "archive.zip"
 
         with open(object_path, "wb") as pdf_file:
-            pdf_file.write(bytes_container)
+            pdf_file.write(bytes_container.getvalue())
 
         pdf_list.append((object_path, bytes_container))
 
@@ -81,7 +81,7 @@ def print_all(request):
         for path, data in pdf_list:
 
             file = zipfile.ZipInfo(path)
-            zip_archive.writestr(file, data)
+            zip_archive.writestr(file, data.getvalue())
 
         # FOR TOMOROW
         # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
