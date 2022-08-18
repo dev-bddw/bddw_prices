@@ -26,6 +26,7 @@ def list_view(request):
 @login_required
 def print_all(request):
 
+    import os
     import random
     import zipfile
     from io import BytesIO
@@ -43,6 +44,8 @@ def print_all(request):
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
     object_dir = f"/var/tmp/{batch_name}/"
     pdf_list = []
+
+    os.makedirs(object_dir)
 
     for tear_sheet in TearSheet.objects.all():
         url_string = (
@@ -63,7 +66,7 @@ def print_all(request):
 
         object_path = object_dir + pdf_file_name
 
-        s3_path = "media/test/" + "archive.zip"
+        s3_path = f"media/test/{batch_name}" + "archive.zip"
 
         with open(object_path, "wb") as pdf_file:
             pdf_file.write(bytes_container)
