@@ -86,7 +86,7 @@ def print_all(request):
         f.write(archive.getbuffer())
 
     archive.close()
-    s3.upload_fileobj(f, bucket_name, s3_path)
+    s3.upload_fileobj(archive, bucket_name, s3_path)
 
     # FOR TOMOROW
     # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
