@@ -83,17 +83,18 @@ def print_all(request):
             file = zipfile.ZipInfo(path)
             zip_archive.writestr(file, data.getvalue())
 
-        # FOR TOMOROW
-        # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
+    with open(object_dir + "all-tearsheets.zip", "wb") as f:
+        f.write(archive.getbuffer())
+        s3.upload_fileobj(f, bucket_name, s3_path)
 
-        # then zip them up by looping through the list and send them to the s3 bucket
+    archive.close()
 
-        # then retun the file
+    # FOR TOMOROW
+    # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
 
-    print(archive)
-    print(pdf_list)
+    # then zip them up by looping through the list and send them to the s3 bucket
 
-    s3.upload_fileobj(archive, bucket_name, s3_path)
+    # then retun the file
 
     #### then for net versions
 
