@@ -39,12 +39,10 @@ def print_all(request):
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
     )
 
-    zip_buffer = BytesIO()
-    mem_list = []
-
     batch_name = str(random.randrange(1000000))
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    object_dir = f"media/tearsheet-batch-print/{batch_name}/"
+    object_dir = f"/var/tmp/{batch_name}/"
+    pdf_list = []
 
     for tear_sheet in TearSheet.objects.all():
         url_string = (
@@ -63,16 +61,33 @@ def print_all(request):
 
         bytes_container = BytesIO(response.content)
 
-        mem_list.append((pdf_file_name, bytes_container))
+        object_path = object_dir + pdf_file_name
 
-    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        s3_path = "media/test/" + "archive.zip"
 
-        zip_file.writestr("eggs.txt", b"this is a thing")
+        with open(object_path, "wb") as pdf_file:
+            pdf_file.write(bytes_container)
 
-        # for file_name, data in mem_list:
-        #     zip_file.writestr(file_name, data.getvalue())
+        pdf_list.append((object_path, bytes_container))
 
-    s3.upload_fileobj(zip_buffer, bucket_name, object_dir + "zip_file.zip")
+    archive = BytesIO()
+
+    with zipfile.ZipFile(archive, "w") as zip_archive:
+        # Create three files on zip archive
+
+        for path, data in pdf_list:
+
+            file = zipfile.ZipInfo(path)
+            zip_archive.writestr(file, data)
+
+        # FOR TOMOROW
+        # expand the list to tuples like this ('/var/tmp/3903931/pdf_name.pdf', BytesIO.(response.content))
+
+        # then zip them up by looping through the list and send them to the s3 bucket
+
+        # then retun the file
+
+    s3.upload_fileobj(archive, bucket_name, s3_path)
 
     #### then for net versions
 
