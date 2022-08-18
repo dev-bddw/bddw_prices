@@ -1,5 +1,11 @@
+import os
+import random
+import zipfile
+from io import BytesIO
 from sqlite3 import IntegrityError
 
+import boto3
+import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, redirect, render
@@ -25,14 +31,6 @@ def list_view(request):
 
 @login_required
 def print_all(request):
-
-    import os
-    import random
-    import zipfile
-    from io import BytesIO
-
-    import boto3
-    import requests
 
     s3 = boto3.client(
         "s3",
@@ -115,7 +113,7 @@ def print_all(request):
 
     return HttpResponse(
         f"<a href='{settings.MEDIA_URL}"
-        + f"tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip'>click here</a>"
+        + f"tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip'>download</a>"
     )
 
 

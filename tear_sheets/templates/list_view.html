@@ -10,7 +10,7 @@
             <th scope="col">ID</th>
             <th scope="col">NAME</th>
             <th scope="col">EDIT</th>
-            <th scope="col">PDF (<a href="{% url 'tearsheets:print_all' %}">PRINT ALL</a>)</th>
+            <th scope="col">PDF (<a hx-target="this" hx-swap="outerHTML" hx-get="{% url 'tearsheets:print_all' %}">PRINT ALL</a>)</th>
             <th scope="col">UPDATED ON</th>
           </tr>
         </thead>
