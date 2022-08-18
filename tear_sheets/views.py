@@ -66,8 +66,9 @@ def print_all(request):
 
         bytes_container = BytesIO(response.content)
 
+        # if we wanted to save the pdfs locally but we don't need to
+        # because we have the byte data
         # object_path = object_dir + pdf_file_name
-
         # with open(object_path, "wb") as pdf_file:
         #     pdf_file.write(bytes_container.getvalue())
 
@@ -88,8 +89,9 @@ def print_all(request):
 
         bytes_container = BytesIO(response.content)
 
+        # if we wanted to save the pfs locally but we don't need to
+        # because we have the byte data
         # object_path = object_dir + pdf_file_name
-
         # with open(object_path, "wb") as pdf_file:
         #     pdf_file.write(bytes_container.getvalue())
 
