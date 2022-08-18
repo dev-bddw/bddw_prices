@@ -66,7 +66,7 @@ def print_all(request):
 
         object_path = object_dir + pdf_file_name
 
-        s3_path = f"media/test/{batch_name}" + "archive.zip"
+        s3_path = f"media/test/{batch_name}/" + "archive.zip"
 
         with open(object_path, "wb") as pdf_file:
             pdf_file.write(bytes_container.getvalue())
@@ -89,6 +89,9 @@ def print_all(request):
         # then zip them up by looping through the list and send them to the s3 bucket
 
         # then retun the file
+
+    print(archive)
+    print(pdf_list)
 
     s3.upload_fileobj(archive, bucket_name, s3_path)
 
