@@ -71,6 +71,28 @@ def print_all(request):
 
         pdf_list.append((pdf_file_name, bytes_container))
 
+    for tear_sheet in TearSheet.objects.all():
+        url_string = (
+            settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+        )
+
+        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-NET.pdf"
+
+        parameter = f"&attachmentName={pdf_file_name}"
+
+        url_string += parameter
+
+        response = requests.get(url_string)
+
+        bytes_container = BytesIO(response.content)
+
+        object_path = object_dir + pdf_file_name
+
+        with open(object_path, "wb") as pdf_file:
+            pdf_file.write(bytes_container.getvalue())
+
+        pdf_list.append((pdf_file_name, bytes_container))
+
     archive = BytesIO()
     s3_path = (
         f"media/tearsheet-batch-print/{batch_name}/"
