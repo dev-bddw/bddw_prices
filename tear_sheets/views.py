@@ -43,7 +43,11 @@ def print_all(request):
     object_dir = f"/var/tmp/{batch_name}/"
     pdf_list = []
 
+    # make local directory to place pdf files
+
     os.makedirs(object_dir)
+
+    # save all the pdfs from the heroku api & load path / bytes into a list of tuples
 
     for tear_sheet in TearSheet.objects.all():
         url_string = (
@@ -62,10 +66,10 @@ def print_all(request):
 
         bytes_container = BytesIO(response.content)
 
-        object_path = object_dir + pdf_file_name
+        # object_path = object_dir + pdf_file_name
 
-        with open(object_path, "wb") as pdf_file:
-            pdf_file.write(bytes_container.getvalue())
+        # with open(object_path, "wb") as pdf_file:
+        #     pdf_file.write(bytes_container.getvalue())
 
         pdf_list.append((pdf_file_name, bytes_container))
 
@@ -84,10 +88,10 @@ def print_all(request):
 
         bytes_container = BytesIO(response.content)
 
-        object_path = object_dir + pdf_file_name
+        # object_path = object_dir + pdf_file_name
 
-        with open(object_path, "wb") as pdf_file:
-            pdf_file.write(bytes_container.getvalue())
+        # with open(object_path, "wb") as pdf_file:
+        #     pdf_file.write(bytes_container.getvalue())
 
         pdf_list.append((pdf_file_name, bytes_container))
 
@@ -97,6 +101,8 @@ def print_all(request):
         + f"TEARSHEET-ARCHIVE-{batch_name}.zip"
     )
 
+    # process tuples into the zip archive buffer
+
     with zipfile.ZipFile(archive, "w") as zip_archive:
 
         for path, data in pdf_list:
@@ -104,10 +110,14 @@ def print_all(request):
             file = zipfile.ZipInfo(path)
             zip_archive.writestr(file, data.getvalue())
 
+    # save the buffer to a real file
+
     with open(object_dir + "all-tearsheets.zip", "wb") as f:
         f.write(archive.getbuffer())
 
     archive.close()
+
+    # upload the file to s3
 
     s3.upload_file(object_dir + "all-tearsheets.zip", bucket_name, s3_path)
 
