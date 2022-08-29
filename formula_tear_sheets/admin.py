@@ -11,36 +11,36 @@ from .models import (
 
 class FormulaTearsheetAdmin(admin.ModelAdmin):
     search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+        "catseriesitem__category__name",
+        "catseriesitem__series__name",
+        "catseriesitem__item__name",
     ]
     list_per_page = 10000
 
 
 class FormulaTearsheetDetailAdmin(admin.ModelAdmin):
     search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+        "tear_sheet__catseriesitem__category__name",
+        "tear_sheet__catseriesitem__series__name",
+        "tear_sheet__catseriesitem__item__name",
     ]
     list_per_page = 10000
 
 
 class FormulaImageCaptionAdmin(admin.ModelAdmin):
     search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+        "tear_sheet__catseriesitem__category__name",
+        "tear_sheet__catseriesitem__series__name",
+        "tear_sheet__catseriesitem__item__name",
     ]
     list_per_page = 10000
 
 
 class FormulaTearSheetFooterDetailAdmin(admin.ModelAdmin):
     search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+        "tear_sheet__catseriesitem__category__name",
+        "tear_sheet__catseriesitem__series__name",
+        "tear_sheet__catseriesitem__item__name",
     ]
     list_per_page = 10000
 

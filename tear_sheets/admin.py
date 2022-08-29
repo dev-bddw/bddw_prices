@@ -5,36 +5,36 @@ from .models import ImageCaption, TearSheet, TearSheetDetail, TearSheetFooterDet
 
 class TearsheetAdmin(admin.ModelAdmin):
     search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+        "catseriesitem__category__name",
+        "catseriesitem__series__name",
+        "catseriesitem__item__name",
     ]
     list_per_page = 10000
 
 
 class TearsheetDetailAdmin(admin.ModelAdmin):
     search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+        "tear_sheet__catseriesitem__category__name",
+        "tear_sheet__catseriesitem__series__name",
+        "tear_sheet__catseriesitem__item__name",
     ]
     list_per_page = 10000
 
 
 class ImageCaptionAdmin(admin.ModelAdmin):
     search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+        "tear_sheet__catseriesitem__category__name",
+        "tear_sheet__catseriesitem__series__name",
+        "tear_sheet__catseriesitem__item__name",
     ]
     list_per_page = 10000
 
 
 class TearSheetFooterDetailAdmin(admin.ModelAdmin):
     search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+        "tear_sheet__catseriesitem__category__name",
+        "tear_sheet__catseriesitem__series__name",
+        "tear_sheet__catseriesitem__item__name",
     ]
     list_per_page = 10000
 
