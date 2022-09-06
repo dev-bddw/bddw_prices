@@ -302,8 +302,6 @@ SPECTACULAR_SETTINGS = {
         {"url": "https://bddwsalestools.com", "description": "Production server"},
     ],
 }
-# Your stuff...
-# ------------------------------------------------------------------------------
 
 # Your stuff...
 # ------------------------------------------------------------------------------
@@ -317,6 +315,7 @@ NET_PRICE_MULTIPLIER = 0.85
 
 
 JAZZMIN_SETTINGS = {
+    "site_title": "",
     "site_logo": "images/bddwlogo.svg",
     "welcome_sign": "WE ARE PRICE",
     "show_ui_builder": True,
@@ -325,28 +324,28 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": False,
     "footer_small_text": False,
-    "body_small_text": False,
+    "body_small_text": True,
     "brand_small_text": False,
     "brand_colour": False,
     "accent": "accent-lightblue",
-    "navbar": "navbar-dark",
+    "navbar": "navbar-white navbar-light",
     "no_navbar_border": False,
     "navbar_fixed": False,
     "layout_boxed": False,
-    "footer_fixed": False,
+    "footer_fixed": True,
     "sidebar_fixed": True,
     "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": True,
+    "sidebar_nav_small_text": False,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": False,
     "sidebar_nav_compact_style": True,
-    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_legacy_style": True,
     "sidebar_nav_flat_style": True,
-    "theme": "darkly",
+    "theme": "lumen",
     "dark_mode_theme": None,
     "button_classes": {
-        "primary": "btn-dark",
-        "secondary": "btn-dark",
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
         "info": "btn-dark",
         "warning": "btn-dark",
         "danger": "btn-dark",

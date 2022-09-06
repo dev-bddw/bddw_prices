@@ -436,9 +436,9 @@ def sorting_upload(request):
                     series=series,
                     item=item,
                     defaults={
-                        "cat_order": row[2],
-                        "series_order": row[4],
-                        "item_order": row[6],
+                        "cat_order": row[0],
+                        "series_order": row[2],
+                        "item_order": row[4],
                     },
                 )
 
@@ -470,13 +470,12 @@ def sorting_upload(request):
 
         writer.writerow(
             [
-                "id",
-                "category",
                 "category_order",
-                "series",
+                "category",
                 "series_order",
-                "item",
+                "series",
                 "item_order",
+                "item",
             ]
         )
 
@@ -496,13 +495,12 @@ def export_sorting_records(request):
     writer = csv.writer(response)
 
     csi_records = CatSeriesItem.objects.all().values_list(
-        "id",
-        "category",
         "cat_order",
-        "series",
+        "category",
         "series_order",
-        "item",
+        "series",
         "item_order",
+        "item",
     )
 
     date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
@@ -511,13 +509,12 @@ def export_sorting_records(request):
 
     writer.writerow(
         [
-            "id",
-            "category",
             "category_order",
-            "series",
+            "category",
             "series_order",
-            "item",
+            "series",
             "item_order",
+            "item",
         ]
     )
 

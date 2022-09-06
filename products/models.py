@@ -65,7 +65,7 @@ class CatSeriesItem(models.Model):
         blank=True,
         null=True,
         default=None,
-        help_text="The string version of the formula",
+        help_text="Display alternate series item string?",
         max_length=200,
     )
 
