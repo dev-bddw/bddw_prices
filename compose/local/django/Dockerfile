@@ -23,7 +23,7 @@ RUN pip wheel --wheel-dir /usr/src/app/wheels  \
   -r ${BUILD_ENVIRONMENT}.txt
 
 
-# Python 'run' stage
+# Python 'run' stages
 FROM python as python-run-stage
 
 ARG BUILD_ENVIRONMENT=local
