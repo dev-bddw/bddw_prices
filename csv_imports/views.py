@@ -5,7 +5,11 @@ import io
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from price_records.models import FormulaPriceListPriceRecord, FormulaPriceRecord
+from price_records.models import (
+    FormulaPriceListPriceRecord,
+    FormulaPriceRecord,
+    PriceRecord,
+)
 from products.models import Category, CatSeriesItem, Item, Series
 
 from .helpers import process_price_list, process_tear_sheets
@@ -323,7 +327,57 @@ def price_records_template(request):
 
 
 def export_all_price_records(request):
-    pass
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="PRICE-RECORDS-{date}.csv"'
+        },
+    )
+
+    writer = csv.writer(response)
+
+    # define the db query
+    price_records = PriceRecord.objects.all().values_list(
+        "cat_series_item",
+        "rule_type",
+        "rule_display_1",
+        "rule_display_2",
+        "list_price",
+        "net_price",
+        "order",
+        "bin_id",
+        "is_surcharge",
+    )
+
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    writer = csv.writer(response)
+
+    # write header
+    writer.writerow(
+        [
+            "cat_series_item",
+            "rule_type",
+            "rule_display_1",
+            "rule_display_2",
+            "list_price",
+            "net_price",
+            "order",
+            "bin_id",
+            "is_surcharge",
+        ]
+    )
+
+    for record in price_records:
+        record = list(record)
+
+        record[0] = CatSeriesItem.objects.get(pk=record[0]).__str__()
+
+        writer.writerow(record)
+
+    return response
 
 
 def upload(request):
@@ -407,7 +461,7 @@ def upload(request):
 
 
 ########################
-## CATSERAITM SORTING ##
+## SORTING ##
 ########################
 
 

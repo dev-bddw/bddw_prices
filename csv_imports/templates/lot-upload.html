@@ -31,6 +31,8 @@
         <h4>upload price rules</h4>
         <p>Normal price records and price formulas. Simply upload the pricing export from the bin. Delete details TBD.</p>
         <p><a href="{% url 'csv_imports:normal_template' %}">DOWNLOAD TEMPLATE</a>
+        <p><a href="{% url 'csv_imports:export_price_records' %}">EXPORT PRICE RECORDS</a>
+
         <form action="{% url 'csv_imports:upload' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" id="file1" name="file">
