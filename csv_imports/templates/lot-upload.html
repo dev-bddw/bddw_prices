@@ -13,10 +13,10 @@
 
 <div class="row">
     <div class="col">
-        <h4>Price Rules</h4>
+        <h4>Price Records</h4>
         <p>Upload price records here.</p>
         <p><a href="{% url 'csv_imports:normal_template' %}">DOWNLOAD TEMPLATE</a>
-        <p><a href="{% url 'csv_imports:export_price_records' %}">EXPORT PRICE RECORDS (SNAPSHOT -- DO NOT TRY TO UPLOAD)</a>
+        <p><a href="{% url 'csv_imports:export_price_records' %}">EXPORT PRICE RECORDS (SNAPSHOT -- DO NOT TRY TO REUPLOAD)</a>
 
         <form action="{% url 'csv_imports:upload' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -24,6 +24,17 @@
             <small>Only accepts CSV files</small>
             <button type="submit">Upload</button>
         </form>
+    </div>
+</div>
+
+<div style="height: 40px;"></div>
+
+<div class="row">
+    <div class="col">
+        <h4>Pricelist Records</h4>
+        <p>Upload price records here.</p>
+        <p><a href="{% url 'csv_imports:normal_template' %}"></a>
+        <p><a href="{% url 'csv_imports:export_price_records' %}">EXPORT PRICELIST RECORDS (SNAPSHOT -- DO NOT TRY TO REUPLOAD)</a>
     </div>
 </div>
 

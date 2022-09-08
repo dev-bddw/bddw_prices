@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     export_all_formula_price_records,
     export_all_price_records,
+    export_all_pricelist_records,
     export_sorting_records,
     formula_records_template,
     price_records_template,
@@ -19,6 +20,11 @@ urlpatterns = [
         "export-price-records",
         view=export_all_price_records,
         name="export_price_records",
+    ),
+    path(
+        "export-pricelist-records",
+        view=export_all_pricelist_records,
+        name="export_pricelist_records",
     ),
     path("upload-formula/", view=upload_formula_price_records, name="upload_formula"),
     path(
