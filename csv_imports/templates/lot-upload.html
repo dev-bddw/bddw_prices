@@ -5,22 +5,7 @@
 {% block content %}
 <div class="row">
     <div class="col">
-        <h3 class="pt-5">A word of explanation...</h3>
-        <p>Simply uploading bin data will not create tearsheets.
-         Creating a tearsheet is a multi-step process.</p>
-        <ul>
-            <li>Uploading data from the bin</li>
-            <li>Creating Tearsheets</li>
-            <li>Assigning Cat-Series-Items to tearsheets</li>
-        </ul>
-        <p>
-            And if you are creating formula tearsheets, there's another step:
-        </p>
-        <ul>
-            <li>Uploading or creating formula price records</li>
-        </ul>
-    </div>
-    <div class="col">
+        <h3 class="pt-5">RE: CSV</h3>
     </div>
 </div>
 
@@ -28,10 +13,10 @@
 
 <div class="row">
     <div class="col">
-        <h4>upload price rules</h4>
-        <p>Normal price records and price formulas. Simply upload the pricing export from the bin. Delete details TBD.</p>
+        <h4>Price Rules</h4>
+        <p>Upload price records here.</p>
         <p><a href="{% url 'csv_imports:normal_template' %}">DOWNLOAD TEMPLATE</a>
-        <p><a href="{% url 'csv_imports:export_price_records' %}">EXPORT PRICE RECORDS</a>
+        <p><a href="{% url 'csv_imports:export_price_records' %}">EXPORT PRICE RECORDS (SNAPSHOT -- DO NOT TRY TO UPLOAD)</a>
 
         <form action="{% url 'csv_imports:upload' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -40,8 +25,14 @@
             <button type="submit">Upload</button>
         </form>
     </div>
+</div>
+
+<div style="height: 40px;"></div>
+
+
+<div class="row">
     <div class="col">
-        <h4>upload formula records</h4>
+        <h4>Formula Records</h4>
         <p>These are the records that "fill in" the price formulas. Leave ID column blank
             to create new records. Delete details TBD.
         </p>
@@ -54,13 +45,15 @@
             <button type="submit">Upload</button>
         </form>
     </div>
+    <div class="col">
+    </div>
 </div>
 
 <div style="height: 40px;"></div>
 
 <div class="row">
     <div class="col">
-        <h4>Upload Sorting Rules</h4>
+        <h4>Sorting Rules</h4>
         <p>Define Ordering for Category Series Item objects w/ one simple csv upload.</p>
         <p><a href="{% url 'csv_imports:sorting_upload' %}">DOWNLOAD TEMPLATE</a>
         <p><a href="{% url 'csv_imports:sorting_export' %}">EXPORT ALL RECORDS</a>
