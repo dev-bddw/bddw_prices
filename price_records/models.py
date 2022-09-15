@@ -164,7 +164,7 @@ class PriceListPriceRecord(models.Model):
 
 class FormulaPriceRecord(models.Model):
     cat_series_item = models.ForeignKey(
-        "products.CatSeriesItem", on_delete=models.DO_NOTHING
+        "products.CatSeriesItem", on_delete=models.CASCADE
     )
 
     rule_type = models.CharField(

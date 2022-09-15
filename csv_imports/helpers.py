@@ -1,69 +1,108 @@
 from price_records.models import PriceListPriceRecord, PriceRecord
-from products.models import CatSeriesItem
+from products.models import Category, CatSeriesItem, Item, Series
 
 
-def return_updated_list(baseprice_record, this_record):
+def process_records(records: list):
+    """
+    iterates over records
+    creates category series items
+    creates tearsheet price records
+    create pricelist price records
 
-    baseprice_value = baseprice_record[0][8] if baseprice_record[0][8] != "" else 0
-    this_record_value = this_record[10] if this_record[10] != "" else 0
-
-    new_price = int(baseprice_value) + int(this_record_value)
-
-    this_record[8] = new_price
-
-    return this_record
-
-
-def process_tear_sheets(TEAR_SHEET_FOR_PROCESSING):
-    report = []
-    for x, y in TEAR_SHEET_FOR_PROCESSING.items():
-
-        for record in y:
-            (new_price_record, created) = PriceRecord.objects.update_or_create(
-                bin_id=record[0],
-                defaults={
-                    "cat_series_item": CatSeriesItem.objects.get(pk=x),
-                    "rule_type": record[12],
-                    "list_price": record[8] if record[8] != "" else record[10],
-                    "rule_display_1": record[13],
-                    "rule_display_2": record[14],
-                    "order": 1,
-                },
-            )
-
-            if created:
-                report.append(f"Created {new_price_record} (Tearsheet)")
-            if not created:
-                report.append(f"Updated {new_price_record} (Tearsheet)")
-
-    return report
-
-
-def process_price_list(PRICE_LIST_FOR_PROCESSING):
+    """
     report = []
 
-    for x, y in PRICE_LIST_FOR_PROCESSING.items():
+    for record in records:
 
-        for record in y:
-            (
-                new_price_record,
-                created,
-            ) = PriceListPriceRecord.objects.update_or_create(
-                bin_id=record[0],
-                defaults={
-                    "cat_series_item": CatSeriesItem.objects.get(pk=x),
-                    "rule_type": record[12],
-                    "list_price": record[8] if record[8] != "" else record[10],
-                    "rule_display_1": record[16],
-                    "rule_display_2": record[17],
-                    "order": 1,
-                    "is_surcharge": False if record[10] == "" else True,
-                },
+        if record["is_tearsheet"] or record["is_pricelist"]:
+
+            category, created = Category.objects.get_or_create(
+                name=record["category"].upper()
+            )
+            series, created = Series.objects.get_or_create(
+                name=record["series"].upper()
+            )
+            item, created = Item.objects.get_or_create(name=record["item"].upper())
+
+            cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
+                category=category,
+                series=series,
+                item=item,
+                defaults={"formula": record["formula"]},
             )
 
-            if created:
-                report.append(f"Created {new_price_record} (Pricelist)")
-            if not created:
-                report.append(f"Updated {new_price_record} (Pricelist)")
+            record.update({"csi": cat_series_item.pk})
+
+            csi_record = record.copy()
+            csi_record.update(
+                {
+                    "type": "Cat/Series/Item",
+                    "status": "updated" if csi_created is False else "created",
+                }
+            )
+            report.append(csi_record)
+
+            if not record["is_formula"]:
+
+                if record["is_tearsheet"] is True:
+                    (
+                        new_price_record,
+                        tearsheet_created,
+                    ) = PriceRecord.objects.update_or_create(
+                        bin_id=record["bin_id"],
+                        defaults={
+                            "cat_series_item": CatSeriesItem.objects.get(
+                                pk=record["csi"]
+                            ),
+                            "rule_type": record["list_price"],
+                            "list_price": record["list_price"],
+                            "rule_display_1": record["ts_rule_display_1"],
+                            "rule_display_2": record["ts_rule_display_2"],
+                            "order": record["order"],
+                        },
+                    )
+                    that_record = record.copy()
+
+                    that_record.update(
+                        {
+                            "status": "updated"
+                            if tearsheet_created is False
+                            else "created",
+                            "type": "Tearsheet Record",
+                        }
+                    )
+
+                    report.append(that_record)
+
+                if record["is_pricelist"] is True:
+                    (
+                        new_price_record,
+                        price_list_created,
+                    ) = PriceListPriceRecord.objects.update_or_create(
+                        bin_id=record["bin_id"],
+                        defaults={
+                            "cat_series_item": CatSeriesItem.objects.get(
+                                pk=record["csi"]
+                            ),
+                            "rule_type": record["rule_type"],
+                            "list_price": record["list_price"],
+                            "rule_display_1": record["pl_rule_display_1"],
+                            "rule_display_2": record["pl_rule_display_2"],
+                            "order": record["order"],
+                            "is_surcharge": record["surcharge"],
+                        },
+                    )
+                    this_record = record.copy()
+
+                    this_record.update(
+                        {
+                            "status": "updated"
+                            if price_list_created is False
+                            else "created",
+                            "type": "Pricelist Record",
+                        }
+                    )
+
+                    report.append(this_record)
 
     return report

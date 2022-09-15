@@ -13,7 +13,7 @@ from price_records.models import (
 )
 from products.models import Category, CatSeriesItem, Item, Series
 
-from .helpers import process_price_list, process_tear_sheets
+from .helpers import process_records
 
 ########################
 #### FORMULA RECORDS ###
@@ -437,81 +437,70 @@ def export_all_pricelist_records(request):
 
 def upload(request):
 
+    """
+    Takes csv from bin
+    creates records
+
+    """
+
+    list_of_records = []
+    empty_values = [0, "0", ""]
+
+    columns = {
+        "bin_id": 0,
+        "formula": 9,
+        "category": 1,
+        "series": 2,
+        "item": 3,
+        "tearsheet": 11,
+        "price_list": 15,
+        "rule_type": 12,
+        "ts_rule_display_1": 13,
+        "ts_rule_display_2": 14,
+        "pl_rule_display_1": 16,
+        "pl_rule_display_2": 17,
+        "list_price": 8,
+        "surcharge": 10,
+    }
+
     if request.method == "POST":
 
         csv_file = request.FILES["file"]
-
         data_set = csv_file.read().decode("UTF-8")
-
         io_string = io.StringIO(data_set)
-
         next(io_string)
-
-        report = []
-        TEAR_SHEET_FOR_PROCESSING = {}
-        PRICE_LIST_FOR_PROCESSING = {}
 
         for row in csv.reader(io_string, delimiter=",", quotechar='"'):
 
-            # TEARSHEET PRICE RECORDS
-            if row[11] not in [0, "0", ""]:
+            record = {
+                "category": row[columns["category"]],
+                "series": row[columns["series"]],
+                "item": row[columns["item"]],
+                "is_tearsheet": (row[columns["tearsheet"]] not in empty_values),
+                "is_pricelist": (row[columns["price_list"]] not in empty_values),
+                "is_formula": (row[columns["formula"]] not in empty_values),
+                "formula": row[columns["formula"]],
+                "bin_id": row[columns["bin_id"]],
+                "rule_type": row[columns["rule_type"]],
+                "list_price": row[columns["list_price"]]
+                if row[columns["list_price"]] != ""
+                else row[columns["surcharge"]],
+                "ts_rule_display_1": row[columns["ts_rule_display_1"]],
+                "ts_rule_display_2": row[columns["ts_rule_display_2"]],
+                "pl_rule_display_1": row[columns["pl_rule_display_1"]],
+                "pl_rule_display_2": row[columns["pl_rule_display_2"]],
+                "order": 1,
+                "surcharge": False if row[columns["surcharge"]] == "" else True,
+            }
 
-                category, created = Category.objects.get_or_create(name=row[1].upper())
-                series, created = Series.objects.get_or_create(name=row[2].upper())
-                item, created = Item.objects.get_or_create(name=row[3].upper())
+            list_of_records.append(record)
 
-                cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
-                    category=category,
-                    series=series,
-                    item=item,
-                    defaults={"formula": row[9]},
-                )
-
-                key = str(cat_series_item.pk)
-
-                if key not in TEAR_SHEET_FOR_PROCESSING.keys():
-                    TEAR_SHEET_FOR_PROCESSING.update({f"{key}": []})
-
-                if row[9] == "":  # if there is no formula add it to be processed
-                    TEAR_SHEET_FOR_PROCESSING[key].append(row)
-
-                if csi_created:
-                    report.append(f"Created {cat_series_item}")
-
-            # PRICE LIST PRICE RECORDS
-            if row[15] not in [0, "0", ""]:
-                category, cat_created = Category.objects.get_or_create(
-                    name=row[1].upper()
-                )
-                series, series_created = Series.objects.get_or_create(
-                    name=row[2].upper()
-                )
-                item, item_created = Item.objects.get_or_create(name=row[3].upper())
-
-                cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
-                    category=category,
-                    series=series,
-                    item=item,
-                    defaults={"formula": row[9]},
-                )
-
-                key = str(cat_series_item.pk)
-
-                if key not in PRICE_LIST_FOR_PROCESSING.keys():
-                    PRICE_LIST_FOR_PROCESSING.update({f"{key}": []})
-
-                if row[9] == "":  # if there is no formula add it to be processed
-                    PRICE_LIST_FOR_PROCESSING[key].append(row)
-
-                if csi_created:
-                    report.append(f"Created {cat_series_item}")
-
-        report += process_tear_sheets(TEAR_SHEET_FOR_PROCESSING)
-        report += process_price_list(PRICE_LIST_FOR_PROCESSING)
+        report = process_records(list_of_records)
 
         return render(request, "lot-upload.html", {"report": report})
 
     else:
+
         return render(request, "lot-upload.html", {})
 
 

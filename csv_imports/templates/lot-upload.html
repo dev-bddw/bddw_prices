@@ -82,9 +82,32 @@
 
 <div class='pt-5'></div>
 {% if report %}
-<p>details<p>
+<table class='table'>
+    <h2>upload details</h2>
+    <caption>upload</caption>
+    <thead>
+        <tr>
+          <th scope="col">bin price record id</th>
+          <th scope="col">record type</th>
+          <th scope="col">cat/series/item</th>
+          <th scope="col">Rule Display 1</th>
+          <th scope="col">CHANGE</th>
+          <th scope="col">STATUS</th>
+          <th scope="col"></th>
+
+        </tr>
+      </thead>
     {% for item in report  %}
-        <p>{{item}}</p>
+        <tr>
+            <td>{{item.bin_id}}</td>
+            <td>{{item.type}}</td>
+            <td>{{item.category}} {{item.series}} {{item.item}}</td>
+            <td>{% if item.type == 'Tearsheet Record' %}{{item.ts_rule_display_1}} {% elif item.type == 'Pricelist Record' %} {{item.pl_rule_display_1}}{% else %}{% endif %}<td>
+            <td>{{item.status}}</td>
+            <td>SUCCESS</td>
+            <td></td>
+        </tr>
     {% endfor %}
+</table>
     {% endif %}
 {% endblock content %}
