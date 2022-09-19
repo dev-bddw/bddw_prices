@@ -8,6 +8,7 @@ def process_records(records: list):
     creates category series items
     creates tearsheet price records
     create pricelist price records
+    returns report of record creation
 
     """
     report = []

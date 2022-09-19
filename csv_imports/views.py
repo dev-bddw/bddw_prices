@@ -439,7 +439,10 @@ def upload(request):
 
     """
     Takes csv from bin
-    creates records
+    creates CatSeriesItems
+    creates PriceRecords
+    creates PriceListPriceRecords
+    returns a report on upload to the template
 
     """
 
