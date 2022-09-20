@@ -11,7 +11,7 @@ from django.urls import reverse
 from bddw_prices.users.forms import UserAdminChangeForm
 from bddw_prices.users.models import User
 from bddw_prices.users.tests.factories import UserFactory
-from bddw_prices.users.views import UserRedirectView, UserUpdateView, user_detail_view
+from bddw_prices.users.views import UserUpdateView, user_detail_view
 
 pytestmark = pytest.mark.django_db
 
@@ -64,17 +64,6 @@ class TestUserUpdateView:
 
         messages_sent = [m.message for m in messages.get_messages(request)]
         assert messages_sent == ["Information successfully updated"]
-
-
-class TestUserRedirectView:
-    def test_get_redirect_url(self, user: User, rf: RequestFactory):
-        view = UserRedirectView()
-        request = rf.get("/fake-url")
-        request.user = user
-
-        view.request = request
-
-        assert view.get_redirect_url() == f"/users/{user.username}/"
 
 
 class TestUserDetailView:

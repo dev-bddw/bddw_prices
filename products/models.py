@@ -117,7 +117,7 @@ class CatSeriesItem(models.Model):
 
         import re
 
-        formula = re.sub("([a-z])\s([a-z])", "\\1_\\2", f)
+        formula = re.sub(r"([a-z])\s([a-z])", "\\1_\\2", f)
 
         return formula
 

@@ -257,7 +257,7 @@ class FormulaPriceRecord(models.Model):
 
         import re
 
-        rule_display_1 = re.sub("([a-z])\s([a-z])", "\\1_\\2", f)
+        rule_display_1 = re.sub(r"([a-z])\s([a-z])", "\\1_\\2", f)
 
         return rule_display_1
 
@@ -380,7 +380,7 @@ class FormulaPriceListPriceRecord(models.Model):
 
         import re
 
-        rule_display_1 = re.sub("([a-z])\s([a-z])", "\\1_\\2", f)
+        rule_display_1 = re.sub(r"([a-z])\s([a-z])", "\\1_\\2", f)
 
         return rule_display_1
 
