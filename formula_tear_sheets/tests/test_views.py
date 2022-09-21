@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
+from django.urls import reverse
 
 from formula_tear_sheets.models import (
     FormulaImageCaption,
@@ -91,3 +92,143 @@ class FormulaTearSheetTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.tear_sheet.title)
+
+    def test_change_template_hx(self):
+
+        client = Client()
+
+        client.force_login(self.user)
+
+        url = reverse(
+            "formula_tearsheets:change_template", kwargs={"pk": self.tear_sheet.pk}
+        )
+
+        response = client.post(url, {"template": "C"})
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, "RULE DISPLAY ABOVE")
+
+    def test_change_title_hx(self):
+
+        client = Client()
+
+        client.force_login(self.user)
+
+        url = reverse(
+            "formula_tearsheets:change_title", kwargs={"pk": self.tear_sheet.pk}
+        )
+
+        response = client.post(url, {"title": "NEW TITLE"})
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, "NEW TITLE")
+
+    # def test_change_image_hx(self):
+    #     pass
+
+    def test_change_caption_hx(self):
+
+        client = Client()
+
+        client.force_login(self.user)
+
+        url = reverse(
+            "formula_tearsheets:change_caption", kwargs={"pk": self.image_caption.pk}
+        )
+
+        response = client.post(
+            url, {"title": "Top Right", "caption": "Two men by the river."}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, "Two men by the river.")
+
+    def test_change_detail_hx(self):
+
+        client = Client()
+
+        client.force_login(self.user)
+
+        url = reverse("formula_tearsheets:change_detail", kwargs={"pk": self.detail.pk})
+
+        response = client.post(
+            url, {"name": "Lamp", "details": "Two colors to choose from."}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, "Two colors to choose from.")
+
+    def test_change_footer_detail_hx(self):
+
+        client = Client()
+
+        client.force_login(self.user)
+
+        url = reverse(
+            "formula_tearsheets:change_footer_detail",
+            kwargs={"pk": self.footer_detail.pk},
+        )
+
+        response = client.post(
+            url, {"name": "Disclaimer", "details": "BDDW loves its customers!"}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Disclaimer")
+        self.assertContains(response, "BDDW loves its customers!")
+
+    def test_create_caption_hx(self):
+
+        client = Client()
+
+        client.force_login(self.user)
+
+        url = reverse(
+            "formula_tearsheets:create_caption", kwargs={"pk": self.tear_sheet.pk}
+        )
+
+        response = client.post(
+            url, {"title": "Top Right", "caption": "Two men by the river."}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, "Two men by the river.")
+
+    def test_create_detail_hx(self):
+        client = Client()
+
+        client.force_login(self.user)
+
+        url = reverse(
+            "formula_tearsheets:create_detail", kwargs={"pk": self.tear_sheet.pk}
+        )
+
+        response = client.post(
+            url, {"name": "Lamp", "details": "Two colors to choose from."}
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertContains(response, "Two colors to choose from.")
+
+    def test_create_footer_detail_hx(self):
+        client = Client()
+
+        client.force_login(self.user)
+
+        url = reverse(
+            "formula_tearsheets:create_footer_detail", kwargs={"pk": self.tear_sheet.pk}
+        )
+
+        response = client.post(
+            url, {"name": "Disclaimer", "details": "BDDW loves its customers!"}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Disclaimer")
+        self.assertContains(response, "BDDW loves its customers!")
