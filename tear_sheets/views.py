@@ -129,6 +129,7 @@ def print_all(request):
     )
 
 
+@login_required
 def detail_view(request, pk):
 
     tear_sheet = TearSheet.objects.get(pk=pk)
