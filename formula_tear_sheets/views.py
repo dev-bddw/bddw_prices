@@ -1,5 +1,3 @@
-from sqlite3 import IntegrityError
-
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import HttpResponse, redirect, render
@@ -311,45 +309,6 @@ def create_detail_hx(request, pk):
             request,
             "formula_tear_sheets/hx/post/create/detail.html",
             {"detail": detail, "tearsheet": tear_sheet},
-        )
-
-
-@login_required
-def create_price_record_hx(request):
-
-    if request.method == "POST":
-        csi = CatSeriesItem.objects.get(pk=request.POST.get("cat_series_item"))
-        order = (
-            1
-            + max(
-                [
-                    x.order
-                    for x in FormulaPriceRecord.objects.filter(cat_series_item=csi)
-                ]
-            )
-            if [x.order for x in FormulaPriceRecord.objects.filter(cat_series_item=csi)]
-            != []
-            else 1
-        )
-        cat_series_items = CatSeriesItem.objects.filter(tear_sheet=csi.tear_sheet)
-        try:
-            price_record = FormulaPriceRecord.objects.create(
-                rule_type=request.POST.get("rule_type"),
-                rule_display_1=request.POST.get("rule_display_1"),
-                rule_display_2=request.POST.get("rule_display_2"),
-                list_price=request.POST.get("list_price"),
-                cat_series_item=CatSeriesItem.objects.get(
-                    pk=request.POST.get("cat_series_item")
-                ),
-                order=order,
-            )
-        except IntegrityError:
-            pass
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/create/price_record.html",
-            {"price_record": price_record, "cat_series_items": cat_series_items},
         )
 
 

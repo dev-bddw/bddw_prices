@@ -272,7 +272,9 @@ Session.vim
 tags
 
 ### Project template
-bddw_prices/media/
+!bddw_prices/media/
+bddw_prices/media/*
+!bddw_prices/media/default_image.jpg
 
 .pytest_cache/
 .ipython/

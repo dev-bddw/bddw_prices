@@ -2,6 +2,7 @@ import csv
 import datetime
 import io
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -20,6 +21,7 @@ from .helpers import process_records
 ########################
 
 
+@login_required
 def upload_formula_price_records(request):
 
     if request.method == "POST":
@@ -35,12 +37,12 @@ def upload_formula_price_records(request):
 
         for row in csv.reader(io_string, delimiter=",", quotechar='"'):
 
-            category = Category.objects.get(name=row[1].upper())
-            series = Series.objects.get(name=row[2].upper())
-            item = Item.objects.get(name=row[3].upper())
+            category, created = Category.objects.get_or_create(name=row[1].upper())
+            series, created = Series.objects.get_or_create(name=row[2].upper())
+            item, created = Item.objects.get_or_create(name=row[3].upper())
 
-            cat_series_item = CatSeriesItem.objects.get(
-                item=item.pk, category=category.pk, series=series.pk
+            cat_series_item, created = CatSeriesItem.objects.get_or_create(
+                item=item, category=category, series=series
             )
 
             if row[7] in [1, "1"]:
@@ -125,6 +127,7 @@ def upload_formula_price_records(request):
         return render(request, "lot-upload.html", {"report": report})
 
 
+@login_required
 def export_all_formula_price_records(request):
 
     tearsheet_records = FormulaPriceRecord.objects.all().values_list(
@@ -243,6 +246,7 @@ def export_all_formula_price_records(request):
     return response
 
 
+@login_required
 def formula_records_template(request):
 
     date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
@@ -289,6 +293,7 @@ def formula_records_template(request):
 ########################
 
 
+@login_required
 def price_records_template(request):
 
     date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
@@ -327,6 +332,7 @@ def price_records_template(request):
     return response
 
 
+@login_required
 def export_all_price_records(request):
     date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
 
@@ -381,6 +387,7 @@ def export_all_price_records(request):
     return response
 
 
+@login_required
 def export_all_pricelist_records(request):
     date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
 
@@ -435,6 +442,7 @@ def export_all_pricelist_records(request):
     return response
 
 
+@login_required
 def upload(request):
 
     """
@@ -512,6 +520,7 @@ def upload(request):
 ########################
 
 
+@login_required
 def sorting_upload(request):
 
     if request.method == "POST":
@@ -583,6 +592,7 @@ def sorting_upload(request):
         return response
 
 
+@login_required
 def export_sorting_records(request):
     date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
 

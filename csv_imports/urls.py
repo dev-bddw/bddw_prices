@@ -33,9 +33,9 @@ urlpatterns = [
         name="export_formula",
     ),
     path(
-        "price-records-template/", view=formula_records_template, name="form_template"
+        "price-records-template/", view=price_records_template, name="normal_template"
     ),
-    path("form-records-template/", view=price_records_template, name="normal_template"),
+    path("form-records-template/", view=formula_records_template, name="form_template"),
     path("sorting-upload/", view=sorting_upload, name="sorting_upload"),
     path("sorting-export/", view=export_sorting_records, name="sorting_export"),
 ]

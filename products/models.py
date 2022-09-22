@@ -113,13 +113,19 @@ class CatSeriesItem(models.Model):
 
     def return_translation(self):
 
-        f = self.formula.replace("[", "").replace("]", "")
+        try:
 
-        import re
+            f = self.formula.replace("[", "").replace("]", "")
 
-        formula = re.sub(r"([a-z])\s([a-z])", "\\1_\\2", f)
+            import re
 
-        return formula
+            formula = re.sub(r"([a-z])\s([a-z])", "\\1_\\2", f)
+
+            return formula
+
+        except AttributeError:
+
+            pass
 
     def return_price_records(self):
         if self.formula is None or "":

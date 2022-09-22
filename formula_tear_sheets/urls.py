@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (  # views; edit views; pdf printing views
+from .views import (
     change_caption_hx,
     change_detail_hx,
     change_footer_detail_hx,
@@ -11,7 +11,6 @@ from .views import (  # views; edit views; pdf printing views
     create_caption_hx,
     create_detail_hx,
     create_footer_detail_hx,
-    create_price_record_hx,
     detail_view,
     detail_view_for_printing,
     detail_view_for_printing_list,
@@ -64,11 +63,6 @@ urlpatterns = [
     ),
     path("create-caption/<pk>", view=create_caption_hx, name="create_caption"),
     path("create-detail/<pk>", view=create_detail_hx, name="create_detail"),
-    path(
-        "create-price-record/",
-        view=create_price_record_hx,
-        name="create_price_record",
-    ),
     path(
         "create-footer-detail/<pk>",
         view=create_footer_detail_hx,
