@@ -177,43 +177,6 @@ def change_detail_hx(request, pk):
         )
 
 
-def change_price_record_hx(request, pk):
-    price_record = FormulaPriceRecord.objects.get(pk=pk)
-
-    if request.method == "DELETE":
-        price_record.delete()
-
-        return HttpResponse("")
-
-    if request.method == "PUT":
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/edit/price_record.html",
-            {"price_record": price_record},
-        )
-
-    if request.method == "POST":
-
-        price_record.rule_type = request.POST.get("rule_type")
-        price_record.rule_display_1 = request.POST.get("rule_display_1")
-        price_record.rule_display_2 = request.POST.get("rule_display_2")
-        price_record.save()
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/edit/price_record.html",
-            {"price_record": price_record},
-        )
-
-    if request.method == "GET":
-        return render(
-            request,
-            "formula_tear_sheets/hx/get/price_record.html",
-            {"price_record": price_record},
-        )
-
-
 def change_footer_detail_hx(request, pk):
     footer_detail = FormulaTearSheetFooterDetail.objects.get(pk=pk)
 

@@ -5,7 +5,6 @@ from .views import (
     change_detail_hx,
     change_footer_detail_hx,
     change_image_hx,
-    change_price_record_hx,
     change_template_hx,
     change_title_hx,
     create_caption_hx,
@@ -45,11 +44,6 @@ urlpatterns = [
         "detail-for-print-list/<pk>",
         view=detail_view_for_printing_list,
         name="detail-view-for-print-list",
-    ),
-    path(
-        "change-price-record/<pk>",
-        view=change_price_record_hx,
-        name="change_price_record",
     ),
     path(
         "change-footer-detail/<pk>",
