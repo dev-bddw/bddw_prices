@@ -102,9 +102,17 @@
             <td>{{item.bin_id}}</td>
             <td>{{item.type}}</td>
             <td>{{item.category}} {{item.series}} {{item.item}}</td>
-            <td>{% if item.type == 'Tearsheet Record' %}{{item.ts_rule_display_1}} {% elif item.type == 'Pricelist Record' %} {{item.pl_rule_display_1}}{% else %}{% endif %}</td>
+            <td>{% if item.type == 'Tearsheet Record' %}
+                {{item.ts_rule_display_1}}
+                {% elif item.type == 'Pricelist Record' %}
+                {{item.pl_rule_display_1}}
+                {% elif item.type == 'formula record'%}
+                {{ item.rule_display_1 }}
+                {% elif item.type == 'formula pricelist record'%}
+                {{ item.rule_display_1 }}
+                {% else %}n/a{% endif %}</td>
             <td>{{item.status}}</td>
-            <td>SUCCESS</td>
+            <td>{% if item.message %} {{item.message}} {% else %} SUCCESS {% endif %}</td>
             <td></td>
         </tr>
     {% endfor %}

@@ -70,7 +70,15 @@ class TestUploadViews(TestCase):
 
             response = self.client.post(self.sorting_csv_upload_url, {"file": csv_file})
 
+        category = Category.objects.get(name="STORAGE")
+        series = Series.objects.get(name="BRONZE")
+        item = Item.objects.get(name="CREDENZA")
+        csi = CatSeriesItem.objects.get(category=category, series=series, item=item)
+
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(csi.cat_order, 1)
+        self.assertEqual(csi.series_order, 3)
+        self.assertEqual(csi.item_order, 3)
 
 
 class TestExportViews(TestCase):
