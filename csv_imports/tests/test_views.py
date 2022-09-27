@@ -59,9 +59,15 @@ class TestUploadViews(TestCase):
             FormulaPriceListPriceRecord.objects.all(),
         )
 
+        test_pl = FormulaPriceListPriceRecord.objects.get(id=38)
+        test_pr = FormulaPriceRecord.objects.get(id=34)
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(23, len(created_records))
         self.assertEqual(66, len(created_pricelist_records))
+
+        self.assertEqual(test_pl.rule_display_1, "132 L x 36 D x 28 H (16 SEAT H)")
+        self.assertEqual(test_pr.rule_display_1, "132 L x 72 D x 29 H (18 SEAT H)")
 
     def test_sorting_record_upload(self):
         with open(

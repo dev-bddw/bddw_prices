@@ -17,6 +17,381 @@ from products.models import Category, CatSeriesItem, Item, Series
 from .helpers import process_records
 
 ########################
+#### PRICE RECORDS #####
+########################
+
+
+@login_required
+def price_records_template(request):
+
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="PRICE-RULES-{date}.csv"'
+        },
+    )
+
+    writer = csv.writer(response)
+
+    writer.writerow(
+        [
+            "id",
+            "category",
+            "series",
+            "item",
+            "product_attribute1",
+            "allowed_value1",
+            "product_attribute2",
+            "allowed_value2",
+            "base_price",
+            "formula_price",
+            "surcharge",
+            "tearsheet_include",
+            "rule_type",
+            "tearsheet_rule_display_1",
+            "tearsheet_rule_display_2",
+            "price_list_include",
+            "price_list_rule_display_1",
+            "price_list_rule_display_2",
+        ]
+    )
+
+    return response
+
+
+@login_required
+def export_all_price_records(request):
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="PRICE-RECORDS-{date}.csv"'
+        },
+    )
+
+    writer = csv.writer(response)
+
+    # define the db query
+    price_records = PriceRecord.objects.all().values_list(
+        "cat_series_item",
+        "rule_type",
+        "rule_display_1",
+        "rule_display_2",
+        "list_price",
+        "net_price",
+        "order",
+        "bin_id",
+        "is_surcharge",
+    )
+
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    writer = csv.writer(response)
+
+    # write header
+    writer.writerow(
+        [
+            "cat_series_item",
+            "rule_type",
+            "rule_display_1",
+            "rule_display_2",
+            "list_price",
+            "net_price",
+            "order",
+            "bin_id",
+            "is_surcharge",
+        ]
+    )
+
+    for record in price_records:
+        record = list(record)
+
+        record[0] = CatSeriesItem.objects.get(pk=record[0]).__str__()
+
+        writer.writerow(record)
+
+    return response
+
+
+@login_required
+def export_all_pricelist_records(request):
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="PRICE-RECORDS-{date}.csv"'
+        },
+    )
+
+    writer = csv.writer(response)
+
+    # define the db query
+    price_records = PriceListPriceRecord.objects.all().values_list(
+        "cat_series_item",
+        "rule_type",
+        "rule_display_1",
+        "rule_display_2",
+        "list_price",
+        "net_price",
+        "order",
+        "bin_id",
+        "is_surcharge",
+    )
+
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    writer = csv.writer(response)
+
+    # write header
+    writer.writerow(
+        [
+            "cat_series_item",
+            "rule_type",
+            "rule_display_1",
+            "rule_display_2",
+            "list_price",
+            "net_price",
+            "order",
+            "bin_id",
+            "is_surcharge",
+        ]
+    )
+
+    for record in price_records:
+        record = list(record)
+
+        record[0] = CatSeriesItem.objects.get(pk=record[0]).__str__()
+
+        writer.writerow(record)
+
+    return response
+
+
+@login_required
+def upload(request):
+
+    """
+    Takes csv from bin
+    creates CatSeriesItems
+    creates PriceRecords
+    creates PriceListPriceRecords
+    returns a report on upload to the template
+
+    """
+
+    list_of_records = []
+    empty_values = [0, "0", ""]
+
+    columns = {
+        "bin_id": 0,
+        "formula": 9,
+        "category": 1,
+        "series": 2,
+        "item": 3,
+        "tearsheet": 11,
+        "price_list": 15,
+        "rule_type": 12,
+        "ts_rule_display_1": 13,
+        "ts_rule_display_2": 14,
+        "pl_rule_display_1": 16,
+        "pl_rule_display_2": 17,
+        "list_price": 8,
+        "surcharge": 10,
+    }
+
+    if request.method == "POST":
+
+        csv_file = request.FILES["file"]
+        data_set = csv_file.read().decode("UTF-8")
+        io_string = io.StringIO(data_set)
+        next(io_string)
+
+        for row in csv.reader(io_string, delimiter=",", quotechar='"'):
+
+            record = {
+                "category": row[columns["category"]],
+                "series": row[columns["series"]],
+                "item": row[columns["item"]],
+                "is_tearsheet": (row[columns["tearsheet"]] not in empty_values),
+                "is_pricelist": (row[columns["price_list"]] not in empty_values),
+                "is_formula": (row[columns["formula"]] not in empty_values),
+                "formula": row[columns["formula"]],
+                "bin_id": row[columns["bin_id"]],
+                "rule_type": row[columns["rule_type"]],
+                "list_price": row[columns["list_price"]]
+                if row[columns["list_price"]] != ""
+                else row[columns["surcharge"]],
+                "ts_rule_display_1": row[columns["ts_rule_display_1"]],
+                "ts_rule_display_2": row[columns["ts_rule_display_2"]],
+                "pl_rule_display_1": row[columns["pl_rule_display_1"]],
+                "pl_rule_display_2": row[columns["pl_rule_display_2"]],
+                "order": 1,
+                "surcharge": False if row[columns["surcharge"]] == "" else True,
+            }
+
+            list_of_records.append(record)
+
+        report = process_records(list_of_records)
+
+        return render(request, "lot-upload.html", {"report": report})
+
+    else:
+
+        return render(request, "lot-upload.html", {})
+
+
+########################
+## SORTING ##
+########################
+
+
+@login_required
+def sorting_upload(request):
+
+    if request.method == "POST":
+
+        csv_file = request.FILES["file"]
+
+        data_set = csv_file.read().decode("UTF-8")
+
+        io_string = io.StringIO(data_set)
+
+        next(io_string)
+
+        report = []
+
+        for row in csv.reader(io_string, delimiter=",", quotechar='"'):
+            try:
+                category, created = Category.objects.get_or_create(name=row[1].upper())
+                series, created = Series.objects.get_or_create(name=row[3].upper())
+                item, created = Item.objects.get_or_create(name=row[5].upper())
+
+                cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
+                    category=category,
+                    series=series,
+                    item=item,
+                    defaults={
+                        "cat_order": row[0],
+                        "series_order": row[2],
+                        "item_order": row[4],
+                    },
+                )
+
+            except ValueError:
+                report.append(
+                    {
+                        "type": "sorting order",
+                        "category": category.name,
+                        "series": series.name,
+                        "item": item.name,
+                        "status": "Failed",
+                        "message": "Value Error",
+                    }
+                )
+
+            if csi_created:
+                report.append(
+                    {
+                        "type": "sorting order",
+                        "category": category.name,
+                        "series": series.name,
+                        "item": item.name,
+                        "status": "created",
+                    }
+                )
+            else:
+                report.append(
+                    {
+                        "bin_id": "n/a",
+                        "type": "sorting order",
+                        "category": category.name,
+                        "series": series.name,
+                        "item": item.name,
+                        "status": "updated",
+                    }
+                )
+
+        return render(request, "lot-upload.html", {"report": report})
+
+    if request.method == "GET":
+
+        date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={
+                "Content-Disposition": f'attachment; filename="SORTING RULES TEMPLATE-{date}.csv"'
+            },
+        )
+
+        writer = csv.writer(response)
+
+        writer.writerow(
+            [
+                "category_order",
+                "category",
+                "series_order",
+                "series",
+                "item_order",
+                "item",
+            ]
+        )
+
+        return response
+
+
+@login_required
+def export_sorting_records(request):
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": f'attachment; filename="SORTING-ORDER-{date}.csv"'
+        },
+    )
+
+    writer = csv.writer(response)
+
+    csi_records = CatSeriesItem.objects.all().values_list(
+        "cat_order",
+        "category",
+        "series_order",
+        "series",
+        "item_order",
+        "item",
+    )
+
+    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
+
+    writer = csv.writer(response)
+
+    writer.writerow(
+        [
+            "category_order",
+            "category",
+            "series_order",
+            "series",
+            "item_order",
+            "item",
+        ]
+    )
+
+    # replace pk with name of csi, write row to csv
+    for record in csi_records:
+        record = list(record)
+        record[1] = Category.objects.get(pk=record[1]).name
+        record[3] = Series.objects.get(pk=record[3]).name
+        record[5] = Item.objects.get(pk=record[5]).name
+
+        writer.writerow(record)
+
+    return response
+
+
+########################
 #### FORMULA RECORDS ###
 ########################
 
@@ -396,380 +771,5 @@ def formula_records_template(request):
             "inset",
         ]
     )
-
-    return response
-
-
-########################
-#### PRICE RECORDS #####
-########################
-
-
-@login_required
-def price_records_template(request):
-
-    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-    response = HttpResponse(
-        content_type="text/csv",
-        headers={
-            "Content-Disposition": f'attachment; filename="PRICE-RULES-{date}.csv"'
-        },
-    )
-
-    writer = csv.writer(response)
-
-    writer.writerow(
-        [
-            "id",
-            "category",
-            "series",
-            "item",
-            "product_attribute1",
-            "allowed_value1",
-            "product_attribute2",
-            "allowed_value2",
-            "base_price",
-            "formula_price",
-            "surcharge",
-            "tearsheet_include",
-            "rule_type",
-            "tearsheet_rule_display_1",
-            "tearsheet_rule_display_2",
-            "price_list_include",
-            "price_list_rule_display_1",
-            "price_list_rule_display_2",
-        ]
-    )
-
-    return response
-
-
-@login_required
-def export_all_price_records(request):
-    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-
-    response = HttpResponse(
-        content_type="text/csv",
-        headers={
-            "Content-Disposition": f'attachment; filename="PRICE-RECORDS-{date}.csv"'
-        },
-    )
-
-    writer = csv.writer(response)
-
-    # define the db query
-    price_records = PriceRecord.objects.all().values_list(
-        "cat_series_item",
-        "rule_type",
-        "rule_display_1",
-        "rule_display_2",
-        "list_price",
-        "net_price",
-        "order",
-        "bin_id",
-        "is_surcharge",
-    )
-
-    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-
-    writer = csv.writer(response)
-
-    # write header
-    writer.writerow(
-        [
-            "cat_series_item",
-            "rule_type",
-            "rule_display_1",
-            "rule_display_2",
-            "list_price",
-            "net_price",
-            "order",
-            "bin_id",
-            "is_surcharge",
-        ]
-    )
-
-    for record in price_records:
-        record = list(record)
-
-        record[0] = CatSeriesItem.objects.get(pk=record[0]).__str__()
-
-        writer.writerow(record)
-
-    return response
-
-
-@login_required
-def export_all_pricelist_records(request):
-    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-
-    response = HttpResponse(
-        content_type="text/csv",
-        headers={
-            "Content-Disposition": f'attachment; filename="PRICE-RECORDS-{date}.csv"'
-        },
-    )
-
-    writer = csv.writer(response)
-
-    # define the db query
-    price_records = PriceListPriceRecord.objects.all().values_list(
-        "cat_series_item",
-        "rule_type",
-        "rule_display_1",
-        "rule_display_2",
-        "list_price",
-        "net_price",
-        "order",
-        "bin_id",
-        "is_surcharge",
-    )
-
-    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-
-    writer = csv.writer(response)
-
-    # write header
-    writer.writerow(
-        [
-            "cat_series_item",
-            "rule_type",
-            "rule_display_1",
-            "rule_display_2",
-            "list_price",
-            "net_price",
-            "order",
-            "bin_id",
-            "is_surcharge",
-        ]
-    )
-
-    for record in price_records:
-        record = list(record)
-
-        record[0] = CatSeriesItem.objects.get(pk=record[0]).__str__()
-
-        writer.writerow(record)
-
-    return response
-
-
-@login_required
-def upload(request):
-
-    """
-    Takes csv from bin
-    creates CatSeriesItems
-    creates PriceRecords
-    creates PriceListPriceRecords
-    returns a report on upload to the template
-
-    """
-
-    list_of_records = []
-    empty_values = [0, "0", ""]
-
-    columns = {
-        "bin_id": 0,
-        "formula": 9,
-        "category": 1,
-        "series": 2,
-        "item": 3,
-        "tearsheet": 11,
-        "price_list": 15,
-        "rule_type": 12,
-        "ts_rule_display_1": 13,
-        "ts_rule_display_2": 14,
-        "pl_rule_display_1": 16,
-        "pl_rule_display_2": 17,
-        "list_price": 8,
-        "surcharge": 10,
-    }
-
-    if request.method == "POST":
-
-        csv_file = request.FILES["file"]
-        data_set = csv_file.read().decode("UTF-8")
-        io_string = io.StringIO(data_set)
-        next(io_string)
-
-        for row in csv.reader(io_string, delimiter=",", quotechar='"'):
-
-            record = {
-                "category": row[columns["category"]],
-                "series": row[columns["series"]],
-                "item": row[columns["item"]],
-                "is_tearsheet": (row[columns["tearsheet"]] not in empty_values),
-                "is_pricelist": (row[columns["price_list"]] not in empty_values),
-                "is_formula": (row[columns["formula"]] not in empty_values),
-                "formula": row[columns["formula"]],
-                "bin_id": row[columns["bin_id"]],
-                "rule_type": row[columns["rule_type"]],
-                "list_price": row[columns["list_price"]]
-                if row[columns["list_price"]] != ""
-                else row[columns["surcharge"]],
-                "ts_rule_display_1": row[columns["ts_rule_display_1"]],
-                "ts_rule_display_2": row[columns["ts_rule_display_2"]],
-                "pl_rule_display_1": row[columns["pl_rule_display_1"]],
-                "pl_rule_display_2": row[columns["pl_rule_display_2"]],
-                "order": 1,
-                "surcharge": False if row[columns["surcharge"]] == "" else True,
-            }
-
-            list_of_records.append(record)
-
-        report = process_records(list_of_records)
-
-        return render(request, "lot-upload.html", {"report": report})
-
-    else:
-
-        return render(request, "lot-upload.html", {})
-
-
-########################
-## SORTING ##
-########################
-
-
-@login_required
-def sorting_upload(request):
-
-    if request.method == "POST":
-
-        csv_file = request.FILES["file"]
-
-        data_set = csv_file.read().decode("UTF-8")
-
-        io_string = io.StringIO(data_set)
-
-        next(io_string)
-
-        report = []
-
-        for row in csv.reader(io_string, delimiter=",", quotechar='"'):
-            try:
-                category, created = Category.objects.get_or_create(name=row[1].upper())
-                series, created = Series.objects.get_or_create(name=row[3].upper())
-                item, created = Item.objects.get_or_create(name=row[5].upper())
-
-                cat_series_item, csi_created = CatSeriesItem.objects.update_or_create(
-                    category=category,
-                    series=series,
-                    item=item,
-                    defaults={
-                        "cat_order": row[0],
-                        "series_order": row[2],
-                        "item_order": row[4],
-                    },
-                )
-
-            except ValueError:
-                report.append(
-                    {
-                        "type": "sorting order",
-                        "category": category.name,
-                        "series": series.name,
-                        "item": item.name,
-                        "status": "Failed",
-                        "message": "Value Error",
-                    }
-                )
-
-            if csi_created:
-                report.append(
-                    {
-                        "type": "sorting order",
-                        "category": category.name,
-                        "series": series.name,
-                        "item": item.name,
-                        "status": "created",
-                    }
-                )
-            else:
-                report.append(
-                    {
-                        "bin_id": "n/a",
-                        "type": "sorting order",
-                        "category": category.name,
-                        "series": series.name,
-                        "item": item.name,
-                        "status": "updated",
-                    }
-                )
-
-        return render(request, "lot-upload.html", {"report": report})
-
-    if request.method == "GET":
-
-        date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-        response = HttpResponse(
-            content_type="text/csv",
-            headers={
-                "Content-Disposition": f'attachment; filename="SORTING RULES TEMPLATE-{date}.csv"'
-            },
-        )
-
-        writer = csv.writer(response)
-
-        writer.writerow(
-            [
-                "category_order",
-                "category",
-                "series_order",
-                "series",
-                "item_order",
-                "item",
-            ]
-        )
-
-        return response
-
-
-@login_required
-def export_sorting_records(request):
-    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-
-    response = HttpResponse(
-        content_type="text/csv",
-        headers={
-            "Content-Disposition": f'attachment; filename="SORTING-ORDER-{date}.csv"'
-        },
-    )
-
-    writer = csv.writer(response)
-
-    csi_records = CatSeriesItem.objects.all().values_list(
-        "cat_order",
-        "category",
-        "series_order",
-        "series",
-        "item_order",
-        "item",
-    )
-
-    date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
-
-    writer = csv.writer(response)
-
-    writer.writerow(
-        [
-            "category_order",
-            "category",
-            "series_order",
-            "series",
-            "item_order",
-            "item",
-        ]
-    )
-
-    # replace pk with name of csi, write row to csv
-    for record in csi_records:
-        record = list(record)
-        record[1] = Category.objects.get(pk=record[1]).name
-        record[3] = Series.objects.get(pk=record[3]).name
-        record[5] = Item.objects.get(pk=record[5]).name
-
-        writer.writerow(record)
 
     return response
