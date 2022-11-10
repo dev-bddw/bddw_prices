@@ -55,7 +55,7 @@ def process_records(records: list):
                             "cat_series_item": CatSeriesItem.objects.get(
                                 pk=record["csi"]
                             ),
-                            "rule_type": record["list_price"],
+                            "rule_type": record["rule_type"],
                             "list_price": record["list_price"],
                             "rule_display_1": record["ts_rule_display_1"],
                             "rule_display_2": record["ts_rule_display_2"],
