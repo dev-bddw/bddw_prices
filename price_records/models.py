@@ -174,6 +174,10 @@ class FormulaPriceRecord(models.Model):
         null=True,
     )
 
+    order = models.IntegerField(default=0,
+        help_text="The order number when this Price Record appears with others."
+    )
+
     depth = models.IntegerField(null=True, blank=True)
     length = models.IntegerField(null=True, blank=True)
     width = models.IntegerField(null=True, blank=True)
@@ -205,10 +209,21 @@ class FormulaPriceRecord(models.Model):
     list_price = models.CharField(null=True, blank=True, max_length=200)
     net_price = models.CharField(null=True, blank=True, max_length=200)
 
+
+    class Meta:
+        ordering = ['order']
+
     def save(self, *args, **kwargs):
         self.list_price = self.get_price()
         self.net_price = self.get_net_price()
         self.rule_display_1 = self.return_rule_display_1()
+
+        try:
+            order = int(self.list_price)
+        except ValueError:
+            order = 0
+
+        self.order = order
 
         if self.cat_series_item.formula_tear_sheet is None:
             pass
