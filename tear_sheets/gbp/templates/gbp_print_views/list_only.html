@@ -36,7 +36,7 @@
   </head>
 
   <body style="text-transform: uppercase; font-family: 'Source Sans Pro', sans-serif; letter-spacing: 0.05em; font-size: 12px; color: #8B8A86">
-    <div style="font-size: 9px; width: 816px;">
+    <div style="width: 816px;">
         <div style="margin-left:75px; margin-right:75px;">
     
             <!-- HEADER -->
@@ -114,55 +114,49 @@
     </div>
         
         <!--begin wider container to fit four columns for gbp -->
-        <div style="margin-left: 75px; width: 850px;"> 
+        <div style="margin-left: 40px; width: 750px;"> 
                
             {% if tearsheet.template == 'A' %}
     
             <!--TEMPLATE A RULES -->
              <div class="row pt-2 pb-1">
-                {% comment %} <div class="col-2 text-end">
-                </div> {% endcomment %}
-                <div class="col-6">
+                <div class="col-8">
                 </div>
-                 <div class="col-1">
-                    
+                 <div class="col-2">
                 </div>
-                <div class="col-1">
-                    
+                <div class="col-2">
                 </div>
             </div>
-            <div style="font-size: 9px;" class="row ">
-                <div class="col-6">
+            <div style="font-size: 11px;" class="row ">
+                <div class="col-8">
                 </div>
-                  <div style="font-weight: 900;" class="col-1">
+                  <div style="white-space: nowrap; overflow: visible;" style="font-weight: 900;" class="col-1">
                     (INC VAT)
                 </div>
-                <div class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                     (EXC VAT)
                 </div>
-                <div style="font-weight: 900;" class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                 </div>
-                <div class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                 </div>
             </div>
     
             {% for dictionary in price_records  %}
             {% for group,rules in dictionary.items %}
             <div class="pt-2 row">
-                <div style="" class="col-1">
+                <div style="" class="col-2">
                     {{group}}
-                </div>
-                <div class="col-1">
                 </div>
                     {% for item in rules %}
                     {% if forloop.first %}
-                <div class="col-4">
+                <div class="col-6">
                     {{item.rule_display_1}}
                 </div>
                  <div style="font-weight: 900;"  class="col-1">
                     £{{item.gbp_price}}
                 </div>
-                <div class="col-1 text-end">
+                <div class="col-1">
                     £{{item.gbp_price_no_vat}}
                 </div>           
                 <div style="font-weight: 900;"class=" col-1">
@@ -173,17 +167,15 @@
                 {% else %}
     
             <div style="" class="row">
-                <div class="col-1">
+                <div class="col-2">
                 </div>
-                <div class="col-1">
-                </div>
-                <div class="col-4">
+                <div class="col-6">
                     {{item.rule_display_1}}
                 </div>
                 <div style="font-weight: 900;"  class="col-1">
                     £{{item.gbp_price}}
                 </div>
-                <div class="col-1 text-end">
+                <div class="col-1">
                     £{{item.gbp_price_no_vat}}
                 </div>           
                 <div style="font-weight: 900;"class=" col-1">
@@ -204,29 +196,25 @@
             <!-- TEMPlATE B RULES -->
             <div class="row pt-2 pb-1">
     
-                <div class="col-6">
+                <div class="col-8">
                 </div>
                 <div class="col-2">
-                    
                 </div>
                 <div class="col-2">
-                    
                 </div>
             </div>
-            <div style="font-size: 9px;" class="pb-1 row ">
-                {% comment %} <div class="col-2 text-end">
-                </div> {% endcomment %}
-                <div class="col-6">
+            <div style="font-size: 11px;" class="pb-1 row ">
+                <div class="col-8">
                 </div>
-                  <div style="font-weight: 900;" class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" style="font-weight: 900;" class="col-1">
                     (INC VAT)
                 </div>
-                <div class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                     (EXC VAT)
                 </div>
-                <div style="font-weight: 900;" class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                 </div>
-                <div class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                 </div>
              </div>
             {% for dictionary in price_records  %}
@@ -239,10 +227,10 @@
                 </div>
                     {% for item in rules %}
                     {% if forloop.first %}
-                <div class="col-2">
+                <div class="col-3">
                     {{item.rule_display_1}}
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     {{item.rule_display_2}}
                 </div>
                  <div style="font-weight: 900; font-size:11px" class="col-1">
@@ -251,7 +239,7 @@
                 <div style="font-size:11px" class="col-1">
                     £{{item.gbp_price_no_vat}}
                 </div>
-                <div style="font-weight; 900; font-size:11px" class="col-1">
+                <div style="font-weight: 900; font-size:11px" class="col-1">
                 </div>
                 <div style="font-size:11px" class="col-1">
                 </div>
@@ -263,10 +251,10 @@
                 </div>
                 <div class="col-1 text-end">
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     {{item.rule_display_1}}
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                     {{item.rule_display_2}}
                 </div>
                  <div style="font-weight: 900; font-size:11px" class="col-1">
@@ -292,36 +280,35 @@
             {% for dictionary in price_records  %}
             {% for group,rules in dictionary.items %}
             <div style="font-size: 11px" class="row pt-2 pb-1">
-                <div class="col-2 text-start">
-                </div>
-                <div class="col-4">
+                <div class="col-8 text-start">
+                {{group}}
                 </div>
                 <div class="col-2">
                     
                 </div>
                 <div class="col-2">
+                    
                 </div>
             </div>
-            <div style="font-size: 9px;" class="pb-1 row ">
-                <div style="font-size: 11px;" class="col-6">
-                    {{group}}
+            <div style="font-size: 11px;" class="pb-1 row ">
+                <div class="col-8">
                 </div>
-                  <div style="font-weight: 900;" class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" style="font-weight: 900;" class="col-1">
                     (INC VAT)
                 </div>
-                <div class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                     (EXC VAT)
                 </div>
-                <div style="font-weight: 900;" class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                 </div>
-                <div class="col-1">
+                <div style="white-space: nowrap; overflow: visible;" class="col-1">
                 </div>
              </div>
     
             {% for item in rules %}
     
             <div style="font-size: 11px; padding-top: 3px;" class="row">
-                <div class="col-2">
+                <div class="col-4">
                     {{item.rule_display_1}}
                 </div>
                 <div class="col-4">
