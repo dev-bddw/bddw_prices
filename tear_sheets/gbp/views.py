@@ -176,7 +176,7 @@ def redirect_detail_view_to_pdf(request, pk):
     tear_sheet = TearSheet.objects.get(pk=pk)
 
     url_string = (
-        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_gbp_printing_url()
     )
 
     parameter = (
@@ -195,7 +195,7 @@ def redirect_detail_view_to_pdf_list(request, pk):
     tear_sheet = TearSheet.objects.get(pk=pk)
 
     url_string = (
-        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url_no_list()
+        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_gbp_printing_url_no_list()
     )
 
     parameter = (
