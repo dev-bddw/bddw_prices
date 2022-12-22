@@ -49,7 +49,7 @@ def print_all(request):
         url_string = (
             settings.PDF_APP_URL
             + settings.SITE_URL
-            + tear_sheet.get_printing_url_no_list()
+            + tear_sheet.get_gbp_printing_url_no_list()
         )
 
         pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-GBP-TEAR-SHEET.pdf"
@@ -72,7 +72,7 @@ def print_all(request):
 
     for tear_sheet in TearSheet.objects.all():
         url_string = (
-            settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+            settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_gbp_printing_url()
         )
 
         pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-GBP-NET.pdf"
@@ -121,7 +121,7 @@ def print_all(request):
 
     return HttpResponse(
         f"<a href='{settings.MEDIA_URL}"
-        + f"tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip'>download</a>"
+        + f"tearsheet-batch-print/{batch_name}/GBP-TEARSHEET-ARCHIVE-{batch_name}.zip'>download</a>"
     )
 
 
