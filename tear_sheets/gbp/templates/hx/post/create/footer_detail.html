@@ -1,0 +1,38 @@
+{% load static %}
+<div id="footer-detail-{{footer_detail.pk}}" style="padding-bottom: -20px;" class="row">
+    <div class="col-2">
+        {{ footer_detail.name}}
+    </div>
+
+    <div class="col-9">
+        {{footer_detail.details}}
+    </div>
+    <div class="text-end col-1">
+        <img
+        hx-get='{% url 'tearsheets:change_footer_detail' footer_detail.pk %}'
+        hx-trigger='click'
+        hx-swap='outerHTML'
+        hx-target="#footer-detail-{{footer_detail.pk}}"
+        height="10px" src="{% static 'images/edit.svg' %}">
+    </div>
+</div>
+<form id="create-footer-detail">
+    <div class="pt-1 row">
+        <div class="col-2">
+            <input name='name' value="name">
+        </div>
+        <div class="col-7">
+            <input style="width: 250px;" name='details' value="details">
+        </div>
+        <div class="text-end col-2">
+        </div>
+        <div class="text-end col-1">
+            <img
+            hx-post='{% url 'tearsheets:create_footer_detail' tearsheet.pk %}'
+            hx-trigger='click'
+            hx-swap='outerHTML'
+            hx-target="#create-footer-detail"
+            height="12px" src="{% static 'images/add.svg' %}">
+        </div>
+    </div>
+</form>

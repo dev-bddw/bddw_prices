@@ -83,6 +83,7 @@ LOCAL_APPS = [
     "products",
     "csv_imports",
     "tear_sheets",
+    "tear_sheets.gbp",
     "formula_tear_sheets",
     "price_records",
     "price_lists"

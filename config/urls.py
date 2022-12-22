@@ -22,6 +22,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path("tear-sheets/", include("tear_sheets.urls", namespace="tearsheets")),
+    path("gbp/", include("tear_sheets.gbp.urls", namespace="gbp")),
     path(
         "formula-tear-sheets/",
         include("formula_tear_sheets.urls", namespace="formula_tearsheets"),

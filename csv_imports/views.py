@@ -54,6 +54,10 @@ def price_records_template(request):
             "price_list_include",
             "price_list_rule_display_1",
             "price_list_rule_display_2",
+            "gbp",
+            "gbp_minus_vat",
+            "gbp_trade",
+            "gbp_trade_minus_vat"
         ]
     )
 
@@ -200,6 +204,10 @@ def upload(request):
         "pl_rule_display_2": 17,
         "list_price": 8,
         "surcharge": 10,
+        "gbp": 18,
+        "gbp_minus_vat": 19,
+        "gbp_trade": 20,
+        "gbp_trade_minus_vat": 21,
     }
 
     if request.method == "POST":
@@ -230,6 +238,10 @@ def upload(request):
                 "pl_rule_display_2": row[columns["pl_rule_display_2"]],
                 "order": 1,
                 "surcharge": False if row[columns["surcharge"]] == "" else True,
+                "gbp_price": row[columns["gbp"]],
+                "gbp_price_no_vat": row[columns['gbp_minus_vat']],
+                "gbp_trade_no_vat": row[columns['gbp_trade_minus_vat']],
+                "gbp_trade": row[columns['gbp_trade']],
             }
 
             list_of_records.append(record)

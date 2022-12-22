@@ -37,7 +37,10 @@ class PriceRecord(models.Model):
         null=True,
         help_text="This value will be calculated on record save.",
     )
-
+    gbp_price = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_trade = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_price_no_vat = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_trade_no_vat = models.CharField(max_length=200, default=None, blank=True, null=True)
     order = models.IntegerField(
         help_text="The order number when this Price Record appears with others."
     )

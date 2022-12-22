@@ -1,0 +1,38 @@
+{% load static %}
+<div id="detail-{{detail.pk}}" style="padding-bottom: -20px;" class="row">
+    <div class="col-2">
+        {{detail.name}}
+    </div>
+
+    <div class="col-9">
+        {{detail.details}}
+    </div>
+    <div class="text-end col-1">
+        <img
+        hx-get='{% url 'tearsheets:change_detail' detail.pk %}'
+        hx-trigger='click'
+        hx-swap='outerHTML'
+        hx-target="#detail-{{detail.pk}}"
+        height="10px" src="{% static 'images/edit.svg' %}">
+    </div>
+</div>
+<form id="create-detail" >
+    <div class="pt-1 row">
+        <div class="col-2">
+            <input name='name' value="name">
+        </div>
+        <div class="col-7">
+            <input style="width: 515px;" name='details' value="details">
+        </div>
+        <div class="text-end col-2">
+        </div>
+        <div class="text-end col-1">
+            <img
+            hx-post='{% url 'tearsheets:create_detail' tearsheet.pk %}'
+            hx-trigger='click'
+            hx-swap='outerHTML'
+            hx-target="#create-detail"
+            height="12px" src="{% static 'images/add.svg' %}">
+        </div>
+    </div>
+</form>

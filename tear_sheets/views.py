@@ -40,7 +40,7 @@ def print_all(request):
 
     batch_name = str(random.randrange(1000000))
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    object_dir = f"/var/tmp/{batch_name}/"
+    object_dir = f'/var/tmp/{batch_name}/'
     pdf_list = []
 
     # make local directory to place pdf files
@@ -48,7 +48,6 @@ def print_all(request):
     os.makedirs(object_dir)
 
     # save all the pdfs from the heroku api & load path / bytes into a list of tuples
-
     for tear_sheet in TearSheet.objects.all():
         url_string = (
             settings.PDF_APP_URL

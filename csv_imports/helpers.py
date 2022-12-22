@@ -60,6 +60,10 @@ def process_records(records: list):
                             "rule_display_1": record["ts_rule_display_1"],
                             "rule_display_2": record["ts_rule_display_2"],
                             "order": record["order"],
+                            "gbp_price": record["gbp_price"],
+                            "gbp_trade": record["gbp_trade"],
+                            "gbp_price_no_vat": record["gbp_price_no_vat"],
+                            "gbp_trade_no_vat": record["gbp_trade_no_vat"],
                         },
                     )
                     that_record = record.copy()
