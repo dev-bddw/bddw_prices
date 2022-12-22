@@ -75,7 +75,7 @@ def print_all(request):
             settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_gbp_printing_url()
         )
 
-        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-GBP-NET.pdf"
+        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-GBP-TRADE.pdf"
 
         parameter = f"&attachmentName={pdf_file_name}"
 
