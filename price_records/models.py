@@ -50,6 +50,7 @@ class PriceRecord(models.Model):
     )
 
     is_surcharge = models.BooleanField(default=False)
+    man_order = models.BooleanField(help_text="Check this if you want to enter a manual order number for this price record", default=False)
 
     class Meta:
         ordering = ["order", "rule_display_1"]
@@ -70,12 +71,13 @@ class PriceRecord(models.Model):
     def save(self, *args, **kwargs):
         self.net_price = self.get_net_price()
 
-        try:
-            order = int(self.list_price)
-        except ValueError:
-            order = 0
+        if self.man_order == False:
+            try:
+                order = int(self.list_price)
+            except ValueError:
+                order = 0
 
-        self.order = order
+            self.order = order
 
         if self.cat_series_item.tear_sheet is None:
             pass
