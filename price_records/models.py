@@ -66,7 +66,7 @@ class PriceRecord(models.Model):
             return "LIST PRICE MUST HAVE INT VALUE."
 
     def __str__(self):
-        return f"{self.cat_series_item} PRICE RECORD"
+        return f"{self.cat_series_item} {self.rule_type} {self.rule_display_1}  PRICE RECORD"
 
     def save(self, *args, **kwargs):
         self.net_price = self.get_net_price()
