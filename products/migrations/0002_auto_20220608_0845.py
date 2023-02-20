@@ -7,29 +7,40 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tear_sheets', '0001_initial'),
-        ('products', '0001_initial'),
+        ("tear_sheets", "0001_initial"),
+        ("products", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='catseriesitem',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='products.category'),
+            model_name="catseriesitem",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING, to="products.category"
+            ),
         ),
         migrations.AlterField(
-            model_name='catseriesitem',
-            name='item',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='products.item'),
+            model_name="catseriesitem",
+            name="item",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING, to="products.item"
+            ),
         ),
         migrations.AlterField(
-            model_name='catseriesitem',
-            name='series',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='products.series'),
+            model_name="catseriesitem",
+            name="series",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.DO_NOTHING, to="products.series"
+            ),
         ),
         migrations.AlterField(
-            model_name='catseriesitem',
-            name='tear_sheet',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.DO_NOTHING, to='tear_sheets.tearsheet'),
+            model_name="catseriesitem",
+            name="tear_sheet",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="tear_sheets.tearsheet",
+            ),
         ),
     ]

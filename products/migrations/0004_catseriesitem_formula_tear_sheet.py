@@ -7,14 +7,19 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('formula_tear_sheets', '0001_initial'),
-        ('products', '0003_alter_catseriesitem_tear_sheet'),
+        ("formula_tear_sheets", "0001_initial"),
+        ("products", "0003_alter_catseriesitem_tear_sheet"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='catseriesitem',
-            name='formula_tear_sheet',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='formula_tear_sheets.formulatearsheet'),
+            model_name="catseriesitem",
+            name="formula_tear_sheet",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="formula_tear_sheets.formulatearsheet",
+            ),
         ),
     ]

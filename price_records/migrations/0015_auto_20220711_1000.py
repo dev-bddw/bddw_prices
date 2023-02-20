@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0014_auto_20220711_0807'),
+        ("price_records", "0014_auto_20220711_0807"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='formulapricelistpricerecord',
-            name='updated_on',
+            model_name="formulapricelistpricerecord",
+            name="updated_on",
             field=models.DateTimeField(auto_now=True, null=True),
         ),
         migrations.AlterField(
-            model_name='pricelistpricerecord',
-            name='updated_on',
+            model_name="pricelistpricerecord",
+            name="updated_on",
             field=models.DateTimeField(auto_now=True, null=True),
         ),
     ]

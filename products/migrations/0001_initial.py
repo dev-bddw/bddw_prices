@@ -9,60 +9,154 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('tear_sheets', '0001_initial'),
+        ("tear_sheets", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('order', models.IntegerField(blank=True, help_text='The order number when this Category appears with other Categories.', null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                (
+                    "order",
+                    models.IntegerField(
+                        blank=True,
+                        help_text="The order number when this Category appears with other Categories.",
+                        null=True,
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Categories',
-                'ordering': ['order'],
+                "verbose_name_plural": "Categories",
+                "ordering": ["order"],
             },
         ),
         migrations.CreateModel(
-            name='Item',
+            name="Item",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('order', models.IntegerField(blank=True, help_text='The order number when this Item appears with other Items.', null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                (
+                    "order",
+                    models.IntegerField(
+                        blank=True,
+                        help_text="The order number when this Item appears with other Items.",
+                        null=True,
+                    ),
+                ),
             ],
             options={
-                'ordering': ['order'],
+                "ordering": ["order"],
             },
         ),
         migrations.CreateModel(
-            name='Series',
+            name="Series",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('order', models.IntegerField(blank=True, help_text='The order number when this series appears with other Series.', null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                (
+                    "order",
+                    models.IntegerField(
+                        blank=True,
+                        help_text="The order number when this series appears with other Series.",
+                        null=True,
+                    ),
+                ),
             ],
             options={
-                'verbose_name_plural': 'Series',
-                'ordering': ['order'],
+                "verbose_name_plural": "Series",
+                "ordering": ["order"],
             },
         ),
         migrations.CreateModel(
-            name='CatSeriesItem',
+            name="CatSeriesItem",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order', models.IntegerField(blank=True, help_text='The order number when this Category Series Item appears with other Category Series Items.', null=True)),
-                ('formula', models.CharField(blank=True, default=None, help_text='The string version of the formula', max_length=200, null=True)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.category')),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.item')),
-                ('series', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.series')),
-                ('tear_sheet', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='tear_sheets.tearsheet')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "order",
+                    models.IntegerField(
+                        blank=True,
+                        help_text="The order number when this Category Series Item appears with other Category Series Items.",
+                        null=True,
+                    ),
+                ),
+                (
+                    "formula",
+                    models.CharField(
+                        blank=True,
+                        default=None,
+                        help_text="The string version of the formula",
+                        max_length=200,
+                        null=True,
+                    ),
+                ),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="products.category",
+                    ),
+                ),
+                (
+                    "item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="products.item"
+                    ),
+                ),
+                (
+                    "series",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="products.series",
+                    ),
+                ),
+                (
+                    "tear_sheet",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="tear_sheets.tearsheet",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Category Series Item',
-                'verbose_name_plural': 'Category Series Items',
-                'ordering': ['order'],
+                "verbose_name": "Category Series Item",
+                "verbose_name_plural": "Category Series Items",
+                "ordering": ["order"],
             },
         ),
     ]

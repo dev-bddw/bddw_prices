@@ -57,7 +57,7 @@ def price_records_template(request):
             "gbp",
             "gbp_minus_vat",
             "gbp_trade",
-            "gbp_trade_minus_vat"
+            "gbp_trade_minus_vat",
         ]
     )
 
@@ -239,9 +239,9 @@ def upload(request):
                 "order": 1,
                 "surcharge": False if row[columns["surcharge"]] == "" else True,
                 "gbp_price": row[columns["gbp"]],
-                "gbp_price_no_vat": row[columns['gbp_minus_vat']],
-                "gbp_trade_no_vat": row[columns['gbp_trade_minus_vat']],
-                "gbp_trade": row[columns['gbp_trade']],
+                "gbp_price_no_vat": row[columns["gbp_minus_vat"]],
+                "gbp_trade_no_vat": row[columns["gbp_trade_minus_vat"]],
+                "gbp_trade": row[columns["gbp_trade"]],
             }
 
             list_of_records.append(record)

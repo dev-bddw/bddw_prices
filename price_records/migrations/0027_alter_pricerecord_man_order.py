@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0026_pricerecord_man_order'),
+        ("price_records", "0026_pricerecord_man_order"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='pricerecord',
-            name='man_order',
-            field=models.BooleanField(default=False, help_text='Check this if you want to enter a manual order number for this price record'),
+            model_name="pricerecord",
+            name="man_order",
+            field=models.BooleanField(
+                default=False,
+                help_text="Check this if you want to enter a manual order number for this price record",
+            ),
         ),
     ]

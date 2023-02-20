@@ -6,13 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('formula_tear_sheets', '0003_formulatearsheet_footer_space'),
+        ("formula_tear_sheets", "0003_formulatearsheet_footer_space"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='formulatearsheet',
-            name='template',
-            field=models.CharField(choices=[('A', 'ONE COLUMN DISPLAY'), ('B', 'TWO COLUMN DISPLAY'), ('C', 'RULE TYPE ABOVE')], default='B', max_length=1000),
+            model_name="formulatearsheet",
+            name="template",
+            field=models.CharField(
+                choices=[
+                    ("A", "ONE COLUMN DISPLAY"),
+                    ("B", "TWO COLUMN DISPLAY"),
+                    ("C", "RULE TYPE ABOVE"),
+                ],
+                default="B",
+                max_length=1000,
+            ),
         ),
     ]

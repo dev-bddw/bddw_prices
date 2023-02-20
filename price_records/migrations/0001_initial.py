@@ -9,48 +9,130 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('products', '0001_initial'),
+        ("products", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PriceRecord',
+            name="PriceRecord",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rule_type', models.CharField(choices=[('SIZES', 'SIZES'), ('FINISH', 'FINISH'), ('ANY', 'ANY')], default='SIZES', help_text='What kind of price record is this?', max_length=200)),
-                ('rule_display_1', models.CharField(help_text='ex. 67 x 19 x 29 H', max_length=200)),
-                ('rule_display_2', models.CharField(blank=True, help_text='ex. / 2 STANDARD DRAWERS / 2 CABS ', max_length=200, null=True)),
-                ('list_price', models.CharField(max_length=200)),
-                ('net_price', models.CharField(max_length=200)),
-                ('order', models.IntegerField(help_text='The order number when this Price Record appears with others.')),
-                ('bin_id', models.IntegerField(blank=True, help_text='This is the bin id number for the price rule', null=True)),
-                ('cat_series_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.catseriesitem')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "rule_type",
+                    models.CharField(
+                        choices=[
+                            ("SIZES", "SIZES"),
+                            ("FINISH", "FINISH"),
+                            ("ANY", "ANY"),
+                        ],
+                        default="SIZES",
+                        help_text="What kind of price record is this?",
+                        max_length=200,
+                    ),
+                ),
+                (
+                    "rule_display_1",
+                    models.CharField(help_text="ex. 67 x 19 x 29 H", max_length=200),
+                ),
+                (
+                    "rule_display_2",
+                    models.CharField(
+                        blank=True,
+                        help_text="ex. / 2 STANDARD DRAWERS / 2 CABS ",
+                        max_length=200,
+                        null=True,
+                    ),
+                ),
+                ("list_price", models.CharField(max_length=200)),
+                ("net_price", models.CharField(max_length=200)),
+                (
+                    "order",
+                    models.IntegerField(
+                        help_text="The order number when this Price Record appears with others."
+                    ),
+                ),
+                (
+                    "bin_id",
+                    models.IntegerField(
+                        blank=True,
+                        help_text="This is the bin id number for the price rule",
+                        null=True,
+                    ),
+                ),
+                (
+                    "cat_series_item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="products.catseriesitem",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['order'],
+                "ordering": ["order"],
             },
         ),
         migrations.CreateModel(
-            name='FormulaPriceRecord',
+            name="FormulaPriceRecord",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rule_type', models.CharField(blank=True, help_text='What kind of price record is this?', max_length=200, null=True)),
-                ('depth', models.IntegerField(blank=True, null=True)),
-                ('length', models.IntegerField(blank=True, null=True)),
-                ('width', models.IntegerField(blank=True, null=True)),
-                ('diameter', models.IntegerField(blank=True, null=True)),
-                ('height', models.IntegerField(blank=True, null=True)),
-                ('headboard_height', models.IntegerField(blank=True, null=True)),
-                ('headboard_width', models.IntegerField(blank=True, null=True)),
-                ('seat_fabric_yardage', models.IntegerField(blank=True, null=True)),
-                ('seat_back_height', models.IntegerField(blank=True, null=True)),
-                ('seat_height', models.IntegerField(blank=True, null=True)),
-                ('size', models.IntegerField(blank=True, null=True)),
-                ('rule_display_1', models.CharField(help_text='ex. 67 x 19 x 29 H', max_length=200)),
-                ('rule_display_2', models.CharField(blank=True, help_text='ex. / 2 STANDARD DRAWERS / 2 CABS', max_length=200, null=True)),
-                ('list_price', models.CharField(blank=True, max_length=200, null=True)),
-                ('net_price', models.CharField(blank=True, max_length=200, null=True)),
-                ('cat_series_item', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='products.catseriesitem')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "rule_type",
+                    models.CharField(
+                        blank=True,
+                        help_text="What kind of price record is this?",
+                        max_length=200,
+                        null=True,
+                    ),
+                ),
+                ("depth", models.IntegerField(blank=True, null=True)),
+                ("length", models.IntegerField(blank=True, null=True)),
+                ("width", models.IntegerField(blank=True, null=True)),
+                ("diameter", models.IntegerField(blank=True, null=True)),
+                ("height", models.IntegerField(blank=True, null=True)),
+                ("headboard_height", models.IntegerField(blank=True, null=True)),
+                ("headboard_width", models.IntegerField(blank=True, null=True)),
+                ("seat_fabric_yardage", models.IntegerField(blank=True, null=True)),
+                ("seat_back_height", models.IntegerField(blank=True, null=True)),
+                ("seat_height", models.IntegerField(blank=True, null=True)),
+                ("size", models.IntegerField(blank=True, null=True)),
+                (
+                    "rule_display_1",
+                    models.CharField(help_text="ex. 67 x 19 x 29 H", max_length=200),
+                ),
+                (
+                    "rule_display_2",
+                    models.CharField(
+                        blank=True,
+                        help_text="ex. / 2 STANDARD DRAWERS / 2 CABS",
+                        max_length=200,
+                        null=True,
+                    ),
+                ),
+                ("list_price", models.CharField(blank=True, max_length=200, null=True)),
+                ("net_price", models.CharField(blank=True, max_length=200, null=True)),
+                (
+                    "cat_series_item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="products.catseriesitem",
+                    ),
+                ),
             ],
         ),
     ]

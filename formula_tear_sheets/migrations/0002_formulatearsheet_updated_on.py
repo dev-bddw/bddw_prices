@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('formula_tear_sheets', '0001_initial'),
+        ("formula_tear_sheets", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='formulatearsheet',
-            name='updated_on',
+            model_name="formulatearsheet",
+            name="updated_on",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

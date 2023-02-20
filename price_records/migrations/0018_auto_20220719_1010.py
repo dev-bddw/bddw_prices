@@ -6,21 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0017_pricelistpricerecord_is_surcharge'),
+        ("price_records", "0017_pricelistpricerecord_is_surcharge"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='formulapricelistpricerecord',
-            options={'ordering': ['rule_type', 'list_price']},
+            name="formulapricelistpricerecord",
+            options={"ordering": ["rule_type", "list_price"]},
         ),
         migrations.AlterModelOptions(
-            name='pricelistpricerecord',
-            options={'ordering': ['is_surcharge', 'rule_type', 'order']},
+            name="pricelistpricerecord",
+            options={"ordering": ["is_surcharge", "rule_type", "order"]},
         ),
         migrations.AlterField(
-            model_name='pricelistpricerecord',
-            name='rule_display_1',
-            field=models.CharField(help_text='ex. [depth] D x 29 H', max_length=200),
+            model_name="pricelistpricerecord",
+            name="rule_display_1",
+            field=models.CharField(help_text="ex. [depth] D x 29 H", max_length=200),
         ),
     ]

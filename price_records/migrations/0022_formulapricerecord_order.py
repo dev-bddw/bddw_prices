@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0021_alter_formulapricerecord_cat_series_item'),
+        ("price_records", "0021_alter_formulapricerecord_cat_series_item"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='formulapricerecord',
-            name='order',
-            field=models.IntegerField(default=0, help_text='The order number when this Price Record appears with others.'),
+            model_name="formulapricerecord",
+            name="order",
+            field=models.IntegerField(
+                default=0,
+                help_text="The order number when this Price Record appears with others.",
+            ),
         ),
     ]

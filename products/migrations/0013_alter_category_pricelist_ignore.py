@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0012_category_pricelist_ignore'),
+        ("products", "0012_category_pricelist_ignore"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='pricelist_ignore',
-            field=models.BooleanField(default=False, help_text='If selected (true) rules for this category will not show up in pricelist'),
+            model_name="category",
+            name="pricelist_ignore",
+            field=models.BooleanField(
+                default=False,
+                help_text="If selected (true) rules for this category will not show up in pricelist",
+            ),
         ),
     ]

@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0024_auto_20221221_1520'),
+        ("price_records", "0024_auto_20221221_1520"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='pricerecord',
-            old_name='gbp_no_vat',
-            new_name='gbp_price_no_vat',
+            model_name="pricerecord",
+            old_name="gbp_no_vat",
+            new_name="gbp_price_no_vat",
         ),
         migrations.AddField(
-            model_name='pricerecord',
-            name='gbp_trade',
+            model_name="pricerecord",
+            name="gbp_trade",
             field=models.CharField(blank=True, default=None, max_length=200, null=True),
         ),
         migrations.AddField(
-            model_name='pricerecord',
-            name='gbp_trade_no_vat',
+            model_name="pricerecord",
+            name="gbp_trade_no_vat",
             field=models.CharField(blank=True, default=None, max_length=200, null=True),
         ),
     ]

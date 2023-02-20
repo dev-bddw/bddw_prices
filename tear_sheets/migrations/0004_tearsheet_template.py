@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tear_sheets', '0003_tearsheet_footer_space'),
+        ("tear_sheets", "0003_tearsheet_footer_space"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tearsheet',
-            name='template',
-            field=models.CharField(choices=[('1', 'Template A'), ('2', 'Template B'), ('3', 'Template C')], default='2', max_length=1000),
+            model_name="tearsheet",
+            name="template",
+            field=models.CharField(
+                choices=[("1", "Template A"), ("2", "Template B"), ("3", "Template C")],
+                default="2",
+                max_length=1000,
+            ),
         ),
     ]
