@@ -19,9 +19,9 @@ from .models import ImageCaption, TearSheet, TearSheetDetail, TearSheetFooterDet
 
 @login_required
 def list_view(request):
-'''
-list all tearsheets
-'''
+    '''
+    list all tearsheets
+    '''
     return render(
         request,
         "list_view.html",
