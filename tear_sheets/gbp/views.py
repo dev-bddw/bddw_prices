@@ -37,7 +37,7 @@ def print_all(request):
 
     batch_name = str(random.randrange(1000000))
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
-    object_dir = f'/var/tmp/{batch_name}/'
+    object_dir = f"/var/tmp/{batch_name}/"
     pdf_list = []
 
     # make local directory to place pdf files
@@ -195,7 +195,9 @@ def redirect_detail_view_to_pdf_list(request, pk):
     tear_sheet = TearSheet.objects.get(pk=pk)
 
     url_string = (
-        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_gbp_printing_url_no_list()
+        settings.PDF_APP_URL
+        + settings.SITE_URL
+        + tear_sheet.get_gbp_printing_url_no_list()
     )
 
     parameter = (

@@ -39,8 +39,12 @@ class PriceRecord(models.Model):
     )
     gbp_price = models.CharField(max_length=200, default=None, blank=True, null=True)
     gbp_trade = models.CharField(max_length=200, default=None, blank=True, null=True)
-    gbp_price_no_vat = models.CharField(max_length=200, default=None, blank=True, null=True)
-    gbp_trade_no_vat = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_price_no_vat = models.CharField(
+        max_length=200, default=None, blank=True, null=True
+    )
+    gbp_trade_no_vat = models.CharField(
+        max_length=200, default=None, blank=True, null=True
+    )
     order = models.IntegerField(
         help_text="The order number when this Price Record appears with others."
     )
@@ -50,7 +54,10 @@ class PriceRecord(models.Model):
     )
 
     is_surcharge = models.BooleanField(default=False)
-    man_order = models.BooleanField(help_text="Check this if you want to enter a manual order number for this price record", default=False)
+    man_order = models.BooleanField(
+        help_text="Check this if you want to enter a manual order number for this price record",
+        default=False,
+    )
 
     class Meta:
         ordering = ["order", "rule_display_1"]
@@ -179,8 +186,9 @@ class FormulaPriceRecord(models.Model):
         null=True,
     )
 
-    order = models.IntegerField(default=0,
-        help_text="The order number when this Price Record appears with others."
+    order = models.IntegerField(
+        default=0,
+        help_text="The order number when this Price Record appears with others.",
     )
 
     depth = models.IntegerField(null=True, blank=True)
@@ -214,9 +222,8 @@ class FormulaPriceRecord(models.Model):
     list_price = models.CharField(null=True, blank=True, max_length=200)
     net_price = models.CharField(null=True, blank=True, max_length=200)
 
-
     class Meta:
-        ordering = ['order']
+        ordering = ["order"]
 
     def save(self, *args, **kwargs):
         self.list_price = self.get_price()

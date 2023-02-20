@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tear_sheets', '0002_tearsheet_updated_on'),
+        ("tear_sheets", "0002_tearsheet_updated_on"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tearsheet',
-            name='footer_space',
+            model_name="tearsheet",
+            name="footer_space",
             field=models.IntegerField(blank=True, default=200, null=True),
         ),
     ]

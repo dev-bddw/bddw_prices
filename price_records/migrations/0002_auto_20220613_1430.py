@@ -6,22 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0001_initial'),
+        ("price_records", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='formulapricerecord',
-            name='size',
+            model_name="formulapricerecord",
+            name="size",
         ),
         migrations.AddField(
-            model_name='formulapricerecord',
-            name='footboard_height',
+            model_name="formulapricerecord",
+            name="footboard_height",
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='formulapricerecord',
-            name='inset',
+            model_name="formulapricerecord",
+            name="inset",
             field=models.IntegerField(blank=True, null=True),
         ),
     ]

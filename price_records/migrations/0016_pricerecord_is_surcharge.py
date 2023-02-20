@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0015_auto_20220711_1000'),
+        ("price_records", "0015_auto_20220711_1000"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='pricerecord',
-            name='is_surcharge',
+            model_name="pricerecord",
+            name="is_surcharge",
             field=models.BooleanField(default=False),
         ),
     ]

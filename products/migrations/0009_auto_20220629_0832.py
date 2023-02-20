@@ -6,32 +6,32 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0008_auto_20220629_0753'),
+        ("products", "0008_auto_20220629_0753"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='category',
-            options={'verbose_name_plural': 'Categories'},
+            name="category",
+            options={"verbose_name_plural": "Categories"},
         ),
         migrations.AlterModelOptions(
-            name='item',
-            options={'verbose_name_plural': 'Items'},
+            name="item",
+            options={"verbose_name_plural": "Items"},
         ),
         migrations.AlterModelOptions(
-            name='series',
-            options={'verbose_name_plural': 'Series'},
+            name="series",
+            options={"verbose_name_plural": "Series"},
         ),
         migrations.RemoveField(
-            model_name='category',
-            name='order',
+            model_name="category",
+            name="order",
         ),
         migrations.RemoveField(
-            model_name='item',
-            name='order',
+            model_name="item",
+            name="order",
         ),
         migrations.RemoveField(
-            model_name='series',
-            name='order',
+            model_name="series",
+            name="order",
         ),
     ]

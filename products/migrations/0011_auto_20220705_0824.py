@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0010_auto_20220629_0834'),
+        ("products", "0010_auto_20220629_0834"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='category',
-            options={'ordering': ['order'], 'verbose_name_plural': 'Categories'},
+            name="category",
+            options={"ordering": ["order"], "verbose_name_plural": "Categories"},
         ),
         migrations.AddField(
-            model_name='category',
-            name='order',
+            model_name="category",
+            name="order",
             field=models.IntegerField(blank=True, null=True),
         ),
     ]

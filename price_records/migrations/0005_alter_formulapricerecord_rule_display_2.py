@@ -6,13 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0004_alter_pricerecord_rule_display_2'),
+        ("price_records", "0004_alter_pricerecord_rule_display_2"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='formulapricerecord',
-            name='rule_display_2',
-            field=models.CharField(blank=True, default='', help_text='ex. / 2 STANDARD DRAWERS / 2 CABS', max_length=200, null=True),
+            model_name="formulapricerecord",
+            name="rule_display_2",
+            field=models.CharField(
+                blank=True,
+                default="",
+                help_text="ex. / 2 STANDARD DRAWERS / 2 CABS",
+                max_length=200,
+                null=True,
+            ),
         ),
     ]

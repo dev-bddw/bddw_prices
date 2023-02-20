@@ -6,13 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0006_alter_catseriesitem_options'),
+        ("products", "0006_alter_catseriesitem_options"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='catseriesitem',
-            name='opt_series_item_display',
-            field=models.CharField(blank=True, default=None, help_text='The string version of the formula', max_length=200, null=True),
+            model_name="catseriesitem",
+            name="opt_series_item_display",
+            field=models.CharField(
+                blank=True,
+                default=None,
+                help_text="The string version of the formula",
+                max_length=200,
+                null=True,
+            ),
         ),
     ]

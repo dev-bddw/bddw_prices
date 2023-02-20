@@ -6,20 +6,20 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0010_formulapricelistpricerecord_rule_display_2'),
+        ("price_records", "0010_formulapricelistpricerecord_rule_display_2"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='formulapricelistpricerecord',
-            options={'ordering': ['list_price']},
+            name="formulapricelistpricerecord",
+            options={"ordering": ["list_price"]},
         ),
         migrations.AlterModelOptions(
-            name='formulapricerecord',
-            options={'ordering': ['list_price']},
+            name="formulapricerecord",
+            options={"ordering": ["list_price"]},
         ),
         migrations.AlterModelOptions(
-            name='pricelistpricerecord',
-            options={'ordering': ['list_price']},
+            name="pricelistpricerecord",
+            options={"ordering": ["list_price"]},
         ),
     ]

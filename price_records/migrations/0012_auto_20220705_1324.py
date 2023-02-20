@@ -6,16 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('price_records', '0011_auto_20220705_1312'),
+        ("price_records", "0011_auto_20220705_1312"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='formulapricerecord',
+            name="formulapricerecord",
             options={},
         ),
         migrations.AlterModelOptions(
-            name='pricelistpricerecord',
-            options={'ordering': ['order']},
+            name="pricelistpricerecord",
+            options={"ordering": ["order"]},
         ),
     ]

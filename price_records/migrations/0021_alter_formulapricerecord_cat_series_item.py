@@ -7,14 +7,16 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0014_alter_catseriesitem_opt_series_item_display'),
-        ('price_records', '0020_alter_formulapricerecord_rule_display_1'),
+        ("products", "0014_alter_catseriesitem_opt_series_item_display"),
+        ("price_records", "0020_alter_formulapricerecord_rule_display_1"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='formulapricerecord',
-            name='cat_series_item',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='products.catseriesitem'),
+            model_name="formulapricerecord",
+            name="cat_series_item",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="products.catseriesitem"
+            ),
         ),
     ]
