@@ -19,7 +19,9 @@ from .models import ImageCaption, TearSheet, TearSheetDetail, TearSheetFooterDet
 
 @login_required
 def list_view(request):
-
+'''
+list all tearsheets
+'''
     return render(
         request,
         "list_view.html",
@@ -31,7 +33,9 @@ def list_view(request):
 
 @login_required
 def print_all(request):
-
+    '''
+    returns a link to rar file of all tearsheets
+    '''
     s3 = boto3.client(
         "s3",
         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
@@ -130,7 +134,9 @@ def print_all(request):
 
 @login_required
 def detail_view(request, pk):
-
+    '''
+    tearsheet detail view
+    '''
     tear_sheet = TearSheet.objects.get(pk=pk)
     captions = ImageCaption.objects.filter(tear_sheet=tear_sheet)
     footer_details = TearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
@@ -150,7 +156,9 @@ def detail_view(request, pk):
 
 @login_required
 def edit_view(request, pk):
-
+    '''
+    tearsheet edit view
+    '''
     tear_sheet = TearSheet.objects.get(pk=pk)
     details = TearSheetDetail.objects.filter(tear_sheet=tear_sheet)
     captions = ImageCaption.objects.filter(tear_sheet=tear_sheet)
@@ -180,7 +188,9 @@ def edit_view(request, pk):
 
 @login_required
 def change_template_hx(request, pk):
-
+    '''
+    change tearsheet template view
+    '''
     tearsheet = TearSheet.objects.get(pk=pk)
 
     if request.method == "POST":
@@ -192,7 +202,9 @@ def change_template_hx(request, pk):
 
 @login_required
 def change_title_hx(request, pk):
-
+    '''
+    change tearsheet title
+    '''
     tearsheet = TearSheet.objects.get(pk=pk)
 
     if request.method == "PUT":
@@ -210,7 +222,9 @@ def change_title_hx(request, pk):
 
 @login_required
 def change_image_hx(request, pk):
-
+    '''
+    change image
+    '''
     tear_sheet = TearSheet.objects.get(pk=pk)
 
     if request.method == "POST":
@@ -227,7 +241,9 @@ def change_image_hx(request, pk):
 
 @login_required
 def change_caption_hx(request, pk):
-
+    '''
+    change caption
+    '''
     caption = ImageCaption.objects.get(pk=pk)
 
     if request.method == "DELETE":
@@ -249,6 +265,10 @@ def change_caption_hx(request, pk):
 
 @login_required
 def change_detail_hx(request, pk):
+    '''
+    change detail
+    '''
+
     detail = TearSheetDetail.objects.get(pk=pk)
 
     if request.method == "DELETE":
@@ -272,6 +292,10 @@ def change_detail_hx(request, pk):
 
 @login_required
 def change_price_record_hx(request, pk):
+    '''
+    edit the price record on tearsheet edit view
+    '''
+
     price_record = PriceRecord.objects.get(pk=pk)
 
     if request.method == "DELETE":
@@ -304,6 +328,9 @@ def change_price_record_hx(request, pk):
 
 @login_required
 def change_footer_detail_hx(request, pk):
+    '''
+    change footer detail
+    '''
     footer_detail = TearSheetFooterDetail.objects.get(pk=pk)
 
     if request.method == "DELETE":
@@ -357,7 +384,9 @@ def create_caption_hx(request, pk):
 
 @login_required
 def create_detail_hx(request, pk):
-
+    '''
+    add detail to tearsheet
+    '''
     if request.method == "POST":
         tear_sheet = TearSheet.objects.get(pk=pk)
         detail = TearSheetDetail.objects.create(
@@ -382,7 +411,9 @@ def create_detail_hx(request, pk):
 
 @login_required
 def create_price_record_hx(request):
-
+    '''
+    create price records on tearsheet
+    '''
     if request.method == "POST":
         csi = CatSeriesItem.objects.get(pk=request.POST.get("cat_series_item"))
         order = (
@@ -443,18 +474,12 @@ def create_footer_detail_hx(request, pk):
 
 
 def detail_view_for_printing(request, pk):
-
-    number_of = 0
-
+    '''
+    the view the printer app uses to create pdfs    
+    '''
     tear_sheet = TearSheet.objects.get(pk=pk)
     captions = ImageCaption.objects.filter(tear_sheet=tear_sheet)
     footer_details = TearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
-
-    # spacing size b/t records and footer
-    # we should actually perform a rational calculation here that
-    # includes getting the tearsheet.img.height value and sbtrcts
-
-    number_of += len(captions) + len(footer_details)
 
     return render(
         request,
@@ -470,6 +495,10 @@ def detail_view_for_printing(request, pk):
 
 
 def redirect_detail_view_to_pdf(request, pk):
+    '''
+    redirect to the proper url for the printer
+    '''
+
     tear_sheet = TearSheet.objects.get(pk=pk)
 
     url_string = (
@@ -488,6 +517,9 @@ def redirect_detail_view_to_pdf(request, pk):
 
 
 def redirect_detail_view_to_pdf_list(request, pk):
+    '''
+    redirect to the proper url for the printer
+    '''
 
     tear_sheet = TearSheet.objects.get(pk=pk)
 
@@ -509,7 +541,9 @@ def redirect_detail_view_to_pdf_list(request, pk):
 
 
 def detail_view_for_printing_list(request, pk):
-
+    '''
+    detail view pdf app uses to create list pdfs
+    '''
     tear_sheet = TearSheet.objects.get(pk=pk)
     captions = ImageCaption.objects.filter(tear_sheet=tear_sheet)
     footer_details = TearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
