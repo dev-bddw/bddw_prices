@@ -42,11 +42,26 @@ class TearSheetFooterDetail(Detail):
 
 
 class TearSheet(models.Model):
+    def json_default():
+        return {
+            "col_1": 10,
+            "col_2": 35,
+            "col_3": 35,
+            "col_4": 10,
+            "col_5": 10,
+            "d_col_1": 10,
+            "d_col_2": 90,
+            "pt": 5,
+            "pt_pr": 5,
+            "font_size": 10,
+        }
+
     class TearSheetTemplate(models.TextChoices):
         a = "A", "ONE COLUMN DISPLAY"
         b = "B", "TWO COLUMN DISPLAY"
         c = "C", "RULE TYPE ABOVE"
 
+    sdata = models.JSONField(default=json_default, blank=True, null=True)
     template = models.CharField(
         choices=TearSheetTemplate.choices, default="B", max_length=1000
     )

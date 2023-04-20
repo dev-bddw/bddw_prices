@@ -8,6 +8,19 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
 from bddw_prices.views import snapshot
+from react_views.views import (
+    create_caption_api,
+    create_detail_api,
+    create_footer_api,
+    detail_view_entry,
+    edit_caption_api,
+    edit_detail_api,
+    edit_footer_api,
+    edit_image_api,
+    edit_pricerecord_api,
+    edit_tearsheet_api,
+    edit_view_entry,
+)
 
 urlpatterns = [
     path("", view=snapshot, name="home"),
@@ -29,6 +42,29 @@ urlpatterns = [
     ),
     path("uploads/", include("csv_imports.urls", namespace="csv_imports")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+urlpatterns += [
+    path("react/edit-tearsheet/<id>", edit_view_entry, name="edit-tearsheet"),
+    path("react/view-tearsheet/<id>", detail_view_entry, name="view-tearsheet"),
+    path("react/edit-tearsheetapi/<id>", edit_tearsheet_api, name="edit-tearsheet-api"),
+    path("react/edit-image/<id>", edit_image_api, name="edit-image-api"),
+    path("react/edit-price-record/", edit_pricerecord_api, name="edit-pricerecord-api"),
+    path("react/edit-caption-record/", edit_caption_api, name="edit-caption-api"),
+    path("react/edit-detail-record/", edit_detail_api, name="edit-detail-api"),
+    path("react/edit-footer-record/", edit_footer_api, name="edit-footer-api"),
+    path(
+        "react/create-footer-record/<id>", create_footer_api, name="create-footer-api"
+    ),
+    path(
+        "react/create-detail-record/<id>", create_detail_api, name="create-detail-api"
+    ),
+    path(
+        "react/create-caption-record/<id>",
+        create_caption_api,
+        name="create-caption-api",
+    ),
+]
 
 # API URLS
 urlpatterns += [
