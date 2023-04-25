@@ -87,7 +87,7 @@ LOCAL_APPS = [
     "formula_tear_sheets",
     "price_records",
     "price_lists",
-    "react_views"
+    "react_views.r_tear_sheets"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -156,8 +156,10 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
     str(APPS_DIR / "static"),
-    "/app/react_views/templates/edit/dist/assets/",
-    "/app/react_views/templates/detail/dist/assets/",
+    "/app/react_views/r_tear_sheets/templates/edit/dist/assets/",
+    "/app/react_views/r_tear_sheets/templates/detail/dist/assets/",
+    "/app/react_views/r_tear_sheets/templates/detail_for_print/dist/assets/",
+    "/app/react_views/r_tear_sheets/templates/detail_for_print_list/dist/assets/",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders

@@ -1,0 +1,318 @@
+
+{% load static i18n %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}bddw_tearsheets{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="lance knickerbocker">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro" rel="stylesheet">
+    <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
+    {% block css %}
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}" />
+    <!-- Your stuff: Third-party CSS libraries go here -->
+
+    <!-- This file stores project-specific CSS -->
+    {% endblock %}
+    <!-- Le javascript
+    ================================================== -->
+    {# Placed at the top of the document so pages load faster with defer #}
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <!-- Bootstrap JS -->
+      <script defer src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+      <!-- Your stuff: Third-party javascript libraries go here -->
+      <script src="https://unpkg.com/htmx.org@1.7.0"></script>
+      <!-- place project specific Javascript in this file -->
+      <script defer src="{% static 'js/project.js' %}"></script>
+
+    {% endblock javascript %}
+
+  </head>
+
+  <body style="text-transform: uppercase; font-family: 'Source Sans Pro', sans-serif; letter-spacing: 0.05em; font-size: 12px; color: #8B8A86">
+    <div style="font-weight: lighter; font-size: 11px; width: 816px;">
+
+    <div class="top-margin" style="height:30px;"></div>
+        <div style="margin-left:75px; margin-right:75px;">
+            <h3 class="pb-2">{{tearsheet}}</h3>
+            <div>
+                <img class="img-fluid" src="{{tearsheet.image.url}}">
+            </div>
+        <!-- CAPTIONS -->
+        {% if captions %}
+        <div class="pt-2">
+            {% for caption in captions  %}
+            <div class="row">
+                <div class="col-2">
+                    {{caption.caption_title}}
+                </div>
+                <div class="col-10">
+                    {{caption.caption}}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- CAPTIONS -->
+
+        <!-- DETAILS -->
+        {% if details %}
+        <div class="pt-2">
+            {% for detail_dictionary in details  %}
+            {% for name,detail in detail_dictionary.items  %}
+            <div style="padding-bottom: -20px;" class="row">
+                <div class="col-2">
+                    {{name}}
+                </div>
+                {% for item in detail %}
+                {% if forloop.first %}
+                <div class="col-10">
+                    {{item.details}}
+                </div>
+            </div>
+            {% else %}
+            <div style="padding-bottom: -20px;" class=" row">
+                <div class="col-2">
+                   {% comment %} SKIP {% endcomment %}
+                </div>
+                <div class="col-10">
+                    {{item.details}}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- DETAILS -->
+
+        {% comment %} RULES TEMPLATES
+
+        TEMPLATE A:
+        TEMPLATE B:
+        TEMPLATE C:
+
+        {% endcomment %}
+
+        {% if tearsheet.template == 'A' %}
+
+        <!--TEMPLATE A RULES -->
+        <div class="row pt-2 pb-1">
+            {% comment %} <div class="col-2 text-end">
+            </div> {% endcomment %}
+            <div class="col-8">
+            </div>
+            <div class="col-2 text-end">
+                LIST
+            </div>
+            <div class="col-2 text-end">
+                {% comment %} NET {% endcomment %}
+            </div>
+        </div>
+
+        {% for dictionary in price_records  %}
+        {% for group,rules in dictionary.items %}
+        <div style="" class="pt-2 row">
+            <div class="col-1 text-start">
+                {{group}}
+            </div>
+            <div class="col-1">
+            </div>
+                {% for item in rules %}
+                {% if forloop.first %}
+            <div class="col-6">
+                {{item.rule_display_1}}
+            </div>
+            <div class="col-2 text-end">
+                ${{item.list_price}}
+            </div>
+            <div class="col-2 text-end">
+                {% comment %} ${{item.net_price}} {% endcomment %}
+            </div>
+        </div>
+            {% else %}
+
+        <div style="" class="row">
+            <div class="col-1 text-end">
+            </div>
+            <div class="col-1 text-end">
+                {% comment %} SKIP {% endcomment %}
+            </div>
+            <div class="col-6">
+                {{item.rule_display_1}}
+            </div>
+            <div class="col-2 text-end">
+                ${{item.list_price}}
+            </div>
+            <div class="col-2 text-end">
+                {% comment %} ${{item.net_price}} {% endcomment %}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
+
+        <!--TEMPLATE A RULES -->
+
+
+        {% elif tearsheet.template == 'B' %}
+
+        <!-- TEMPlATE B RULES -->
+        <div class="row pt-2 pb-1">
+            {% comment %} <div class="col-2 text-end">
+            </div> {% endcomment %}
+            <div class="col-8">
+            </div>
+            <div class="col-2 text-end">
+                LIST
+            </div>
+            <div class="col-2 text-end">
+                {% comment %} NET {% endcomment %}
+            </div>
+        </div>
+
+        {% for dictionary in price_records  %}
+        {% for group,rules in dictionary.items %}
+        <div style="" class="pt-3 row">
+            <div class="col-1 text-start">
+                {{group}}
+            </div>
+            <div class="col-1">
+            </div>
+                {% for item in rules %}
+                {% if forloop.first %}
+            <div class="col-3">
+                {{item.rule_display_1}}
+            </div>
+            <div class="col-3">
+                {{item.rule_display_2}}
+            </div>
+            {% comment %} <div class="col-1">
+            </div> {% endcomment %}
+            <div class="col-2 text-end">
+                ${{item.list_price}}
+            </div>
+            <div class="col-2 text-end">
+                {% comment %} ${{item.net_price}} {% endcomment %}
+            </div>
+        </div>
+            {% else %}
+
+        <div style="padding-top: 3px;" class="row">
+            <div class="col-1 text-end">
+            </div>
+            <div class="col-1 text-end">
+            </div>
+            <div class="col-3">
+                {{item.rule_display_1}}
+            </div>
+
+            <div class="col-3">
+                {{item.rule_display_2}}
+            </div>
+
+            <div class="col-2 text-end">
+                ${{item.list_price}}
+            </div>
+            <div class="col-2 text-end">
+                {% comment %} ${{item.net_price}} {% endcomment %}
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
+        <!-- TEMPLATE B RULES-->
+
+        {% elif tearsheet.template == 'C' %}
+
+        <!--TEMPLATE C RULE DISPLAY ABOVE RULES-->
+        {% for dictionary in price_records  %}
+        {% for group,rules in dictionary.items %}
+        <div class="row pt-2 pb-1">
+            <div class="col-2 text-start">
+            {{group}}
+            </div>
+            <div class="col-6">
+            </div>
+            <div class="col-2 text-end">
+                LIST
+            </div>
+            <div class="col-2 text-end">
+                {% comment %} NET {% endcomment %}
+            </div>
+        </div>
+
+        {% for item in rules %}
+
+        <div style="padding-top: 3px;" class="row">
+            <div class="col-2">
+                {{item.rule_display_1}}
+            </div>
+            <div class="col-6">
+                {{item.rule_display_2}}
+            </div>
+            <div class="col-2 text-end">
+                ${{item.list_price}}
+            </div>
+            <div class="col-2 text-end">
+                {% comment %} ${{item.net_price}} {% endcomment %}
+            </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
+        <!--TEMPLATE C RULES-->
+
+
+        {% endif %}
+
+
+        <!-- FOOTER DETAILS -->
+        {% if footer_details %}
+        <div class="pt-2">
+            {% regroup footer_details by name as footer_detail_list %}
+            {% for footer_detail in footer_detail_list  %}
+            <div style="padding-bottom: -20px;" class="row">
+                <div class="col-2">
+                    {{footer_detail.grouper}}
+                </div>
+                {% for item in footer_detail.list %}
+                {% if forloop.first %}
+                <div class="col-10">
+                    {{item.details}}
+                </div>
+            </div>
+            {% else %}
+            <div style="padding-bottom: -20px;" class="row">
+                <div class="col-2">
+                </div>
+                <div class="col-10">
+                    {{item.details}}
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        <!-- FOOTER DETAILS -->
+        <div style="height: {{tearsheet.footer_space}}px">
+        </div>
+        <!-- ADDRESS FOOTER-->
+        {% comment %} <div class='text-center'>
+            <p style="letter-spacing: .15em;" class="pt-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
+        </div> {% endcomment %}
+
+    </div>
+
+  </body>
+</html>

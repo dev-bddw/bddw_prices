@@ -1,0 +1,304 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .image-container {
+        position: relative;
+        {% comment %} width: 50%; {% endcomment %}
+      }
+
+      .edit-image {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: .5s ease;
+        background-color: white;
+      }
+
+      .image-container:hover .overlay {
+        opacity: .9;
+      }
+
+      .text {
+        color: grey;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        text-align: center;
+      }
+</style>
+
+<div style="font-size: 9px; width: 816px;">
+
+
+    <div style="margin-left:75px; margin-right:75px;">
+
+        <div class="pt-5 pb-2">
+            <div class"row">
+                <div class"col">
+                    <a href="{% url 'formula_tearsheets:detail' tearsheet.pk %}"><< detail view</a>
+                </div>
+            </div>
+            <h3 class="pt-2" id="this">{{tearsheet}}
+            <img
+                style="margin-bottom:5px; margin-left:5px;"
+                height="20px"
+                src="{% static 'images/edit.svg' %}"
+                hx-get='{% url 'formula_tearsheets:change_title' tearsheet.pk %}'
+                hx-trigger='click'
+                hx-swap='outerHTML'
+                hx-target="#this"
+                >
+            </h3>
+            <div id="template">
+                <label >TEMPLATE</label>
+                <select name="template" hx-post="{% url 'formula_tearsheets:change_template' tearsheet.pk %}" hx-swapping="outerHTML" hx-target="#template">
+                    <option value="{{tearsheet.template}}">
+                        {% if tearsheet.template == 'A' %}
+                        ONE COLUMN DISPLAY
+                        {% elif tearsheet.template == 'B' %}
+                        TWO COLUMN DISPLAY
+                        {% elif tearsheet.template == 'C' %}
+                        RULE DISPLAY ABOVE
+                        {% endif %}
+
+                        </option>
+                  {% for value,label in tearsheet.TearSheetTemplate.choices  %}
+                    {% if value != tearsheet.template %}
+                    <option value="{{value}}">{{label}}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="image-container">
+            <form enctype="multipart/form-data" action="{% url 'formula_tearsheets:change_image' tearsheet.pk %}" method="POST">
+                {% csrf_token %}
+                <div id="picture" class="overlay">
+                    <div class="text">CHANGE IMAGE FOR {{tearsheet}}</div>
+                </div>
+                <img class="img-fluid edit-image" src="{{tearsheet.image.url}}" name="pic" >
+                <input onChange="form.submit()" id="fileinput" type="file" name="fileinput" style="display:none"/>
+                {% comment %} <input type="submit" name="button" value="Submit"/> {% endcomment %}
+            </form>
+        </div>
+
+
+        <!-- CAPTIONS -->
+        <div id="captions" class="pt-3">
+            <div class="pb-1 row">
+                <span style="text-decoration: underline;">CAPTIONS</span>
+            </div>
+            {% for caption in captions  %}
+            <div id="caption-{{caption.pk}}" class="row">
+                <div class="col-2">
+                    {{caption.caption_title}}
+                </div>
+                <div class="col-9">
+                    {{caption.caption}}
+                </div>
+                <div class="text-end col-1">
+                    <img
+                    hx-get='{% url 'formula_tearsheets:change_caption' caption.pk %}'
+                    hx-trigger='click'
+                    hx-swap='outerHTML'
+                    hx-target="#caption-{{caption.pk}}"
+                    height="10px" src="{% static 'images/edit.svg' %}">
+                </div>
+            </div>
+            {% endfor %}
+            <form id="create-caption">
+                <div class="row">
+                    <div class="col-2">
+                        <input name='title' value="caption_title">
+                    </div>
+                    <div class="col-8">
+                        <input style="width: 515px;" name='caption' value="caption">
+                    </div>
+                    <div class="text-end col-1">
+                    </div>
+                    <div class="text-end col-1">
+                        <img
+                        hx-post='{% url 'formula_tearsheets:create_caption' tearsheet.pk %}'
+                        hx-trigger='click'
+                        hx-swap='outerHTML'
+                        hx-target="#create-caption"
+                        height="12px" src="{% static 'images/add.svg' %}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- CAPTIONS -->
+
+        <!-- DETAILS -->
+        <div id="details" class="pt-3">
+            <div class="pb-1 row">
+                <span style="text-decoration: underline;">DETAILS</span>
+            </div>
+            {% for detail in details  %}
+            <div id="detail-{{detail.pk}}" style="padding-bottom: -20px;" class="row">
+                <div class="col-2">
+                    {{detail.name}}
+                </div>
+
+                <div class="col-9">
+                    {{detail.details}}
+                </div>
+                <div class="text-end col-1">
+                    <img
+                    hx-get='{% url 'formula_tearsheets:change_detail' detail.pk %}'
+                    hx-trigger='click'
+                    hx-swap='outerHTML'
+                    hx-target="#detail-{{detail.pk}}"
+                    height="10px" src="{% static 'images/edit.svg' %}">
+                </div>
+            </div>
+            {% endfor %}
+            <form id="create-detail" >
+                <div class="pt-1 row">
+                    <div class="col-2">
+                        <input name='name' value="name">
+                    </div>
+                    <div class="col-7">
+                        <input style="width: 515px;" name='details' value="details">
+                    </div>
+                    <div class="text-end col-2">
+                    </div>
+                    <div class="text-end col-1">
+                        <img
+                        hx-post='{% url 'formula_tearsheets:create_detail' tearsheet.pk %}'
+                        hx-trigger='click'
+                        hx-swap='outerHTML'
+                        hx-target="#create-detail"
+                        height="12px" src="{% static 'images/add.svg' %}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- DETAILS -->
+
+
+        <!--RULES -->
+
+        <div class="row pt-3 pb-1">
+            <div class="col-3 ">
+                <span style="text-decoration: underline;">PRICE RECORDS</span>
+            </div>
+            <div class="col-6">
+            </div>
+            <div class="col-1">
+                LIST
+            </div>
+            <div class="col-2">
+                NET
+            </div>
+        </div>
+
+        {% for price_record in price_records  %}
+        <div id="price-record-{{price_record.pk}}" class="row">
+            <div class="col-2 text-start">
+                {{price_record.rule_type}}
+            </div>
+
+            <div class="col-7">
+                {{price_record.rule_display_1}}
+                {{price_record.rule_display_2}}
+            </div>
+            <div class="col-1">
+                ${{price_record.list_price}}
+            </div>
+            <div class="col-1">
+                ${{price_record.net_price}}
+            </div>
+            <div class="text-end col-1">
+
+            </div>
+        </div>
+        {% endfor %}
+        <!--RULES -->
+
+
+
+        <!-- FOOTER DETAILS -->
+
+        <div class="pt-4">
+            <div class="pb-1 row">
+                <span style="text-decoration: underline;">FOOTER DETAILS</span>
+            </div>
+            {% for footer_detail in footer_details  %}
+            <div id="footer-detail-{{footer_detail.pk}}" style="padding-bottom: -20px;" class="row">
+                <div class="col-2">
+                    {{ footer_detail.name}}
+                </div>
+
+                <div class="col-9">
+                    {{footer_detail.details}}
+                </div>
+                <div class="text-end col-1">
+                    <img
+                    hx-get='{% url 'formula_tearsheets:change_footer_detail' footer_detail.pk %}'
+                    hx-trigger='click'
+                    hx-swap='outerHTML'
+                    hx-target="#footer-detail-{{footer_detail.pk}}"
+                    height="10px" src="{% static 'images/edit.svg' %}">
+                </div>
+            </div>
+            {% endfor %}
+            <form id="create-footer-detail">
+                <div class="pt-1 row">
+                    <div class="col-2">
+                        <input name='name' value="name">
+                    </div>
+                    <div class="col-7">
+                        <input style="width: 250px;" name='details' value="details">
+                    </div>
+                    <div class="text-end col-2">
+                    </div>
+                    <div class="text-end col-1">
+                        <img
+                        hx-post='{% url 'formula_tearsheets:create_footer_detail' tearsheet.pk %}'
+                        hx-trigger='click'
+                        hx-swap='outerHTML'
+                        hx-target="#create-footer-detail"
+                        height="12px" src="{% static 'images/add.svg' %}">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <!-- FOOTER DETAILS -->
+        <div style="height: {{tearsheet.footer_space}}px">
+        </div>
+        <!-- ADDRESS FOOTER-->
+        {% comment %} <div class='text-center'>
+            <p class="pt-5 pb-5">B D D W • 5 CROSBY STREET NEW YORK NY 10013 • T 212 625 1230 • INFO@BDDW.COM • WWW.BDDW.COM</p>
+        </div> {% endcomment %}
+
+    </div>
+
+{% endblock content %}
+
+{% block inline_javascript %}
+<script>
+    $(function() {
+        $('#picture').on('click', function() {
+            $('#fileinput').trigger('click');
+        });
+        });
+</script>
+{% endblock inline_javascript %}

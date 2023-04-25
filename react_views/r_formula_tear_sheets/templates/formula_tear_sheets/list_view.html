@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="pt-5">
+    <table class="table table-striped">
+        <thead>
+          <caption>All FORMULA BASED TEARSHEETS</caption>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">NAME</th>
+            <th scope="col">EDIT</th>
+            <th scope="col">PDF</th>
+            <th scope="col">UPDATED ON</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tearsheet in tearsheets  %}
+          <tr>
+            <th scope="row">{{tearsheet.pk}}</th>
+            <td><a href="{{tearsheet.get_absolute_url}}">{{tearsheet}}</a></td>
+            <td><a href="{{tearsheet.get_edit_url}}">EDIT</a>
+              <td >
+                <a style="" href="{% url 'formula_tearsheets:print' tearsheet.pk %}" target="_blank">
+                    view pdf
+                </a>
+                -
+                <a style="" href="{% url 'formula_tearsheets:print' tearsheet.pk %}?justDownload=True">
+                    download pdf
+                </a>
+                -
+                <a style="" href="{% url 'formula_tearsheets:print-list' tearsheet.pk %}" target="_blank">
+                    view list pdf
+                </a>
+                -
+                <a style="" href="{% url 'formula_tearsheets:print-list' tearsheet.pk %}?justDownload=True">
+                    download list pdf
+                </a>
+              </td>
+
+
+            <td>{{tearsheet.updated_on}}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+
+{% endblock content %}

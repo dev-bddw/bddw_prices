@@ -89,16 +89,25 @@ class TearSheet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("tearsheets:detail", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_tear_sheets:view-tearsheet", kwargs={"id": self.pk}
+        )
 
     def get_edit_url(self):
-        return reverse("tearsheets:edit", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_tear_sheets:edit-tearsheet", kwargs={"id": self.pk}
+        )
 
     def get_printing_url(self):
-        return reverse("tearsheets:detail-view-for-print", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_tear_sheets:detail-view-for-print", kwargs={"id": self.pk}
+        )
 
     def get_printing_url_no_list(self):
-        return reverse("tearsheets:detail-view-for-print-list", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_tear_sheets:detail-view-for-print-list",
+            kwargs={"id": self.pk},
+        )
 
     def get_gbp_printing_url(self):
         return reverse("gbp:detail-view-for-print", kwargs={"pk": self.pk})
