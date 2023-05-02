@@ -16,12 +16,12 @@ export default function TemplateC({price_records, sdata}) {
 
 function RuleTypeGroup({sdata, price_records, rule_type}) {
   return(
-		<table style={{'width': '666px'}} className={`mx-auto table-auto`}>
+		<table className={`table-auto`}>
 			<thead className="text-gray-400 text-left">
 				<th style={{'font-weight': 'normal', 'width': `${sdata.col_1}%`}} className="py-1">{rule_type}</th>
 				<th></th>
 				<th style={{'font-weight': 'normal'}} className="py-1">LIST</th>
-				<th style={{'font-weight': 'normal'}} className="py-1"></th>
+				<th style={{'font-weight': 'normal'}} className="py-1">NET</th>
 			</thead>
 			<tbody>
 				{ price_records.map( (price_record, index) =>  <TableRow sdata={sdata} index={index} price_record={price_record} />)}
@@ -38,13 +38,13 @@ function TableRow({sdata, price_record, index}) {
 	const [list, setList] = useState(price_record.list_price)
 	const [net, setNet] = useState(price_record.net_price)
 
-	return(
+  return(
 		<>
-			<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
+		<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
 					<td style={{'width':`${sdata.col_2}%`}} >{display_one}</td>
-					<td style={{'width':`${sdata.col_3}%`}}>{display_two}</td>
-					<td style={{'width':`${sdata.col_4}%`}}>${list}</td>
-					<td style={{'width':`${sdata.col_5}%`}}></td>
+					<td style={{'width':`${sdata.col_3}%`}} >{display_two}</td>
+					<td style={{'width':`${sdata.col_4}%`}} >${list}</td>
+					<td style={{'width':`${sdata.col_5}%`}} >${net}</td>
 			</tr>
 		</>
 	)

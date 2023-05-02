@@ -5,8 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>DETAIL TEARSHEET</title>
-    <script type="module" crossorigin src="/assets/index-a3d205dc.js"></script>
-    <link rel="stylesheet" href="/assets/index-58993792.css">
+    <script type="module" crossorigin src="/assets/index.1d305dbf.js"></script>
+    <link rel="stylesheet" href="/assets/index.ce27c1ee.css">
   </head>
   <body>
 		<div>
@@ -30,6 +30,6 @@
 		};
 	</script>
 
-
+	
   </body>
 </html>

@@ -52,7 +52,7 @@ export default function Image({img }) {
 	return (
 		<div>
 				<div onClick={ (event) => { handleClick(event)}} className="cursor-pointer relative">
-					<img style={{'width': '850px'}} className='hover:opacity-90 object-fill' src={img_url}/>
+					<img className='hover:opacity-90 object-fill' src={img_url}/>
 					<input style={{'display': 'none'}} ref={hiddenFileInput} type="file" name="image_url" accept="image/jpeg,image/png,image/gif" onChange={(event) => {onChangeHandler(event)}}></input>
 					<p className="opacity-25 hover:opacity-100 duration-300 absolute text-5xl underline text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Change Image</p>
 				</div>

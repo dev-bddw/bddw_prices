@@ -20,12 +20,12 @@ function RuleTypeGroup({sdata, price_records, rule_type}) {
   return(
 		<>
 			<div style={{'height': sdata.pt_pr}}></div>
-				<table style={{'width': '666px'}} className={`mx-auto table-auto`}>
+				<table className={`table-auto`}>
 					<thead className="text-gray-400 text-left">
 						<th></th>
 						<th></th>
 						<th style={{'font-weight': 'normal'}} className="py-1">LIST</th>
-						<th style={{'font-weight': 'normal'}} className="py-1"></th>
+						<th style={{'font-weight': 'normal'}} className="py-1">NET</th>
 					</thead>
 					<tbody>
 						{ price_records.map( (price_record, index) =>  <TableRow sdata={sdata} index={index} price_record={price_record} />)}
@@ -45,10 +45,10 @@ function TableRow({sdata, price_record, index}) {
 
   return(
 			<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
-					<td style={{'width': `${sdata.col_1}%`}} >{ index == 0 ? rule_type : null}</td>
-					<td style={{'width':`${sdata.col_2}%`}} >{display_one}</td>
-					<td style={{'width':`${sdata.col_3}%`}} >${list}</td>
-					<td style={{'width':`${sdata.col_4}%`}} ></td>
+					<td style={{'width': `${sdata.col_1}%`}} onClick={ () => onClickHandler(setEditType) } >{ index == 0 ? rule_type : null}</td>
+					<td style={{'width':`${sdata.col_2}%`}} onClick={ () => onClickHandler(setEditOne) } >{display_one}</td>
+					<td style={{'width':`${sdata.col_3}%`}}  onClick={() => { onClickHandler(setEditList) }} >${list}</td>
+					<td style={{'width':`${sdata.col_4}%`}} onClick={ () => { onClickHandler(setEditNet)} } >${net}</td>
 			</tr>
 	)
 }

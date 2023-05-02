@@ -7,10 +7,14 @@ from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken.views import obtain_auth_token
 
+
+from react_views.r_tear_sheets.views import test
+
 from bddw_prices.views import snapshot
 
 urlpatterns = [
     path("", view=snapshot, name="home"),
+    path("test/", test, name="test"),
     path(
         "about/", TemplateView.as_view(template_name="pages/about.html"), name="about"
     ),

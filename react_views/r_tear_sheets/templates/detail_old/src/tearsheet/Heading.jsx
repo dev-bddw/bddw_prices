@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import SETTINGS from './Settings'
 
-export default function Title({title}) {
+export default function Heading({title}) {
 
 	const links = [
 		{
@@ -27,7 +27,7 @@ export default function Title({title}) {
 	]
 
 	return (
-		<div className="">
+		<div style={{'padding-top': '30px'}}>
 			<div className="text-gray-500 text-left">
 					<a className="text-left text-xs" href={CONTEXT.tearsheets_list}>{'<<<'} list</a>
 					<div className="text-right text-xs">

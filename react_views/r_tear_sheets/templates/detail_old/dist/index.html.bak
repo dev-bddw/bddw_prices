@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>DETAIL FOR PRINT LIST</title>
+		<title>DETAIL TEARSHEET</title>
+    <script type="module" crossorigin src="/assets/index.5dd9bfb8.js"></script>
+    <link rel="stylesheet" href="/assets/index.8f103b7a.css">
   </head>
   <body>
 		<div>
@@ -28,6 +30,6 @@
 		};
 	</script>
 
-	<script type="module" src="/src/main.jsx"></script>
+	
   </body>
 </html>

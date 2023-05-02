@@ -4,7 +4,7 @@ import TemplateA from './TemplateA'
 import TemplateB from './TemplateB'
 import TemplateC from './TemplateC'
 import Image from './Image'
-import Title from './Title'
+import Heading from './Heading'
 import Captions from './Captions'
 import Details from './Details'
 import FooterDetails from './FooterDetail'
@@ -51,18 +51,38 @@ export default function Tearsheet() {
 	}
 
   return(
-			<div className="flex justify-center items-center">
-				<div style={{ 'line-height': '1.5', 'font-weight': '400', 'letter-spacing': '.05em', 'font-size': `${sdata.font_size}px`, 'position':'relative', 'width':'816px', 'height':'1100px', }} className="rounded-lg">
-						<div style={{'margin-left': '75px', 'margin-right': '75px'}}>
-              <Title title={CONTEXT.tearsheet.title}/>
-						  <Image img={img}/>
-							<Captions sdata={sdata} captions={captions} />
-							<Details sdata={sdata} details={details}/>
-							{renderTemplate(template) }
-							<FooterDetails sdata={sdata} footers={footer_details} />
-							<Footer/>
-						</div>
-					</div>
-				</div>
-	  )
+		<div>
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>	
+				<tbody>
+					<tr>
+						<td style={{
+							'padding-right': '75px', 
+							'padding-left': '75px', 
+							'width':'816px', 
+							'line-height': '1.5', 
+							'font-weight': '400', 
+							'letter-spacing': '.05em', 
+							'font-size': `${sdata.font_size}px`
+							}}>
+								<Heading title={CONTEXT.tearsheet.title}/>
+								<Image img={img}/>
+								<Captions sdata={sdata} captions={captions} />
+								<Details sdata={sdata} details={details}/>
+								{renderTemplate(template) }
+								<FooterDetails sdata={sdata} footers={footer_details} />
+								<Footer/>
+						</td>
+						<td>	
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+			)
 }
