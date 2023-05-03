@@ -160,6 +160,7 @@ STATICFILES_DIRS = [
     "/app/react_views/r_tear_sheets/templates/edit/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/detail/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/detail_for_print/dist/assets/",
+    "/app/react_views/r_tear_sheets/templates/detail_for_print_list/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/edit/dist/assets/",
     "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_detail/dist/assets/",
     "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_edit/dist/assets/",
