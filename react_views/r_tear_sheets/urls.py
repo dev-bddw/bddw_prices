@@ -17,7 +17,6 @@ from .views import (
     print_all,
     redirect_detail_view_to_pdf,
     redirect_detail_view_to_pdf_list,
-    render_pdf
 )
 
 app_name = "r_tear_sheets"
@@ -47,7 +46,6 @@ urlpatterns = [
         view=detail_view_for_printing_list,
         name="detail-view-for-print-list",
     ),
-    path('render-pdf/<id>', render_pdf, name='render_pdf')
 ]
 
 ### API URLS ###

@@ -7,8 +7,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
-export default function ConfigPanel({ template, setTemplate, sdata, setSheetData}) {
+
+export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData}) {
 
 	const default_values ={
 		'd_col_1': 10,
@@ -120,6 +124,7 @@ export default function ConfigPanel({ template, setTemplate, sdata, setSheetData
 			<div className="px-5 bg-gray-50 border border-solid rounded-lg text-left">
 				<h3 className="font-bold py-3">CONFIG</h3>
 				<TemplateDropdown  template={template} setTemplate={setTemplate}/>
+				<InputSwitch  showCreateInputs={showCreateInputs} setShowCreateInputs={setShowCreateInputs}/>
 				{ Object.keys(sdata).map( (key) => {
 					return(
 						<Box sx={{ width: 400, color: 'black' }}>
@@ -141,7 +146,23 @@ export default function ConfigPanel({ template, setTemplate, sdata, setSheetData
 		</div>
 		);
 	}
+function InputSwitch({showCreateInputs, setShowCreateInputs}) {
+// https://mui.com/material-ui/react-switch/
 
+	const handleChange = () => {
+		setShowCreateInputs(!showCreateInputs)
+	}
+
+	return(
+		<div className="template__wrapper py-5">
+			<FormGroup>
+				<FormControlLabel control={
+				<Switch checked={showCreateInputs} onChange={ () => handleChange() } inputProps={{'aria-label': 'controlled'}} />
+				} label="Show Input Fields"/>
+			</FormGroup>
+		</div>
+		)
+}
 function TemplateDropdown({template, setTemplate}) {
   //https://mui.com/material-ui/react-select/
 	//

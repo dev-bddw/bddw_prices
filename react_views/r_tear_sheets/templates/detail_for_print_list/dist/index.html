@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>EDIT TEARSHEET</title>
+    <script type="module" crossorigin src="/static/index.a0690ad4.js"></script>
+    <link rel="stylesheet" href="/static/index.79fcc05e.css">
+  </head>
+  <body>
+		<div>
+    <div style="background-color: white;" id="root"></div>
+    {{context|json_script:"context"}}
+		{% csrf_token %}
+	<script>
+	 const read_context = JSON.parse(JSON.parse(document.getElementById('context').textContent));
+	 const CONTEXT = {
+		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+		 'auth_token': read_context.auth_token,
+		 'tearsheet' : read_context.tearsheet,
+		 'edit_pricerecord_api' : '{% url 'react_views:r_tear_sheets:edit-pricerecord-api' %}',
+		 'edit_tearsheet_api' : '{% url 'react_views:r_tear_sheets:edit-tearsheet-api' id  %}',
+		 'edit_image_api' : '{% url 'react_views:r_tear_sheets:edit-image-api' id %}',
+		 'create_caption_api' : '{% url 'react_views:r_tear_sheets:create-caption-api' id %}',
+		 'edit_caption_api' : '{% url 'react_views:r_tear_sheets:edit-caption-api' %}',
+		 'create_detail_api' : '{% url 'react_views:r_tear_sheets:create-detail-api' id %}',
+		 'edit_detail_api' : '{% url 'react_views:r_tear_sheets:edit-detail-api' %}',
+		 'create_footer_api' : '{% url 'react_views:r_tear_sheets:create-footer-api' id %}',
+		 'edit_footer_api' : '{% url 'react_views:r_tear_sheets:edit-footer-api' %}',
+		 'view_tearsheet' : '{% url 'react_views:r_tear_sheets:view-tearsheet' id %}',
+
+		};
+	</script>
+
+
+  </body>
+</html>

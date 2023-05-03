@@ -16,7 +16,6 @@ export default function Tearsheet() {
   const captions = CONTEXT.tearsheet.captions
 	const details = CONTEXT.tearsheet.details
 	const footer_details = CONTEXT.tearsheet.footer_details
-	const tearsheet_id = CONTEXT.tearsheet.id
 	const img = CONTEXT.tearsheet.img
 	const title = CONTEXT.tearsheet.title
 
@@ -58,16 +57,16 @@ export default function Tearsheet() {
 						<th></th>
 						<th></th>
 					</tr>
-				</thead>	
+				</thead>
 				<tbody>
 					<tr>
 						<td style={{
-							'padding-right': '75px', 
-							'padding-left': '75px', 
-							'width':'816px', 
-							'line-height': '1.5', 
-							'font-weight': '400', 
-							'letter-spacing': '.05em', 
+							'padding-right': '75px',
+							'padding-left': '75px',
+							'width':'816px',
+							'line-height': '1.5',
+							'font-weight': '400',
+							'letter-spacing': '.05em',
 							'font-size': `${sdata.font_size}px`
 							}}>
 								<Heading title={CONTEXT.tearsheet.title}/>
@@ -78,7 +77,7 @@ export default function Tearsheet() {
 								<FooterDetails sdata={sdata} footers={footer_details} />
 								<Footer/>
 						</td>
-						<td>	
+						<td>
 						</td>
 					</tr>
 				</tbody>

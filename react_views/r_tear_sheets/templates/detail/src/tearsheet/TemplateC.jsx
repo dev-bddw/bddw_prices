@@ -46,10 +46,10 @@ function TableRow({sdata, price_record, index}) {
   return(
 		<>
 		<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
-					<td style={{'width':`${sdata.col_2}%`}} >{display_one}</td>
-					<td style={{'width':`${sdata.col_3}%`}} >{display_two}</td>
-					<td style={{'width':`${sdata.col_4}%`}} >${list}</td>
-					<td style={{'width':`${sdata.col_5}%`}} >${net}</td>
+					<td style={{'width':`${sdata.col_1}%`}} >{display_one}</td>
+					<td style={{'width':`${sdata.col_2}%`}} >{display_two}</td>
+					<td style={{'width':`${sdata.col_3}%`}} >${list}</td>
+					<td style={{'width':`${sdata.col_4}%`}} >${net}</td>
 			</tr>
 		</>
 	)

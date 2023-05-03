@@ -24,7 +24,7 @@
             <td><a href="{{ tearsheet.get_absolute_url }}">{{tearsheet}}</a></td>
             <td><a href="{{tearsheet.get_edit_url}}">EDIT</a>
             <td>
-              <a style="" href="{% url 'react_views:r_tear_sheets:render_pdf' tearsheet.pk %}" target="_blank">
+              <a style="" href="{% url 'react_views:r_tear_sheets:print' tearsheet.pk %}" target="_blank">
                   view pdf
               </a>
               -

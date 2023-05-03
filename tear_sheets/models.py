@@ -56,12 +56,35 @@ class TearSheet(models.Model):
             "font_size": 10,
         }
 
+    def sdata_json_default(self):
+        return self.json_default()
+
+    def gbp_sdata_json_default():
+        return {
+            "col_1": 10,
+            "col_2": 35,
+            "col_3": 35,
+            "col_4": 5,
+            "col_5": 5,
+            "col_6": 5,
+            "col_7": 5,
+            "d_col_1": 10,
+            "d_col_2": 90,
+            "pt": 5,
+            "pt_pr": 5,
+            "font_size": 10,
+        }
+
     class TearSheetTemplate(models.TextChoices):
         a = "A", "ONE COLUMN DISPLAY"
         b = "B", "TWO COLUMN DISPLAY"
         c = "C", "RULE TYPE ABOVE"
 
-    sdata = models.JSONField(default=json_default, blank=True, null=True)
+    sdata = models.JSONField(default=sdata_json_default, blank=True, null=True)
+    gbp_sdata = models.JSONField(default=gbp_sdata_json_default, blank=True, null=True)
+    gbp_template = models.CharField(
+        choices=TearSheetTemplate.choices, default="C", max_length=1000
+    )
     template = models.CharField(
         choices=TearSheetTemplate.choices, default="B", max_length=1000
     )
@@ -110,10 +133,14 @@ class TearSheet(models.Model):
         )
 
     def get_gbp_printing_url(self):
-        return reverse("gbp:detail-view-for-print", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_gbp:detail-view-for-print", kwargs={"id": self.pk}
+        )
 
     def get_gbp_printing_url_no_list(self):
-        return reverse("gbp:detail-view-for-print-list", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_gbp:detail-view-for-print-list", kwargs={"id": self.pk}
+        )
 
     def get_slug_title(self):
         return slugify(self.title)

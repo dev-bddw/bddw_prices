@@ -24,20 +24,23 @@ from tear_sheets.models import (
 from .helpers import return_details_by_title, return_price_records_by_rule_type
 
 
+@login_required
 def detail_view_entry(request, id):
     user = request.user
 
-#        token = Token.objects.get(user=user)
-#    except Token.DoesNotExist:
-#        token = Token.objects.create(user=user)
+    try:
+        token = Token.objects.get(user=user)
+    except Token.DoesNotExist:
+        token = Token.objects.create(user=user)
 
     if request.method == "GET":
 
         x = TearSheet.objects.get(id=id)
 
         context = {
-            "auth_token": 'fc02c4f9cf69a674b0a7d9b69b0be4b9fc99aa31',
+            "auth_token": token.key,
             "tearsheet": {
+                "id": id,
                 "title": x.title,
                 "sdata": x.sdata,
                 "template": x.template,
@@ -84,6 +87,7 @@ def edit_view_entry(request, id):
         context = {
             "auth_token": token.key,
             "tearsheet": {
+                "id": id,
                 "title": x.title,
                 "sdata": x.sdata,
                 "template": x.template,
@@ -146,13 +150,53 @@ def edit_image_api(request, id):
 
 
 @api_view(["POST"])
+def edit_detail_api(request):
+
+    errors = None
+
+    if request.data["data"]["name"] == "" and request.data["data"]["details"] == "":
+
+        TearSheetDetail.objects.filter(id=request.data["data"]["id"]).delete()
+
+    else:
+
+        TearSheetDetail.objects.filter(id=request.data["data"]["id"]).update(
+            **request.data["data"]
+        )
+
+    return JsonResponse({"errors": errors})
+
+
+@api_view(["POST"])
+def create_detail_api(request, id):
+
+    errors = None
+
+    if request.method == "POST":
+
+        order_no = len(TearSheetDetail.objects.filter(tear_sheet_id=id))
+        request.data["data"].update({"order": order_no + 1})
+        TearSheetDetail.objects.create(**request.data["data"])
+
+        return JsonResponse({"errors": errors})
+
+        # return redirect(reverse('edit-tearsheet', kwargs={'id': id}))
+
+    else:
+        return HttpResponse("Request method not supported")
+
+
+@api_view(["POST"])
 def create_caption_api(request, id):
 
     errors = None
 
     if request.method == "POST":
 
-        # create new ImageCpation with tear_sheet_id = id
+        order_no = len(ImageCaption.objects.filter(tear_sheet_id=id))
+        request.data["data"].update({"order_no": order_no + 1})
+
+        ImageCaption.objects.create(**request.data["data"])
 
         return JsonResponse({"errors": errors})
 
@@ -167,17 +211,38 @@ def edit_caption_api(request):
 
     errors = None
 
-    if request.method == "POST":
+    if (
+        request.data["data"]["caption_title"] == ""
+        and request.data["data"]["caption"] == ""
+    ):
 
-        print(request.data["data"])
+        ImageCaption.objects.filter(id=request.data["data"]["id"]).delete()
+
+    else:
+
         ImageCaption.objects.filter(id=request.data["data"]["id"]).update(
             **request.data["data"]
         )
 
-        return JsonResponse({"errors": errors})
+    return JsonResponse({"errors": errors})
+
+
+@api_view(["POST"])
+def edit_footer_api(request):
+
+    errors = None
+
+    if request.data["data"]["name"] == "" and request.data["data"]["details"] == "":
+
+        TearSheetFooterDetail.objects.filter(id=request.data["data"]["id"]).delete()
 
     else:
-        return HttpResponse("Request method not supported")
+
+        TearSheetFooterDetail.objects.filter(id=request.data["data"]["id"]).update(
+            **request.data["data"]
+        )
+
+    return JsonResponse({"errors": errors})
 
 
 @api_view(["POST"])
@@ -187,62 +252,13 @@ def create_footer_api(request, id):
 
     if request.method == "POST":
 
-        # create new ImageCpation with tear_sheet_id = id
+        order_no = len(TearSheetFooterDetail.objects.filter(tear_sheet_id=id))
+        request.data["data"].update({"order": order_no + 1})
+        TearSheetFooterDetail.objects.create(**request.data["data"])
 
         return JsonResponse({"errors": errors})
 
         # return redirect(reverse('edit-tearsheet', kwargs={'id': id}))
-
-    else:
-        return HttpResponse("Request method not supported")
-
-
-@api_view(["POST"])
-def edit_footer_api(request):
-
-    errors = None
-
-    if request.method == "POST":
-
-        TearSheetFooterDetail.objects.filter(id=request.data["data"]["id"]).update(
-            **request.data["data"]
-        )
-
-        return JsonResponse({"errors": errors})
-
-    else:
-        return HttpResponse("Request method not supported")
-
-
-@api_view(["POST"])
-def create_detail_api(request, id):
-
-    errors = None
-
-    if request.method == "POST":
-
-        # create new ImageCpation with tear_sheet_id = id
-
-        return JsonResponse({"errors": errors})
-
-        # return redirect(reverse('edit-tearsheet', kwargs={'id': id}))
-
-    else:
-        return HttpResponse("Request method not supported")
-
-
-@api_view(["POST"])
-def edit_detail_api(request):
-
-    errors = None
-
-    if request.method == "POST":
-
-        TearSheetDetail.objects.filter(id=request.data["data"]["id"]).update(
-            **request.data["data"]
-        )
-
-        return JsonResponse({"errors": errors})
 
     else:
         return HttpResponse("Request method not supported")
@@ -490,64 +506,3 @@ def redirect_detail_view_to_pdf_list(request, id):
     url_string += parameter
 
     return redirect(url_string)
-
-def render_pdf(request, id):
-
-    from django.template import Context, Template
-    from django.template.loader import get_template
-    
-
-    user = request.user
-    try:
-        token = Token.objects.get(user=user)
-    except Token.DoesNotExist:
-        token = Token.objects.create(user=user)
-
-
-    x = TearSheet.objects.get(id=id)
-
-    context = {
-        "auth_token": token.key,
-        "tearsheet": {
-            "title": x.title,
-            "sdata": x.sdata,
-            "template": x.template,
-            "img": x.image.url,
-            "price_records": return_price_records_by_rule_type(id)
-            if return_price_records_by_rule_type(id) is not None
-            else [],
-            "captions": [
-                {"id": c.id, "caption_title": c.caption_title, "caption": c.caption}
-                for c in ImageCaption.objects.filter(tear_sheet_id=id)
-            ]
-            if ImageCaption.objects.filter(tear_sheet_id=id) is not None
-            else [],
-            "details": return_details_by_title(id)
-            if return_details_by_title(id) is not None
-            else [],
-            "footer_details": [
-                {"id": f.id, "name": f.name, "details": f.details}
-                for f in TearSheetFooterDetail.objects.filter(tear_sheet_id=id)
-            ]
-            if TearSheetFooterDetail.objects.filter(tear_sheet_id=id) is not None
-            else [],
-        },
-    }
-
-    context = json.dumps(context)
-
-    context_ = {"id": id, "context": context}
-    template = get_template("detail/dist/index.html")
-    _html = template.render(context_)
-
-    import requests
-    
-    headers = {'Content-Type': 'application/json'}
-
-    response = requests.post(url=settings.PDF_APP_URL, headers=headers, json={'html': _html})
-    
-    return HttpResponse(response)
-
-def test(request):
-
-    return render(request, 'test/dist/index.html')

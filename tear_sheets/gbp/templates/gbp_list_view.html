@@ -20,21 +20,21 @@
           {% for tearsheet in tearsheets  %}
           <tr>
             <th scope="row">{{tearsheet.pk}}</th>
-			<td><a href="{% url 'gbp:detail' tearsheet.pk  %}" >{{tearsheet}}</a></td>
+			<td><a href="{% url 'react_views:r_gbp:view-tearsheet' tearsheet.pk  %}" >{{tearsheet}}</a></td>
             <td>
-              <a style="" href="{% url 'gbp:print' tearsheet.pk %}" target="_blank">
+              <a style="" href="{% url 'react_views:r_gbp:print' tearsheet.pk %}" target="_blank">
                   view pdf
               </a>
               -
-              <a style="" href="{% url 'gbp:print' tearsheet.pk %}?justDownload=True">
+              <a style="" href="{% url 'react_views:r_gbp:print' tearsheet.pk %}?justDownload=True">
                   download pdf
               </a>
               -
-              <a style="" href="{% url 'gbp:print-list' tearsheet.pk %}" target="_blank">
+              <a style="" href="{% url 'react_views:r_gbp:print-list' tearsheet.pk %}" target="_blank">
                   view list pdf
               </a>
               -
-              <a style="" href="{% url 'gbp:print-list' tearsheet.pk %}?justDownload=True">
+              <a style="" href="{% url 'react_views:r_gbp:print-list' tearsheet.pk %}?justDownload=True">
                   download list pdf
               </a>
             </td>

@@ -87,7 +87,8 @@ LOCAL_APPS = [
     "formula_tear_sheets",
     "price_records",
     "price_lists",
-    "react_views.r_tear_sheets"
+    "react_views.r_tear_sheets",
+    "react_views.r_tear_sheets.r_gbp"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -159,8 +160,11 @@ STATICFILES_DIRS = [
     "/app/react_views/r_tear_sheets/templates/edit/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/detail/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/detail_for_print/dist/assets/",
-    "/app/react_views/r_tear_sheets/templates/detail_for_print_list/dist/assets/",
-    "/app/react_views/r_tear_sheets/templates/test/dist/assets/",
+    "/app/react_views/r_tear_sheets/templates/edit/dist/assets/",
+    "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_detail/dist/assets/",
+    "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_edit/dist/assets/",
+    "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_detail_for_print/dist/assets/",
+    "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_detail_for_print_list/dist/assets/",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders

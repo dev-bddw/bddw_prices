@@ -10,3 +10,7 @@ Collectfast==2.2.0  # https://github.com/antonagestam/collectfast
 # ------------------------------------------------------------------------------
 django-storages[boto3]==1.12.3  # https://github.com/jschneier/django-storages
 django-anymail[sendgrid]==8.5  # https://github.com/anymail/django-anymail
+
+# Sentry (django)
+# ------------------------------------------------------------------------------
+sentry-sdk==1.21.1
