@@ -68,7 +68,7 @@ function TableRow({sdata, price_record, index}) {
 					<td style={{'width':`${sdata.col_2}%`}} >{display_one}</td>
 					<td style={{'font-weight': 'bold', 'width':`${sdata.col_3}%`}} >£{list}</td>
 					<td style={{'width':`${sdata.col_4}%`}} >£{listNoVat}</td>
-					<td style={{'width':`${sdata.col_5}%`}}  >£{trade}</td>
+					<td style={{'font-weight': 'bold', 'width':`${sdata.col_5}%`}}  >£{trade}</td>
 					<td style={{'width':`${sdata.col_6}%`}} >£{tradeNoVat}</td>
 			</tr>
 		</>

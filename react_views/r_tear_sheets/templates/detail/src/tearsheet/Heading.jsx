@@ -31,7 +31,7 @@ export default function Heading({title}) {
 	return (
 		<div className="text-gray-500 text-left">
 			<Nav/>
-			<span style={{'width': '300px', 'display': 'block', 'font-size': '30px'}} className="py-2 text-gray-500 text-left">{title}</span>
+			<span style={{'display': 'block', 'font-size': '30px'}} className="w-full py-2 text-gray-500 text-left">{title}</span>
 	</div>
 	)
 }
