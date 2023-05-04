@@ -24,6 +24,9 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'col_5': 5,
 		'col_6': 5,
 		'col_7': 5,
+		'pt_cap': 5,
+		'pt_detail': 5,
+		'pt_footer': 5,
 		'pt_pr': 5,
 		'pt': 5,
 		'font_size': 10
@@ -37,10 +40,32 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'col_3': CONTEXT.tearsheet.sdata.col_3,
 		'col_4': CONTEXT.tearsheet.sdata.col_4,
 		'col_5': CONTEXT.tearsheet.sdata.col_5,
+		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
+		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
+		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
 		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
 		'pt': CONTEXT.tearsheet.sdata.pt,
 		'font_size': CONTEXT.tearsheet.sdata.font_size
 	})
+
+	const easy_defs = {
+		'd_col_1': 'Details Column One Width',
+		'd_col_2': 'Details Column Two Width',
+		'col_1': 'Price Record Column One Width',
+		'col_2': 'Price Record Column Two Width',
+		'col_3': 'Price Record Column Three Width',
+		'col_4': 'Price Record Column Four Width',
+		'col_5': 'Price Record Column Five Width',
+		'col_6': 'Price Record Column Six Width',
+		'col_7': 'Price Record Column Seven Width',
+		'pt_cap': 'Padding Top Captions',
+		'pt_detail': 'Padding Top Details',
+		'pt_footer': 'Padding Top Footer Detail',
+		'pt_pr': 'Padding Top Price Records',
+		'pt': 'Padding top details/captions/footer',
+		'font_size': 'Font Size'
+	}
+
 
 	const initial_template = useRef( template )
 
@@ -92,21 +117,6 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		setSheetData(default_values)
 		setTemplate('B')
 		setMessage('Defaults applied. Not saved!')
-	}
-
-	const easy_defs = {
-		'd_col_1': 'Details Column One Width',
-		'd_col_2': 'Details Column Two Width',
-		'col_1': 'Price Record Column One Width',
-		'col_2': 'Price Record Column Two Width',
-		'col_3': 'Price Record Column Three Width',
-		'col_4': 'Price Record Column Four Width',
-		'col_5': 'Price Record Column Five Width',
-		'col_6': 'Price Record Column Six Width',
-		'col_7': 'Price Record Column Seven Width',
-		'pt_pr': 'Padding Top Price Records',
-		'pt': 'Padding top details/captions/footer',
-		'font_size': 'Font Size'
 	}
 
 

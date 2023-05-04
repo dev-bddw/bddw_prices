@@ -51,7 +51,9 @@ class TearSheet(models.Model):
             "col_5": 10,
             "d_col_1": 10,
             "d_col_2": 90,
-            "pt": 5,
+            "pt_cap": 5,
+            "pt_detail": 5,
+            "pt_footer": 5,
             "pt_pr": 5,
             "font_size": 10,
         }
@@ -70,7 +72,9 @@ class TearSheet(models.Model):
             "col_7": 5,
             "d_col_1": 10,
             "d_col_2": 90,
-            "pt": 5,
+            "pt_cap": 5,
+            "pt_detail": 5,
+            "pt_footer": 5,
             "pt_pr": 5,
             "font_size": 10,
         }

@@ -6,7 +6,7 @@ function Captions({showCreateInputs, captions, sdata}) {
 	return(
 
 		<>
-			<div style={{'height': sdata.pt}}/>
+			<div style={{'height': sdata.pt_cap}}/>
 		<table style={{'width': '850px'}} className="py-5 mx-auto table-auto">
 							<thead className="text-gray-400 text-left">
 									<th></th>

@@ -28,6 +28,9 @@ export default function Tearsheet() {
 		'col_3': CONTEXT.tearsheet.sdata.col_3,
 		'col_4': CONTEXT.tearsheet.sdata.col_4,
 		'col_5': CONTEXT.tearsheet.sdata.col_5,
+		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
+		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
+		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
 		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
 		'pt': CONTEXT.tearsheet.sdata.pt,
 		'font_size': CONTEXT.tearsheet.sdata.font_size

@@ -4,7 +4,7 @@ import SETTINGS from './Settings';
 export default function FooterDetails({showCreateInputs, footers, sdata}) {
 	return(
     <>
-		<div style={{'height': sdata.pt}}/>
+		<div style={{'height': sdata.pt_footer}}/>
 			<table style={{'width': '850px'}} className="mx-auto table-auto">
 				<thead className="text-gray-400 text-left">
 					<th></th>

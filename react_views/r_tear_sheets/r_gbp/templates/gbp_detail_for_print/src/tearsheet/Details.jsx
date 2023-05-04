@@ -4,7 +4,7 @@ import SETTINGS from './Settings'
 function Details({details, sdata}) {
 	return(
     <>
-			<div style={{'height': sdata.pt}}/>
+			<div style={{'height': sdata.pt_detail}}/>
 	  <table style={{'width': '850px'}} className="mx-auto table-auto">
 	  	<thead className="text-gray-400 text-left">
 				<th></th>

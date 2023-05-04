@@ -3,7 +3,7 @@ import {useRef, useState, useEffect} from 'react';
 export default function FooterDetails({footers, sdata}) {
 	return(
     <>
-			<div style={{'height': sdata.pt}}/>
+			<div style={{'height': sdata.pt_footer}}/>
 	  <table style={{'width': '850px'}} className="mx-auto table-auto">
 	  	<thead className="text-gray-400 text-left">
 				<th></th>
