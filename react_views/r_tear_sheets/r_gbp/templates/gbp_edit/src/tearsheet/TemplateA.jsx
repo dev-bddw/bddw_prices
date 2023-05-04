@@ -1,4 +1,5 @@
 import {useEffect, useRef, useState} from 'react'
+import SETTINGS from './Settings';
 
 //ONE COLUMN
 //ONE COLUMN
@@ -115,18 +116,16 @@ function TableRow({sdata, price_record, index}) {
 						})
 	}
 
-	const classes="shadow appearance-none border rounded w-full py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outliney-1"
-
   return(
 		<>
 			<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
 				{
 				edit_type ?
-					<td style={{'width': `${sdata.col_1}%`}}><input onChange={ (event) => onChangeHandler(event,setRecord)} className={classes} value={rule_type}></input></td>
+					<td style={{'width': `${sdata.col_1}%`}}><input onChange={ (event) => onChangeHandler(event,setRecord)} className={SETTINGS.input_classes} value={rule_type}></input></td>
 					:<td style={{'width': `${sdata.col_1}%`}} onClick={ () => onClickHandler(setEditType) } >{ index == 0 ? rule_type : null}</td>
 				}{
 				edit_one ?
-					<td style={{'width': `${sdata.col_2}%`}}><input onChange={ (event) => onChangeHandler(event,setOne)} className={classes} value={display_one}></input></td>
+					<td style={{'width': `${sdata.col_2}%`}}><input onChange={ (event) => onChangeHandler(event,setOne)} className={SETTINGS.input_classes} value={display_one}></input></td>
 					:<td style={{'width':`${sdata.col_2}%`}} onClick={ () => onClickHandler(setEditOne) } >{display_one}</td>
 				}{
 				edit_list ?

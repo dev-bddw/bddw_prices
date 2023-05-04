@@ -93,9 +93,6 @@ function FooterRow({sdata, footer, index}) {
 						})
 	}
 
-
-	const classes="shadow appearance-none border rounded w-full py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outliney-1"
-
 return(
 				<>
 					<tr className="hover:bg-gray-50 text-gray-400 text-left">

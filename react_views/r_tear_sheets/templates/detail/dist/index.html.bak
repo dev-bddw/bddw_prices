@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>TEARSHEET DETAIL</title>
     <script type="module" crossorigin src="{% static "index.5288f8d9.js" %}"></script>
-    <link rel="stylesheet" href="{% static "index.b0016798.css" %}">
+    <link rel="stylesheet" href="/static/index.b0016798.css">
   </head>
   <body>
     <div id="root"></div>
