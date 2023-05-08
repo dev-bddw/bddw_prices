@@ -7,7 +7,30 @@ def image_upload_to(instance, filename):
     return f"tear_sheet_images/{instance.title}/{filename}"
 
 
+def json_default():
+    return {
+        "d_col_1": 87,
+        "d_col_2": 703,
+        "col_1": 87,
+        "col_2": 173,
+        "col_3": 499,
+        "col_4": 80,
+        "col_5": 54,
+        "pt_cap": 5,
+        "pt_detail": 5,
+        "pt_footer": 5,
+        "pt_pr": 5,
+        "pt": 5,
+        "font_size": 10,
+    }
+
+
 class FormulaTearSheet(models.Model):
+    """
+    the model for tearsheets that use formulas to generate price records
+    not implemented for gbp
+    """
+
     class TearSheetTemplate(models.TextChoices):
         a = "A", "ONE COLUMN DISPLAY"
         b = "B", "TWO COLUMN DISPLAY"
@@ -16,7 +39,7 @@ class FormulaTearSheet(models.Model):
     template = models.CharField(
         choices=TearSheetTemplate.choices, default="B", max_length=1000
     )
-
+    sdata = models.JSONField(default=json_default, blank=True, null=True)
     title = models.CharField(
         help_text="This will appear at the top of the tearsheet.",
         blank=True,
@@ -40,19 +63,25 @@ class FormulaTearSheet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("formula_tearsheets:detail", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_formula_tear_sheets:view-tearsheet", kwargs={"id": self.pk}
+        )
 
     def get_edit_url(self):
-        return reverse("formula_tearsheets:edit", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_formula_tear_sheets:edit-tearsheet", kwargs={"id": self.pk}
+        )
 
     def get_printing_url(self):
         return reverse(
-            "formula_tearsheets:detail-view-for-print", kwargs={"pk": self.pk}
+            "react_views:r_formula_tear_sheets:detail-view-for-print",
+            kwargs={"id": self.pk},
         )
 
     def get_printing_url_no_list(self):
         return reverse(
-            "formula_tearsheets:detail-view-for-print-list", kwargs={"pk": self.pk}
+            "react_views:r_formula_tear_sheets:detail-view-for-print-list",
+            kwargs={"id": self.pk},
         )
 
     def get_slug_title(self):

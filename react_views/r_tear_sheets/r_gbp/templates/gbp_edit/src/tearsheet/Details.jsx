@@ -65,10 +65,10 @@ function AddDetail({sdata}) {
 	return(
 			<>
 				<tr className="hover:bg-gray-50 text-gray-400 text-left">
-						<td style={{'width':`${sdata.d_col_1}%`}}>
+						<td style={{'width':`${sdata.d_col_1}px`}}>
 							<input onChange={ (event) => onChangeHandler(event, setName)} value={_name} className={classes}></input>
 						</td>
-						<td style={{'width':`${sdata.d_col_2}%`}}>
+						<td style={{'width':`${sdata.d_col_2}px`}}>
 							<input style={{'display': 'inline'}} onChange={ (event) => onChangeHandler(event, setDetails)} value={_details} className={classes}></input>
 							<button onClick={ () => { CREATE() }} className="mx-2 py-1 px-1 bg-gray-50 hover:bg-white text-gray-800 border border-gray-400 rounded shadow" style={{'position': 'absolute', 'display': 'inline'}}>CREATE</button>
 						</td>
@@ -149,13 +149,13 @@ return(
 							<td>
 								<input onChange={ (event) => onChangeHandler(event, setName)} value={_name} className={SETTINGS.input_classes}></input>
 							</td> :
-							<td onClick={ () => { setEditName(true) } } style={{'width':`${sdata.d_col_1}%`}}> { index == 0 ? _name : null} </td>
+							<td onClick={ () => { setEditName(true) } } style={{'width':`${sdata.d_col_1}px`}}> { index == 0 ? _name : null} </td>
 						}
 						{ edit_details ?
 							<td>
 								<input onChange={ (event) => onChangeHandler(event, setDetails)} value={_details} className={SETTINGS.input_classes}></input>
 							</td> :
-							<td onClick={ () => { setEditDetails(true) } } style={{'width':`${sdata.d_col_2}%`}}>{_details} </td>
+							<td onClick={ () => { setEditDetails(true) } } style={{'width':`${sdata.d_col_2}px`}}>{_details} </td>
 						}
 					</tr>
 				</>

@@ -13,15 +13,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 
 export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData}) {
-
 	const default_values ={
-		'd_col_1': 10,
-		'd_col_2': 90,
-		'col_1': 10,
-		'col_2': 35,
-		'col_3': 35,
-		'col_4': 5,
-		'col_5': 5,
+		'd_col_1': 99,
+		'd_col_2': 703,
+		'col_1': 94,
+		'col_2': 173,
+		'col_3': 69,
+		'col_4': 60,
+		'col_5': 54,
 		'col_6': 5,
 		'col_7': 5,
 		'pt_cap': 5,
@@ -40,6 +39,8 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'col_3': CONTEXT.tearsheet.sdata.col_3,
 		'col_4': CONTEXT.tearsheet.sdata.col_4,
 		'col_5': CONTEXT.tearsheet.sdata.col_5,
+		'col_6': CONTEXT.tearsheet.sdata.col_5,
+		'col_7': CONTEXT.tearsheet.sdata.col_6,
 		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
 		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
 		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
@@ -143,7 +144,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 					return(
 						<Box sx={{ width: 400, color: 'black' }}>
 							<p className="font-sans text-slate-400 py-2 text-s">{easy_defs[key]} ({sdata[key]}) </p>
-							<Slider size="small" aria-label="col-width" value={sdata[key]} defaultValue={sdata[key]} onChange={ (event) => handleChange(event,key) } />
+							<Slider size="small" aria-label="col-width" max={1000} value={sdata[key]} defaultValue={sdata[key]} onChange={ (event) => handleChange(event,key) } />
 					</Box>
 					)})
 				}

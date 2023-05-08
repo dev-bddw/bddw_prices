@@ -394,7 +394,7 @@ def detail_view_for_printing(request, id):
             "tearsheet": {
                 "title": x.title,
                 "sdata": x.gbp_sdata,
-                "template": x.template,
+                "template": x.gbp_template,
                 "img": x.image.url,
                 "price_records": return_price_records_by_rule_type(id)
                 if return_price_records_by_rule_type(id) is not None
@@ -439,7 +439,7 @@ def detail_view_for_printing_list(request, id):
             "tearsheet": {
                 "title": x.title,
                 "sdata": x.gbp_sdata,
-                "template": x.template,
+                "template": x.gbp_template,
                 "img": x.image.url,
                 "price_records": return_price_records_by_rule_type(id)
                 if return_price_records_by_rule_type(id) is not None

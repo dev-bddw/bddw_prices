@@ -22,18 +22,20 @@ export default function Tearsheet() {
 	const title = CONTEXT.tearsheet.title
 
 	const [sdata, setSheetData] = useState( {
+		'font_size': CONTEXT.tearsheet.sdata.font_size,
+		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
 		'd_col_1': CONTEXT.tearsheet.sdata.d_col_1,
 		'd_col_2': CONTEXT.tearsheet.sdata.d_col_2,
+		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
+		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
 		'col_1': CONTEXT.tearsheet.sdata.col_1,
 		'col_2': CONTEXT.tearsheet.sdata.col_2,
 		'col_3': CONTEXT.tearsheet.sdata.col_3,
 		'col_4': CONTEXT.tearsheet.sdata.col_4,
 		'col_5': CONTEXT.tearsheet.sdata.col_5,
-		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
-		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
+		'col_6': CONTEXT.tearsheet.sdata.col_6,
+		'col_7': CONTEXT.tearsheet.sdata.col_7,
 		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
-		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
-		'font_size': CONTEXT.tearsheet.sdata.font_size
 		}
 	)
 

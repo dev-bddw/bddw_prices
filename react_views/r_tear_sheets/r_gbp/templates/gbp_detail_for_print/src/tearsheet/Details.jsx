@@ -118,13 +118,13 @@ return(
 							<td>
 								<input onChange={ (event) => onChangeHandler(event, setName)} value={_name} className={SETTINGS.input_classes}></input>
 							</td> :
-							<td onClick={ () => { setEditName(true) } } style={{'width':`${sdata.d_col_1}%`}}> { index == 0 ? _name : null} </td>
+							<td onClick={ () => { setEditName(true) } } style={{'width':`${sdata.d_col_1}px`}}> { index == 0 ? _name : null} </td>
 						}
 						{ edit_details ?
 							<td>
 								<input onChange={ (event) => onChangeHandler(event, setDetails)} value={_details} className={SETTINGS.input_classes}></input>
 							</td> :
-							<td onClick={ () => { setEditDetails(true) } } style={{'width':`${sdata.d_col_2}%`}}>{_details} </td>
+							<td onClick={ () => { setEditDetails(true) } } style={{'width':`${sdata.d_col_2}px`}}>{_details} </td>
 						}
 					</tr>
 				</>

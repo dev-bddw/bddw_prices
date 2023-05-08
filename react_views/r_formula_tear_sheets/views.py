@@ -1,359 +1,482 @@
+import json
+import os
+import random
+import zipfile
+from io import BytesIO
+
+import boto3
+import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import HttpResponse, redirect, render
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
 
-from price_records.models import FormulaPriceRecord
-from products.models import CatSeriesItem
-
-from .helpers import return_details_by_title, return_price_records_by_rule_type
-from .models import (
+from formula_tear_sheets.models import (
     FormulaImageCaption,
     FormulaTearSheet,
     FormulaTearSheetDetail,
     FormulaTearSheetFooterDetail,
 )
 
-
-def list_view(request):
-
-    return render(
-        request,
-        "formula_tear_sheets/list_view.html",
-        {
-            "tearsheets": FormulaTearSheet.objects.all(),
-        },
-    )
+from .helpers import return_details_by_title, return_price_records_by_rule_type
 
 
-def detail_view(request, pk):
+@login_required
+def detail_view_entry(request, id):
+    user = request.user
 
-    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
-    captions = FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
-    footer_details = FormulaTearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
-
-    return render(
-        request,
-        "formula_tear_sheets/detail_view.html",
-        {
-            "tearsheet": tear_sheet,
-            "details": return_details_by_title(pk),
-            "captions": captions,
-            "footer_details": footer_details,
-            "price_records": return_price_records_by_rule_type(pk),
-        },
-    )
-
-
-def edit_view(request, pk):
-
-    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
-    details = FormulaTearSheetDetail.objects.filter(tear_sheet=tear_sheet)
-    captions = FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
-    footer_details = FormulaTearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
-
-    cat_series_items = CatSeriesItem.objects.filter(
-        formula_tear_sheet=tear_sheet
-    ).prefetch_related()
-
-    # https://docs.djangoproject.com/en/4.0/ref/models/querysets/
-    # this is how you return a list of foreign keys from a queryset of another model
-    price_records = FormulaPriceRecord.objects.filter(
-        cat_series_item__in=cat_series_items
-    )
-
-    return render(
-        request,
-        "formula_tear_sheets/edit_view.html",
-        {
-            "tearsheet": tear_sheet,
-            "details": details,
-            "captions": captions,
-            "footer_details": footer_details,
-            "price_records": price_records,
-        },
-    )
-
-
-def change_title_hx(request, pk):
-
-    tearsheet = FormulaTearSheet.objects.get(pk=pk)
-
-    if request.method == "PUT":
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/edit/title.html",
-            {"tearsheet": tearsheet},
-        )
-
-    if request.method == "POST":
-        tearsheet.title = request.POST.get("title")
-        tearsheet.save()
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/edit/title.html",
-            {"tearsheet": tearsheet},
-        )
+    try:
+        token = Token.objects.get(user=user)
+    except Token.DoesNotExist:
+        token = Token.objects.create(user=user)
 
     if request.method == "GET":
+
+        x = FormulaTearSheet.objects.get(id=id)
+
+        context = {
+            "auth_token": token.key,
+            "tearsheet": {
+                "id": id,
+                "title": x.title,
+                "sdata": x.sdata,
+                "template": x.template,
+                "img": x.image.url,
+                "price_records": return_price_records_by_rule_type(id)
+                if return_price_records_by_rule_type(id) is not None
+                else [],
+                "captions": [
+                    {"id": c.id, "caption_title": c.caption_title, "caption": c.caption}
+                    for c in FormulaImageCaption.objects.filter(tear_sheet_id=id)
+                ]
+                if FormulaImageCaption.objects.filter(tear_sheet_id=id) is not None
+                else [],
+                "details": return_details_by_title(id)
+                if return_details_by_title(id) is not None
+                else [],
+                "footer_details": [
+                    {"id": f.id, "name": f.name, "details": f.details}
+                    for f in FormulaTearSheetFooterDetail.objects.filter(
+                        tear_sheet_id=id
+                    )
+                ]
+                if FormulaTearSheetFooterDetail.objects.filter(tear_sheet_id=id)
+                is not None
+                else [],
+            },
+        }
+
+        context = json.dumps(context)
+
         return render(
-            request, "formula_tear_sheets/hx/get/title.html", {"tearsheet": tearsheet}
+            request, "form_detail/dist/index.html", {"id": id, "context": context}
         )
 
 
-def change_image_hx(request, pk):
+@login_required
+def edit_view_entry(request, id):
+    user = request.user
 
-    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
+    try:
+        token = Token.objects.get(user=user)
+    except Token.DoesNotExist:
+        token = Token.objects.create(user=user)
+
+    if request.method == "GET":
+
+        x = FormulaTearSheet.objects.get(id=id)
+
+        context = {
+            "auth_token": token.key,
+            "tearsheet": {
+                "id": id,
+                "title": x.title,
+                "sdata": x.sdata,
+                "template": x.template,
+                "img": x.image.url,
+                "price_records": return_price_records_by_rule_type(id)
+                if return_price_records_by_rule_type(id) is not None
+                else [],
+                "captions": [
+                    {"id": c.id, "caption_title": c.caption_title, "caption": c.caption}
+                    for c in FormulaImageCaption.objects.filter(tear_sheet_id=id)
+                ]
+                if FormulaImageCaption.objects.filter(tear_sheet_id=id) is not None
+                else [],
+                "details": return_details_by_title(id)
+                if return_details_by_title(id) is not None
+                else [],
+                "footer_details": [
+                    {"id": f.id, "name": f.name, "details": f.details}
+                    for f in FormulaTearSheetFooterDetail.objects.filter(
+                        tear_sheet_id=id
+                    )
+                ]
+                if FormulaTearSheetFooterDetail.objects.filter(tear_sheet_id=id)
+                is not None
+                else [],
+            },
+        }
+
+        context = json.dumps(context)
+
+        return render(
+            request, "form_edit/dist/index.html", {"id": id, "context": context}
+        )
+
+
+@api_view(["POST"])
+def edit_tearsheet_api(request, id):
 
     if request.method == "POST":
 
-        image = request.FILES.get("fileinput")
-        tear_sheet.image = image
-        tear_sheet.save()
+        FormulaTearSheet.objects.filter(id=id).update(**request.data["data"])
 
-        return redirect(tear_sheet.get_edit_url())
+        return JsonResponse({"errors": []})
 
     else:
-        pass
+        return HttpResponse("Request method not supported")
 
 
-def change_caption_hx(request, pk):
-
-    caption = FormulaImageCaption.objects.get(pk=pk)
-
-    if request.method == "DELETE":
-        caption.delete()
-
-        return HttpResponse("")
-
-    if request.method == "PUT":
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/edit/caption.html",
-            {"caption": caption},
-        )
+@api_view(["POST"])
+def edit_image_api(request, id):
 
     if request.method == "POST":
-        caption.caption_title = request.POST.get("title")
-        caption.caption = request.POST.get("caption")
-        caption.save()
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/edit/caption.html",
-            {"caption": caption},
-        )
 
-    if request.method == "GET":
-        return render(
-            request, "formula_tear_sheets/hx/get/caption.html", {"caption": caption}
-        )
-
-
-def change_detail_hx(request, pk):
-    detail = FormulaTearSheetDetail.objects.get(pk=pk)
-
-    if request.method == "DELETE":
-        detail.delete()
-        return HttpResponse("")
-
-    if request.method == "PUT":
-
-        return render(
-            request, "formula_tear_sheets/hx/post/edit/detail.html", {"detail": detail}
-        )
-
-    if request.method == "POST":
-        detail.name = request.POST.get("name")
-        detail.details = request.POST.get("details")
-        detail.save()
-
-        return render(
-            request, "formula_tear_sheets/hx/post/edit/detail.html", {"detail": detail}
-        )
-
-    if request.method == "GET":
-        return render(
-            request, "formula_tear_sheets/hx/get/detail.html", {"detail": detail}
-        )
-
-
-def change_footer_detail_hx(request, pk):
-    footer_detail = FormulaTearSheetFooterDetail.objects.get(pk=pk)
-
-    if request.method == "DELETE":
-        footer_detail.delete()
-
-        return HttpResponse("")
-
-    if request.method == "PUT":
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/edit/footer_detail.html",
-            {"footer_detail": footer_detail},
-        )
-
-    if request.method == "POST":
-        footer_detail.name = request.POST.get("name")
-        footer_detail.details = request.POST.get("details")
-        footer_detail.save()
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/edit/footer_detail.html",
-            {"footer_detail": footer_detail},
-        )
-    if request.method == "GET":
-        return render(
-            request,
-            "formula_tear_sheets/hx/get/footer_detail.html",
-            {"footer_detail": footer_detail},
-        )
-
-
-@login_required
-def create_caption_hx(request, pk):
-
-    if request.method == "POST":
-        tear_sheet = FormulaTearSheet.objects.get(pk=pk)
-        caption = FormulaImageCaption.objects.create(
-            caption_title=request.POST.get("title"),
-            caption=request.POST.get("caption"),
-            tear_sheet=tear_sheet,
-            order_no=1
-            + max(
-                [
-                    x.order_no
-                    for x in FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
-                ]
-            )
-            if [
-                x.order_no
-                for x in FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
-            ]
-            != []
-            else 1,
-        )
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/create/caption.html",
-            {"caption": caption, "tearsheet": tear_sheet},
-        )
-
-
-@login_required
-def create_detail_hx(request, pk):
-
-    if request.method == "POST":
-        tear_sheet = FormulaTearSheet.objects.get(pk=pk)
-        detail = FormulaTearSheetDetail.objects.create(
-            name=request.POST.get("name"),
-            details=request.POST.get("details"),
-            tear_sheet=tear_sheet,
-            order=1
-            + max(
-                [
-                    x.order
-                    for x in FormulaTearSheetDetail.objects.filter(
-                        tear_sheet=tear_sheet
-                    )
-                ]
-            )
-            if [
-                x.order
-                for x in FormulaTearSheetDetail.objects.filter(tear_sheet=tear_sheet)
-            ]
-            != []
-            else 1,
-        )
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/create/detail.html",
-            {"detail": detail, "tearsheet": tear_sheet},
-        )
-
-
-@login_required
-def create_footer_detail_hx(request, pk):
-    if request.method == "POST":
-        tear_sheet = FormulaTearSheet.objects.get(pk=pk)
-        detail = FormulaTearSheetFooterDetail.objects.create(
-            name=request.POST.get("name"),
-            details=request.POST.get("details"),
-            tear_sheet=tear_sheet,
-            order=1
-            + max(
-                [
-                    x.order
-                    for x in FormulaTearSheetFooterDetail.objects.filter(
-                        tear_sheet=tear_sheet
-                    )
-                ]
-            )
-            if [
-                x.order
-                for x in FormulaTearSheetFooterDetail.objects.filter(
-                    tear_sheet=tear_sheet
-                )
-            ]
-            != []
-            else 1,
-        )
-
-        return render(
-            request,
-            "formula_tear_sheets/hx/post/create/footer_detail.html",
-            {"footer_detail": detail, "tearsheet": tear_sheet},
-        )
-
-
-@login_required
-def change_template_hx(request, pk):
-
-    tearsheet = FormulaTearSheet.objects.get(pk=pk)
-
-    if request.method == "POST":
-        tearsheet.template = request.POST.get("template")
+        image = request.FILES.get("image")
+        tearsheet = FormulaTearSheet.objects.get(id=id)
+        tearsheet.image = image
         tearsheet.save()
 
-    return render(
-        request,
-        "formula_tear_sheets/hx/post/edit/template.html",
-        {"tearsheet": tearsheet},
+        return JsonResponse({"url": tearsheet.image.url})
+
+        # return redirect(reverse('edit-tearsheet', kwargs={'id': id}))
+
+    else:
+        return HttpResponse("Request method not supported")
+
+
+@api_view(["POST"])
+def edit_detail_api(request):
+
+    errors = None
+
+    if request.data["data"]["name"] == "" and request.data["data"]["details"] == "":
+
+        FormulaTearSheetDetail.objects.filter(id=request.data["data"]["id"]).delete()
+
+    else:
+
+        FormulaTearSheetDetail.objects.filter(id=request.data["data"]["id"]).update(
+            **request.data["data"]
+        )
+
+    return JsonResponse({"errors": errors})
+
+
+@api_view(["POST"])
+def create_detail_api(request, id):
+
+    errors = None
+
+    if request.method == "POST":
+
+        order_no = len(FormulaTearSheetDetail.objects.filter(tear_sheet_id=id))
+        request.data["data"].update({"order": order_no + 1})
+        FormulaTearSheetDetail.objects.create(**request.data["data"])
+
+        return JsonResponse({"errors": errors})
+
+        # return redirect(reverse('edit-tearsheet', kwargs={'id': id}))
+
+    else:
+        return HttpResponse("Request method not supported")
+
+
+@api_view(["POST"])
+def create_caption_api(request, id):
+
+    errors = None
+
+    if request.method == "POST":
+
+        order_no = len(FormulaImageCaption.objects.filter(tear_sheet_id=id))
+        request.data["data"].update({"order_no": order_no + 1})
+
+        FormulaImageCaption.objects.create(**request.data["data"])
+
+        return JsonResponse({"errors": errors})
+
+        # return redirect(reverse('edit-tearsheet', kwargs={'id': id}))
+
+    else:
+        return HttpResponse("Request method not supported")
+
+
+@api_view(["POST"])
+def edit_caption_api(request):
+
+    errors = None
+
+    if (
+        request.data["data"]["caption_title"] == ""
+        and request.data["data"]["caption"] == ""
+    ):
+
+        FormulaImageCaption.objects.filter(id=request.data["data"]["id"]).delete()
+
+    else:
+
+        FormulaImageCaption.objects.filter(id=request.data["data"]["id"]).update(
+            **request.data["data"]
+        )
+
+    return JsonResponse({"errors": errors})
+
+
+@api_view(["POST"])
+def edit_footer_api(request):
+
+    errors = None
+
+    if request.data["data"]["name"] == "" and request.data["data"]["details"] == "":
+
+        FormulaTearSheetFooterDetail.objects.filter(
+            id=request.data["data"]["id"]
+        ).delete()
+
+    else:
+
+        FormulaTearSheetFooterDetail.objects.filter(
+            id=request.data["data"]["id"]
+        ).update(**request.data["data"])
+
+    return JsonResponse({"errors": errors})
+
+
+@api_view(["POST"])
+def create_footer_api(request, id):
+
+    errors = None
+
+    if request.method == "POST":
+
+        order_no = len(FormulaTearSheetFooterDetail.objects.filter(tear_sheet_id=id))
+        request.data["data"].update({"order": order_no + 1})
+        FormulaTearSheetFooterDetail.objects.create(**request.data["data"])
+
+        return JsonResponse({"errors": errors})
+
+        # return redirect(reverse('edit-tearsheet', kwargs={'id': id}))
+
+    else:
+        return HttpResponse("Request method not supported")
+
+
+@login_required
+def print_all(request):
+    """
+    returns a link to rar file of all tearsheets
+    """
+    s3 = boto3.client(
+        "s3",
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+    )
+
+    batch_name = str(random.randrange(1000000))
+    bucket_name = settings.AWS_STORAGE_BUCKET_NAME
+    object_dir = f"/var/tmp/{batch_name}/"
+    pdf_list = []
+
+    # make local directory to place pdf files
+
+    os.makedirs(object_dir)
+
+    # save all the pdfs from the heroku api & load path / bytes into a list of tuples
+    for tear_sheet in FormulaTearSheet.objects.all():
+        url_string = (
+            settings.PDF_APP_URL
+            + settings.SITE_URL
+            + tear_sheet.get_printing_url_no_list()
+        )
+
+        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
+
+        parameter = f"&attachmentName={pdf_file_name}"
+
+        url_string += parameter
+
+        response = requests.get(url_string)
+
+        bytes_container = BytesIO(response.content)
+
+        # if we wanted to save the pdfs locally but we don't need to
+        # because we have the byte data
+        # object_path = object_dir + pdf_file_name
+        # with open(object_path, "wb") as pdf_file:
+        #     pdf_file.write(bytes_container.getvalue())
+
+        pdf_list.append((pdf_file_name, bytes_container))
+
+    for tear_sheet in FormulaTearSheet.objects.all():
+        url_string = (
+            settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+        )
+
+        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-NET.pdf"
+
+        parameter = f"&attachmentName={pdf_file_name}"
+
+        url_string += parameter
+
+        response = requests.get(url_string)
+
+        bytes_container = BytesIO(response.content)
+
+        # if we wanted to save the pfs locally but we don't need to
+        # because we have the byte data
+        # object_path = object_dir + pdf_file_name
+        # with open(object_path, "wb") as pdf_file:
+        #     pdf_file.write(bytes_container.getvalue())
+
+        pdf_list.append((pdf_file_name, bytes_container))
+
+    archive = BytesIO()
+    s3_path = (
+        f"media/tearsheet-batch-print/{batch_name}/"
+        + f"TEARSHEET-ARCHIVE-{batch_name}.zip"
+    )
+
+    # process tuples into the zip archive buffer
+
+    with zipfile.ZipFile(archive, "w") as zip_archive:
+
+        for path, data in pdf_list:
+
+            file = zipfile.ZipInfo(path)
+            zip_archive.writestr(file, data.getvalue())
+
+    # save the buffer to a real file
+
+    with open(object_dir + "all-tearsheets.zip", "wb") as f:
+        f.write(archive.getbuffer())
+
+    archive.close()
+
+    # upload the file to s3
+
+    s3.upload_file(object_dir + "all-tearsheets.zip", bucket_name, s3_path)
+
+    return HttpResponse(
+        f"<a href='{settings.MEDIA_URL}"
+        + f"tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip'>download</a>"
     )
 
 
-def detail_view_for_printing(request, pk):
+def detail_view_for_printing(request, id):
+    """
+    the view the printer app uses to create pdfs
+    """
+    if request.method == "GET":
 
-    number_of = 0
+        x = FormulaTearSheet.objects.get(id=id)
 
-    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
-    captions = FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
-    footer_details = FormulaTearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
+        context = {
+            "auth_token": None,
+            "tearsheet": {
+                "title": x.title,
+                "sdata": x.sdata,
+                "template": x.template,
+                "img": x.image.url,
+                "price_records": return_price_records_by_rule_type(id)
+                if return_price_records_by_rule_type(id) is not None
+                else [],
+                "captions": [
+                    {"id": c.id, "caption_title": c.caption_title, "caption": c.caption}
+                    for c in FormulaImageCaption.objects.filter(tear_sheet_id=id)
+                ]
+                if FormulaImageCaption.objects.filter(tear_sheet_id=id) is not None
+                else [],
+                "details": return_details_by_title(id)
+                if return_details_by_title(id) is not None
+                else [],
+                "footer_details": [
+                    {"id": f.id, "name": f.name, "details": f.details}
+                    for f in FormulaTearSheetFooterDetail.objects.filter(
+                        tear_sheet_id=id
+                    )
+                ]
+                if FormulaTearSheetFooterDetail.objects.filter(tear_sheet_id=id)
+                is not None
+                else [],
+            },
+        }
 
-    # spacing size b/t records and footer
-    # we should actually perform a rational calculation here that
-    # includes getting the tearsheet.img.height value and sbtrcts
+        context = json.dumps(context)
 
-    number_of += len(captions) + len(footer_details)
-
-    return render(
-        request,
-        "formula_tear_sheets/print_views/list_and_net.html",
-        {
-            "tearsheet": tear_sheet,
-            "details": return_details_by_title(pk),
-            "captions": captions,
-            "footer_details": footer_details,
-            "price_records": return_price_records_by_rule_type(pk),
-        },
-    )
+        return render(
+            request,
+            "form_detail_for_print/dist/index.html",
+            {"id": id, "context": context},
+        )
 
 
-def redirect_detail_view_to_pdf(request, pk):
-    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
+def detail_view_for_printing_list(request, id):
+    """
+    detail view pdf app uses to create list pdfs
+    """
+    if request.method == "GET":
+
+        x = FormulaTearSheet.objects.get(id=id)
+
+        context = {
+            "auth_token": None,
+            "tearsheet": {
+                "title": x.title,
+                "sdata": x.sdata,
+                "template": x.template,
+                "img": x.image.url,
+                "price_records": return_price_records_by_rule_type(id)
+                if return_price_records_by_rule_type(id) is not None
+                else [],
+                "captions": [
+                    {"id": c.id, "caption_title": c.caption_title, "caption": c.caption}
+                    for c in FormulaImageCaption.objects.filter(tear_sheet_id=id)
+                ]
+                if FormulaImageCaption.objects.filter(tear_sheet_id=id) is not None
+                else [],
+                "details": return_details_by_title(id)
+                if return_details_by_title(id) is not None
+                else [],
+                "footer_details": [
+                    {"id": f.id, "name": f.name, "details": f.details}
+                    for f in FormulaTearSheetFooterDetail.objects.filter(
+                        tear_sheet_id=id
+                    )
+                ]
+                if FormulaTearSheetFooterDetail.objects.filter(tear_sheet_id=id)
+                is not None
+                else [],
+            },
+        }
+
+        context = json.dumps(context)
+
+        return render(
+            request,
+            "form_detail_for_print_list/dist/index.html",
+            {"id": id, "context": context},
+        )
+
+
+def redirect_detail_view_to_pdf(request, id):
+    """
+    redirect to the proper url for the printer
+    """
+    tear_sheet = FormulaTearSheet.objects.get(pk=id)
 
     url_string = (
         settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
@@ -370,9 +493,12 @@ def redirect_detail_view_to_pdf(request, pk):
     return redirect(url_string)
 
 
-def redirect_detail_view_to_pdf_list(request, pk):
+def redirect_detail_view_to_pdf_list(request, id):
+    """
+    redirect to the proper url for the printer
+    """
 
-    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
+    tear_sheet = FormulaTearSheet.objects.get(id=id)
 
     url_string = (
         settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url_no_list()
@@ -386,25 +512,4 @@ def redirect_detail_view_to_pdf_list(request, pk):
 
     url_string += parameter
 
-    print(url_string)
-
     return redirect(url_string)
-
-
-def detail_view_for_printing_list(request, pk):
-
-    tear_sheet = FormulaTearSheet.objects.get(pk=pk)
-    captions = FormulaImageCaption.objects.filter(tear_sheet=tear_sheet)
-    footer_details = FormulaTearSheetFooterDetail.objects.filter(tear_sheet=tear_sheet)
-
-    return render(
-        request,
-        "formula_tear_sheets/print_views/list_only.html",
-        {
-            "tearsheet": tear_sheet,
-            "details": return_details_by_title(pk),
-            "captions": captions,
-            "footer_details": footer_details,
-            "price_records": return_price_records_by_rule_type(pk),
-        },
-    )

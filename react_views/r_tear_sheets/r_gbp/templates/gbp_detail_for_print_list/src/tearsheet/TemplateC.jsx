@@ -21,7 +21,7 @@ function RuleTypeGroup({sdata, price_records, rule_type}) {
 			<div style={{'height': sdata.pt_pr}}></div>
 			<table className={`table-auto`}>
 					<thead className="text-gray-400 text-left">
-						<th style={{'font-weight': 'normal', 'width': `${sdata.col_1}%`}} className="py-1"></th>
+						<th style={{'font-weight': 'normal', 'width': `${sdata.col_1}px`}} className="py-1"></th>
 						<th></th>
 						<th style={{'font-weight': 'normal'}} className="py-1"></th>
 						<th style={{'font-weight': 'normal'}} className="py-1"></th>
@@ -114,12 +114,12 @@ function TableRow({sdata, price_record, index}) {
   return(
 		<>
 		<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
-					<td style={{'width':`${sdata.col_1}%`}} onClick={ () => onClickHandler(setEditOne) } >{display_one}</td>
-					<td style={{'width':`${sdata.col_2}%`}} onClick={ () => onClickHandler(setEditTwo) } >{display_two}</td>
-					<td style={{'font-weight': 'bold', 'width':`${sdata.col_3}%`}}  onClick={() => { onClickHandler(setEditList) }} >£{list}</td>
-					<td style={{'width':`${sdata.col_4}%`}} onClick={ () => { onClickHandler(setEditListNoVat)} } >£{listNoVat}</td>
-					<td style={{'width':`${sdata.col_5}%`}} onClick={ () => { onClickHandler(setEditTrade)} } ></td>
-					<td style={{'width':`${sdata.col_6}%`}} onClick={ () => { onClickHandler(setEditTradeNoVat)} } ></td>
+					<td style={{'width':`${sdata.col_1}px`}} onClick={ () => onClickHandler(setEditOne) } >{display_one}</td>
+					<td style={{'width':`${sdata.col_2}px`}} onClick={ () => onClickHandler(setEditTwo) } >{display_two}</td>
+					<td style={{'font-weight': 'bold', 'width':`${sdata.col_3}px`}}  onClick={() => { onClickHandler(setEditList) }} >£{list}</td>
+					<td style={{'width':`${sdata.col_4}px`}} onClick={ () => { onClickHandler(setEditListNoVat)} } >£{listNoVat}</td>
+					<td style={{'width':`${sdata.col_5}px`}} onClick={ () => { onClickHandler(setEditTrade)} } ></td>
+					<td style={{'width':`${sdata.col_6}px`}} onClick={ () => { onClickHandler(setEditTradeNoVat)} } ></td>
 			</tr>
 		</>
 	)

@@ -105,8 +105,8 @@ function Caption({caption, sdata, index}) {
 return(
 		<>
 					<tr className="hover:bg-gray-50 text-gray-400 text-left">
-							<td onClick={ () => { setEditTitle(true) } } style={{'width':`${sdata.d_col_1}%`}}> { _title } </td>
-							<td onClick={ () => { setEditCaption(true) } } style={{'width':`${sdata.d_col_2}%`}}> { _caption } </td>
+							<td onClick={ () => { setEditTitle(true) } } style={{'width':`${sdata.d_col_1}px`}}> { _title } </td>
+							<td onClick={ () => { setEditCaption(true) } } style={{'width':`${sdata.d_col_2}px`}}> { _caption } </td>
 					</tr>
 				</>
 		)

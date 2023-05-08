@@ -102,10 +102,10 @@ function TableRow({sdata, price_record, index}) {
   return(
 		<>
 			<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
-					<td style={{'width': `${sdata.col_1}%`}} onClick={ () => onClickHandler(setEditType) } >{ index == 0 ? rule_type : null}</td>
-					<td style={{'width':`${sdata.col_2}%`}} onClick={ () => onClickHandler(setEditOne) } >{display_one}</td>
-					<td style={{'width':`${sdata.col_3}%`}}  onClick={() => { onClickHandler(setEditList) }} >${list}</td>
-					<td style={{'width':`${sdata.col_4}%`}} onClick={ () => { onClickHandler(setEditNet)} } >${net}</td>
+					<td style={{'width': `${sdata.col_1}px`}} onClick={ () => onClickHandler(setEditType) } >{ index == 0 ? rule_type : null}</td>
+					<td style={{'width':`${sdata.col_2}px`}} onClick={ () => onClickHandler(setEditOne) } >{display_one}</td>
+					<td style={{'width':`${sdata.col_3}px`}}  onClick={() => { onClickHandler(setEditList) }} >${list}</td>
+					<td style={{'width':`${sdata.col_4}px`}} onClick={ () => { onClickHandler(setEditNet)} } >${net}</td>
 			</tr>
 		</>
 	)

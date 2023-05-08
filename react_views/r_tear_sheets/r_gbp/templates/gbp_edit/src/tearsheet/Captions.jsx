@@ -68,10 +68,10 @@ function AddCaption({sdata}) {
 	return(
 			<>
 				<tr className="hover:bg-gray-50 text-gray-400 text-left">
-						<td style={{'width':`${sdata.d_col_1}%`}}>
+						<td style={{'width':`${sdata.d_col_1}px`}}>
 							<input onChange={ (event) => onChangeHandler(event, setTitle)} value={_title} className={classes}></input>
 						</td>
-						<td style={{'width':`${sdata.d_col_2}%`}}>
+						<td style={{'width':`${sdata.d_col_2}px`}}>
 							<input style={{'display': 'inline'}} onChange={ (event) => onChangeHandler(event, setCaption)} value={_caption} className={classes}></input>
 							<button onClick={ () => { CREATE() }} className="mx-2 py-1 px-1 bg-gray-50 hover:bg-white text-gray-800 border border-gray-400 rounded shadow" style={{'position': 'absolute', 'display': 'inline'}}>CREATE</button>
 						</td>
@@ -141,13 +141,13 @@ return(
 							<td>
 								<input onChange={ (event) => onChangeHandler(event, setTitle)} value={_title} className={classes}></input>
 							</td> :
-							<td onClick={ () => { setEditTitle(true) } } style={{'width':`${sdata.d_col_1}%`}}> { _title } </td>
+							<td onClick={ () => { setEditTitle(true) } } style={{'width':`${sdata.d_col_1}px`}}> { _title } </td>
 						}
 						{ edit_caption ?
 							<td>
 								<input onChange={ (event) => onChangeHandler(event, setCaption)} value={_caption} className={classes}></input>
 							</td> :
-							<td onClick={ () => { setEditCaption(true) } } style={{'width':`${sdata.d_col_2}%`}}> { _caption } </td>
+							<td onClick={ () => { setEditCaption(true) } } style={{'width':`${sdata.d_col_2}px`}}> { _caption } </td>
 						}
 					</tr>
 				</>

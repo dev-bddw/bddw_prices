@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 
 
-class FormulaTearSheetsConfig(AppConfig):
+class ReactFormulaTearSheetsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "formula_tear_sheets"
-    verbose_name = "Form Tear Sheets"
+    name = "react_views.r_formula_tear_sheets"

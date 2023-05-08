@@ -64,12 +64,12 @@ function TableRow({sdata, price_record, index}) {
   return(
 		<>
 			<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
-					<td style={{'width': `${sdata.col_1}%`}}  >{ index == 0 ? rule_type : null}</td>
-					<td style={{'width':`${sdata.col_2}%`}} >{display_one}</td>
-					<td style={{'font-weight': 'bold', 'width':`${sdata.col_3}%`}} >£{list}</td>
-					<td style={{'width':`${sdata.col_4}%`}} >£{listNoVat}</td>
-					<td style={{'font-weight': 'bold', 'width':`${sdata.col_5}%`}}  >£{trade}</td>
-					<td style={{'width':`${sdata.col_6}%`}} >£{tradeNoVat}</td>
+					<td style={{'width': `${sdata.col_1}px`}}  >{ index == 0 ? rule_type : null}</td>
+					<td style={{'width':`${sdata.col_2}px`}} >{display_one}</td>
+					<td style={{'font-weight': 'bold', 'width':`${sdata.col_3}px`}} >£{list}</td>
+					<td style={{'width':`${sdata.col_4}px`}} >£{listNoVat}</td>
+					<td style={{'font-weight': 'bold', 'width':`${sdata.col_5}px`}}  >£{trade}</td>
+					<td style={{'width':`${sdata.col_6}px`}} >£{tradeNoVat}</td>
 			</tr>
 		</>
 	)

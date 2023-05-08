@@ -88,7 +88,8 @@ LOCAL_APPS = [
     "price_records",
     "price_lists",
     "react_views.r_tear_sheets",
-    "react_views.r_tear_sheets.r_gbp"
+    "react_views.r_tear_sheets.r_gbp",
+    "react_views.r_formula_tear_sheets"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -157,11 +158,17 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
     str(APPS_DIR / "static"),
-    "/app/react_views/r_tear_sheets/templates/edit/dist/assets/",
+    # tearsheets
     "/app/react_views/r_tear_sheets/templates/detail/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/detail_for_print/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/detail_for_print_list/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/edit/dist/assets/",
+    # formula tearsheets
+    "/app/react_views/r_formula_tear_sheets/templates/form_detail/dist/assets/",
+    "/app/react_views/r_formula_tear_sheets/templates/form_detail_for_print/dist/assets/",
+    "/app/react_views/r_formula_tear_sheets/templates/form_detail_for_print_list/dist/assets/",
+    "/app/react_views/r_formula_tear_sheets/templates/form_edit/dist/assets/",
+    # gbp tearsheets
     "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_detail/dist/assets/",
     "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_edit/dist/assets/",
     "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_detail_for_print/dist/assets/",

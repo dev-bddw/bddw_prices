@@ -44,17 +44,18 @@ class TearSheetFooterDetail(Detail):
 class TearSheet(models.Model):
     def json_default():
         return {
-            "col_1": 10,
-            "col_2": 35,
-            "col_3": 35,
-            "col_4": 10,
-            "col_5": 10,
-            "d_col_1": 10,
-            "d_col_2": 90,
+            "d_col_1": 87,
+            "d_col_2": 703,
+            "col_1": 87,
+            "col_2": 173,
+            "col_3": 499,
+            "col_4": 80,
+            "col_5": 54,
             "pt_cap": 5,
             "pt_detail": 5,
             "pt_footer": 5,
             "pt_pr": 5,
+            "pt": 5,
             "font_size": 10,
         }
 

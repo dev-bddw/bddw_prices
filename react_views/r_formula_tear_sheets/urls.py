@@ -1,66 +1,64 @@
 from django.urls import path
 
 from .views import (
-    change_caption_hx,
-    change_detail_hx,
-    change_footer_detail_hx,
-    change_image_hx,
-    change_template_hx,
-    change_title_hx,
-    create_caption_hx,
-    create_detail_hx,
-    create_footer_detail_hx,
-    detail_view,
+    create_caption_api,
+    create_detail_api,
+    create_footer_api,
+    detail_view_entry,
     detail_view_for_printing,
     detail_view_for_printing_list,
-    edit_view,
-    list_view,
+    edit_caption_api,
+    edit_detail_api,
+    edit_footer_api,
+    edit_image_api,
+    edit_tearsheet_api,
+    edit_view_entry,
+    print_all,
     redirect_detail_view_to_pdf,
     redirect_detail_view_to_pdf_list,
 )
 
-app_name = "formula_tearsheets"
+app_name = "r_formula_tear_sheets"
 
+### REAL PATTERNS ###
 urlpatterns = [
-    path("list/", view=list_view, name="list"),
-    path("detail/<pk>", view=detail_view, name="detail"),
-    path("edit/<pk>", view=edit_view, name="edit"),
-    path("change-title/<pk>", view=change_title_hx, name="change_title"),
-    path("change-image-detail/<pk>", view=change_image_hx, name="change_image"),
-    path("change-caption/<pk>", view=change_caption_hx, name="change_caption"),
-    path("change-detail/<pk>", view=change_detail_hx, name="change_detail"),
-    path("print-redirect/<pk>", view=redirect_detail_view_to_pdf, name="print"),
+    path("edit-tearsheet/<id>", edit_view_entry, name="edit-tearsheet"),
+    path("view-tearsheet/<id>", detail_view_entry, name="view-tearsheet"),
+    path("print-redirect/<id>", view=redirect_detail_view_to_pdf, name="print"),
     path(
-        "print-redirect-list/<pk>",
+        "print-redirect-list/<id>",
         view=redirect_detail_view_to_pdf_list,
         name="print-list",
     ),
     path(
-        "detail-for-print/<pk>",
+        "detail-for-print/<id>",
         view=detail_view_for_printing,
         name="detail-view-for-print",
     ),
     path(
-        "detail-for-print-list/<pk>",
+        "print_all",
+        view=print_all,
+        name="print_all",
+    ),
+    path(
+        "detail-for-print-list/<id>",
         view=detail_view_for_printing_list,
         name="detail-view-for-print-list",
     ),
+]
+
+### API URLS ###
+urlpatterns += [
+    path("edit-tearsheetapi/<id>", edit_tearsheet_api, name="edit-tearsheet-api"),
+    path("edit-image/<id>", edit_image_api, name="edit-image-api"),
+    path("edit-caption-record/", edit_caption_api, name="edit-caption-api"),
+    path("edit-detail-record/", edit_detail_api, name="edit-detail-api"),
+    path("edit-footer-record/", edit_footer_api, name="edit-footer-api"),
+    path("create-footer-record/<id>", create_footer_api, name="create-footer-api"),
+    path("create-detail-record/<id>", create_detail_api, name="create-detail-api"),
     path(
-        "change-footer-detail/<pk>",
-        view=change_footer_detail_hx,
-        name="change_footer_detail",
+        "create-caption-record/<id>",
+        create_caption_api,
+        name="create-caption-api",
     ),
-    path(
-        "detail-for-print/<pk>",
-        view=detail_view_for_printing,
-        name="detail-view-for-print",
-    ),
-    path("create-caption/<pk>", view=create_caption_hx, name="create_caption"),
-    path("create-detail/<pk>", view=create_detail_hx, name="create_detail"),
-    path(
-        "create-footer-detail/<pk>",
-        view=create_footer_detail_hx,
-        name="create_footer_detail",
-    ),
-    path("change-template/<pk>", view=change_template_hx, name="change_template"),
 ]

@@ -104,25 +104,25 @@ function TableRow({sdata, price_record, index}) {
 			<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
 				{
 				edit_type ?
-					<td style={{'width': `${sdata.col_1}%`}}><input onChange={ (event) => onChangeHandler(event,setRecord)} className={classes} value={rule_type}></input></td>
-					:<td style={{'width': `${sdata.col_1}%`}} onClick={ () => onClickHandler(setEditType) } >{ index == 0 ? rule_type : null}</td>
+					<td style={{'width': `${sdata.col_1}px`}}><input onChange={ (event) => onChangeHandler(event,setRecord)} className={classes} value={rule_type}></input></td>
+					:<td style={{'width': `${sdata.col_1}px`}} onClick={ () => onClickHandler(setEditType) } >{ index == 0 ? rule_type : null}</td>
 				}{
 				edit_one ?
-					<td style={{'width': `${sdata.col_2}%`}}><input onChange={ (event) => onChangeHandler(event,setOne)} className={classes} value={display_one}></input></td>
-					:<td style={{'width':`${sdata.col_2}%`}} onClick={ () => onClickHandler(setEditOne) } >{display_one}</td>
+					<td style={{'width': `${sdata.col_2}px`}}><input onChange={ (event) => onChangeHandler(event,setOne)} className={classes} value={display_one}></input></td>
+					:<td style={{'width':`${sdata.col_2}px`}} onClick={ () => onClickHandler(setEditOne) } >{display_one}</td>
 				}{
 				edit_two ?
-					<td style={{'width':`${sdata.col_3}%`}}><input onChange={ (event) => onChangeHandler(event,setTwo)} className={classes} value={display_two}></input></td>
-					:<td style={{'width':`${sdata.col_3}%`}} onClick={ () => onClickHandler(setEditTwo) } >{display_two}</td>
+					<td style={{'width':`${sdata.col_3}px`}}><input onChange={ (event) => onChangeHandler(event,setTwo)} className={classes} value={display_two}></input></td>
+					:<td style={{'width':`${sdata.col_3}px`}} onClick={ () => onClickHandler(setEditTwo) } >{display_two}</td>
 				}{
 				edit_list ?
-					<td style={{'width':`${sdata.col_4}%`}}><input onChange={ (event) => onChangeHandler(event,setList)} className={classes} value={list}></input></td>
-					:<td style={{'width':`${sdata.col_4}%`}}  onClick={() => { onClickHandler(setEditList) }}>${list}</td>
+					<td style={{'width':`${sdata.col_4}px`}}><input onChange={ (event) => onChangeHandler(event,setList)} className={classes} value={list}></input></td>
+					:<td style={{'width':`${sdata.col_4}px`}}  onClick={() => { onClickHandler(setEditList) }}>${list}</td>
 				}
 				{
 				edit_net ?
-					<td style={{'width':`${sdata.col_5}%`}}><input onChange={ (event) => onChangeHandler(event,setNet)} className={classes} value={net}></input></td>
-					:<td style={{'width':`${sdata.col_5}%`}} onClick={ () => { onClickHandler(setEditNet)} } >${net}</td>
+					<td style={{'width':`${sdata.col_5}px`}}><input onChange={ (event) => onChangeHandler(event,setNet)} className={classes} value={net}></input></td>
+					:<td style={{'width':`${sdata.col_5}px`}} onClick={ () => { onClickHandler(setEditNet)} } >${net}</td>
 				}
 			</tr>
 		</>

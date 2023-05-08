@@ -78,7 +78,7 @@ class PriceRecord(models.Model):
     def save(self, *args, **kwargs):
         self.net_price = self.get_net_price()
 
-        if self.man_order == False:
+        if self.man_order is False:
             try:
                 order = int(self.list_price)
             except ValueError:
@@ -204,11 +204,12 @@ class FormulaPriceRecord(models.Model):
     seat_height = models.IntegerField(null=True, blank=True)
     inset = models.IntegerField(null=True, blank=True)
 
+    # TODO: there is a bug here when users input uppercase attributes (keyerror)
     rule_display_1 = models.CharField(
         default="",
         blank=False,
         null=False,
-        help_text="Will convert [LENGTH] L x [DEPTH] D or you can just manually ",
+        help_text="Will convert [attribute] L x [attribute] D ",
         max_length=200,
     )
     rule_display_2 = models.CharField(
