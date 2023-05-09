@@ -74,7 +74,7 @@ export default function Tearsheet() {
 							'font-weight': '400',
 							'letter-spacing': '.05em',
 							'font-size': `${sdata.font_size}px`
-							}}>
+							}} className="align-top">
 								<Heading title={CONTEXT.tearsheet.title}/>
 								<Image img={img}/>
 								<Captions showCreateInputs={showCreateInputs} sdata={sdata} captions={captions} />

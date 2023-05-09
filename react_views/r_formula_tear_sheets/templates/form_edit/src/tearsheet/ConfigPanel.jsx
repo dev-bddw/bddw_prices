@@ -129,7 +129,6 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 	// misc
 	return(
 		<div className="confg_wrapper drop-shadow-xl" style={{'margin': '0 0 0 50px', 'width': '475px'}}>
-		<div style={{'height': '85px'}}></div>
 			<div className="px-5 bg-gray-50 border border-solid rounded-lg text-left">
 				<h3 className="font-bold py-3">CONFIG</h3>
 				<TemplateDropdown  template={template} setTemplate={setTemplate}/>

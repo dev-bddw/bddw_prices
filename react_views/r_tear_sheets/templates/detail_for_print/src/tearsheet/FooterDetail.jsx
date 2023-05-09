@@ -30,7 +30,6 @@ return(
 					<tr className="hover:bg-gray-50 text-gray-400 text-left">
 							<td style={{'width':`${sdata.d_col_1}px`}}>{_name}</td>
 							<td style={{'width':`${sdata.d_col_2}px`}}>{_details} </td>
-						}
 					</tr>
 				</>
 		)
