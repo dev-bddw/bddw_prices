@@ -64,19 +64,20 @@ class TearSheet(models.Model):
 
     def gbp_sdata_json_default():
         return {
-            "col_1": 10,
-            "col_2": 35,
-            "col_3": 35,
-            "col_4": 5,
-            "col_5": 5,
+            "d_col_1": 99,
+            "d_col_2": 703,
+            "col_1": 94,
+            "col_2": 173,
+            "col_3": 69,
+            "col_4": 60,
+            "col_5": 54,
             "col_6": 5,
             "col_7": 5,
-            "d_col_1": 10,
-            "d_col_2": 90,
             "pt_cap": 5,
             "pt_detail": 5,
             "pt_footer": 5,
             "pt_pr": 5,
+            "pt": 5,
             "font_size": 10,
         }
 
