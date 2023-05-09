@@ -81,7 +81,7 @@ export default function Tearsheet() {
 								<Details showCreateInputs={showCreateInputs} sdata={sdata} details={details}/>
 								{renderTemplate(template) }
 								<FooterDetails showCreateInputs={showCreateInputs} sdata={sdata} footers={footer_details} />
-								<Footer/>
+								{/*<Footer/>*/}
 						</td>
 						<td>
 								<ConfigPanel showCreateInputs={showCreateInputs}  setShowCreateInputs={setShowCreateInputs} template={template} setTemplate={setTemplate} sdata={sdata} setSheetData={setSheetData} />

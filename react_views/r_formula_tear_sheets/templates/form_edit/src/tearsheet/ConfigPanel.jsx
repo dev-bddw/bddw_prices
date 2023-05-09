@@ -138,7 +138,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 					return(
 						<Box sx={{ width: 400, color: 'black' }}>
 							<p className="font-sans text-slate-400 py-2 text-s">{easy_defs[key]} ({sdata[key]}) </p>
-							<Slider size="small" aria-label="col-width" max={1000} value={sdata[key]} defaultValue={sdata[key]} onChange={ (event) => handleChange(event,key) } />
+							<Slider size="small" aria-label="col-width" max={ key == 'font_size' ? 30 : 1000} value={sdata[key]} defaultValue={sdata[key]} onChange={ (event) => handleChange(event,key) } />
 					</Box>
 					)})
 				}
