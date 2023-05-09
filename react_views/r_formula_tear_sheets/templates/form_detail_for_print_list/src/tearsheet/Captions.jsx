@@ -109,13 +109,13 @@ return(
 							<td>
 								<input onChange={ (event) => onChangeHandler(event, setTitle)} value={_title} className={classes}></input>
 							</td> :
-							<td onClick={ () => { setEditTitle(true) } } style={{'width':`${sdata.d_col_1}%`}}> { _title } </td>
+							<td onClick={ () => { setEditTitle(true) } } style={{'width':`${sdata.d_col_1}px`}}> { _title } </td>
 						}
 						{ edit_caption ?
 							<td>
 								<input onChange={ (event) => onChangeHandler(event, setCaption)} value={_caption} className={classes}></input>
 							</td> :
-							<td onClick={ () => { setEditCaption(true) } } style={{'width':`${sdata.d_col_2}%`}}> { _caption } </td>
+							<td onClick={ () => { setEditCaption(true) } } style={{'width':`${sdata.d_col_2}px`}}> { _caption } </td>
 						}
 					</tr>
 				</>

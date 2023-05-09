@@ -21,7 +21,7 @@ function RuleTypeGroup({sdata, price_records, rule_type}) {
 			<div style={{'height': sdata.pt_pr}}></div>
 			<table className={`table-auto`}>
 					<thead className="text-gray-400 text-left">
-						<th style={{'font-weight': 'normal', 'width': `${sdata.col_1}%`}} className="py-1">{rule_type}</th>
+						<th style={{'font-weight': 'normal', 'width': `${sdata.col_1}px`}} className="py-1">{rule_type}</th>
 						<th></th>
 						<th style={{'font-weight': 'normal'}} className="py-1">LIST</th>
 						<th style={{'font-weight': 'normal'}} className="py-1">NET</th>
@@ -100,10 +100,10 @@ function TableRow({sdata, price_record, index}) {
   return(
 		<>
 		<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
-					<td style={{'width':`${sdata.col_1}%`}} >{display_one}</td>
-					<td style={{'width':`${sdata.col_2}%`}} >{display_two}</td>
-					<td style={{'width':`${sdata.col_3}%`}} >${list}</td>
-					<td style={{'width':`${sdata.col_4}%`}} >${net}</td>
+					<td style={{'width':`${sdata.col_1}px`}} >{display_one}</td>
+					<td style={{'width':`${sdata.col_2}px`}} >{display_two}</td>
+					<td style={{'width':`${sdata.col_3}px`}} >${list}</td>
+					<td style={{'width':`${sdata.col_4}px`}} >${net}</td>
 			</tr>
 		</>
 	)

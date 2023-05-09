@@ -96,8 +96,8 @@ function FooterRow({sdata, footer, index}) {
 return(
 				<>
 					<tr className="hover:bg-gray-50 text-gray-400 text-left">
-							<td onClick={ () => { setEditName(true) } } style={{'width':`${sdata.d_col_1}%`}}>{_name}</td>
-							<td onClick={ () => { setEditDetails(true) } } style={{'width':`${sdata.d_col_2}%`}}>{_details} </td>
+							<td onClick={ () => { setEditName(true) } } style={{'width':`${sdata.d_col_1}px`}}>{_name}</td>
+							<td onClick={ () => { setEditDetails(true) } } style={{'width':`${sdata.d_col_2}px`}}>{_details} </td>
 					</tr>
 				</>
 		)
