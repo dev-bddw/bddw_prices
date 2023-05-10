@@ -12,6 +12,7 @@ def update_tearsheets():
 def update_tearsheets_gbp():
     for tearsheet in TearSheet.objects.all():
         tearsheet.gbp_sdata = TearSheet.gbp_sdata_json_default()
+        tearsheet.gbp_template = "C"
         tearsheet.save()
 
 

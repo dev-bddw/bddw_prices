@@ -80,7 +80,7 @@ export default function Tearsheet() {
 								<Details sdata={sdata} details={details}/>
 								{renderTemplate(template) }
 								<FooterDetails sdata={sdata} footers={footer_details} />
-								<Footer/>
+							{/*<Footer/>*/}
 						</td>
 						<td>
 						</td>
