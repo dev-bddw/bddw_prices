@@ -282,3 +282,6 @@ bddw_prices/media/*
 .env
 .envs/*
 !.envs/.local/
+
+# react bak for text editing
+index.html.bak

@@ -1,16 +1,22 @@
+{% extends 'react_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>TEARSHEET DETAIL</title>
-  </head>
-  <body>
-    <div id="root"></div>
+
+{% block title %}TEARSHEET DETAIL{% endblock title %}
+
+{% block javascript %}
+  {{block.super}}
+ <script type="module" crossorigin src="#"></script>
+ <link rel="stylesheet" href="#">
+ <script type="module" src="/src/main.jsx"></script>
+{% endblock javascript %}
+
+{% block content %}
+<div id="root"></div>
     {{context|json_script:"context"}}
 	{% csrf_token %}
+{% endblock content %}
+
+{% block inline_javascript %}
 	<script>
 	 const read_context = JSON.parse(JSON.parse(document.getElementById('context').textContent));
 	 const CONTEXT = {
@@ -25,7 +31,4 @@
 		 'print_all' : '{% url 'react_views:r_tear_sheets:print_all' %}',
 		};
 	</script>
-
-	<script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+{% endblock inline_javascript %}

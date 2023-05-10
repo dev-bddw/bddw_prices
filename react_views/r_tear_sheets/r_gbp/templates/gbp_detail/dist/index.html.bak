@@ -1,25 +1,31 @@
+<script type="module" crossorigin src="{% static "index.b56c007c.js" %}"></script>
+<link rel="stylesheet" href="/static/index.b0016798.css">
+{% extends 'react_base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>TEARSHEET DETAIL</title>
-    <script type="module" crossorigin src="{% static "index.b56c007c.js" %}"></script>
-    <link rel="stylesheet" href="{% static "index.b0016798.css" %}">
-  </head>
-  <body>
-    <div id="root"></div>
+
+{% block title %}GBP TEARSHEET DETAIL{% endblock title %}
+
+{% block javascript %}
+  {{block.super}}
+ <script type="module" crossorigin src="#"></script>
+ <link rel="stylesheet" href="#">
+
+{% endblock javascript %}
+
+{% block content %}
+<div id="root"></div>
     {{context|json_script:"context"}}
 	{% csrf_token %}
+{% endblock content %}
+
+{% block inline_javascript %}
 	<script>
 	 const read_context = JSON.parse(JSON.parse(document.getElementById('context').textContent));
 	 const CONTEXT = {
 		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
 		 'auth_token': read_context.auth_token,
 		 'tearsheet' : read_context.tearsheet,
-		 'tearsheets_list': '{% url 'gbp:list' %}',
+		 'tearsheets_list': '{% url 'tearsheets:list' %}',
 		 'edit_tearsheet' : '{% url 'react_views:r_gbp:edit-tearsheet' id %}',
 		 'print' : '{% url 'react_views:r_gbp:print' id %}',
 		 'print_list' : '{% url 'react_views:r_gbp:print-list' id %}',
@@ -27,7 +33,4 @@
 		 'print_all' : '{% url 'react_views:r_gbp:print_all' %}',
 		};
 	</script>
-
-
-  </body>
-</html>
+{% endblock inline_javascript %}
