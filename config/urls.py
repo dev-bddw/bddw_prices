@@ -24,6 +24,9 @@ urlpatterns = [
     path("tear-sheets/", include("tear_sheets.urls", namespace="tearsheets")),
     path("gbp/", include("tear_sheets.gbp.urls", namespace="gbp")),
     path(
+        "form-gbp/", include("formula_tear_sheets.form_gbp.urls", namespace="form_gbp")
+    ),
+    path(
         "formula-tear-sheets/",
         include("formula_tear_sheets.urls", namespace="formula_tearsheets"),
     ),

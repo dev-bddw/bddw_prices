@@ -7,6 +7,26 @@ def image_upload_to(instance, filename):
     return f"tear_sheet_images/{instance.title}/{filename}"
 
 
+def gbp_sdata_json_default():
+    return {
+        "d_col_1": 93,
+        "d_col_2": 690,
+        "col_1": 95,
+        "col_2": 475,
+        "col_3": 69,
+        "col_4": 60,
+        "col_5": 60,
+        "col_6": 120,
+        "col_7": 0,
+        "pt_cap": 0,
+        "pt_detail": 13,
+        "pt_footer": 13,
+        "pt_pr": 0,
+        "pt": 5,
+        "font_size": 9,
+    }
+
+
 def json_default():
     return {
         "d_col_1": 87,
@@ -35,6 +55,11 @@ class FormulaTearSheet(models.Model):
         a = "A", "ONE COLUMN DISPLAY"
         b = "B", "TWO COLUMN DISPLAY"
         c = "C", "RULE TYPE ABOVE"
+
+    gbp_sdata = models.JSONField(default=gbp_sdata_json_default, blank=True, null=True)
+    gbp_template = models.CharField(
+        choices=TearSheetTemplate.choices, default="C", max_length=1000
+    )
 
     template = models.CharField(
         choices=TearSheetTemplate.choices, default="B", max_length=1000
@@ -67,6 +92,9 @@ class FormulaTearSheet(models.Model):
             "react_views:r_formula_tear_sheets:view-tearsheet", kwargs={"id": self.pk}
         )
 
+    def get_absolute_gbp_url(self):
+        return reverse("react_views:r_form_gbp:view-tearsheet", kwargs={"id": self.pk})
+
     def get_edit_url(self):
         return reverse(
             "react_views:r_formula_tear_sheets:edit-tearsheet", kwargs={"id": self.pk}
@@ -82,6 +110,16 @@ class FormulaTearSheet(models.Model):
         return reverse(
             "react_views:r_formula_tear_sheets:detail-view-for-print-list",
             kwargs={"id": self.pk},
+        )
+
+    def get_gbp_printing_url(self):
+        return reverse(
+            "react_views:r_form_gbp:detail-view-for-print", kwargs={"id": self.pk}
+        )
+
+    def get_gbp_printing_url_no_list(self):
+        return reverse(
+            "react_views:r_form_gbp:detail-view-for-print-list", kwargs={"id": self.pk}
         )
 
     def get_slug_title(self):

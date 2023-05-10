@@ -1,0 +1,34 @@
+{% extends 'react_base.html' %}
+{% load static %}
+
+{% block title %}GBP TEARSHEET DETAIL{% endblock title %}
+
+{% block javascript %}
+  {{block.super}}
+ <script type="module" crossorigin src="#"></script>
+ <link rel="stylesheet" href="#">
+ <script type="module" src="/src/main.jsx"></script>
+{% endblock javascript %}
+
+{% block content %}
+<div id="root"></div>
+    {{context|json_script:"context"}}
+	{% csrf_token %}
+{% endblock content %}
+
+{% block inline_javascript %}
+	<script>
+	 const read_context = JSON.parse(JSON.parse(document.getElementById('context').textContent));
+	 const CONTEXT = {
+		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+		 'auth_token': read_context.auth_token,
+		 'tearsheet' : read_context.tearsheet,
+		 'tearsheets_list': '{% url 'form_gbp:list' %}',
+		 'edit_tearsheet' : '{% url 'react_views:r_form_gbp:edit-tearsheet' id %}',
+		 'print' : '{% url 'react_views:r_form_gbp:print' id %}',
+		 'print_list' : '{% url 'react_views:r_form_gbp:print-list' id %}',
+		 'detail_view_for_print' : '{% url 'react_views:r_form_gbp:detail-view-for-print' id %}',
+		 'print_all' : '{% url 'react_views:r_form_gbp:print_all' %}',
+		};
+	</script>
+{% endblock inline_javascript %}

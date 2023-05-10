@@ -222,6 +222,14 @@ class FormulaPriceRecord(models.Model):
 
     list_price = models.CharField(null=True, blank=True, max_length=200)
     net_price = models.CharField(null=True, blank=True, max_length=200)
+    gbp_price = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_trade = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_price_no_vat = models.CharField(
+        max_length=200, default=None, blank=True, null=True
+    )
+    gbp_trade_no_vat = models.CharField(
+        max_length=200, default=None, blank=True, null=True
+    )
 
     class Meta:
         ordering = ["order"]
@@ -230,6 +238,8 @@ class FormulaPriceRecord(models.Model):
         self.list_price = self.get_price()
         self.net_price = self.get_net_price()
         self.rule_display_1 = self.return_rule_display_1()
+        self.gbp_price, self.gbp_price_no_vat = self.get_gbp()
+        self.gbp_trade, self.gbp_trade_no_vat = self.get_trade()
 
         try:
             order = int(self.list_price)
@@ -312,6 +322,21 @@ class FormulaPriceRecord(models.Model):
 
         else:
             return 0
+
+    def get_gbp(self):
+        # handle gbp
+        gbp = int(self.list_price) if self.list_price not in [" ", "", None] else 0
+        # handle gbp minus vat
+        gbp_minus_vat = 100 * round((gbp / 1.2) * 0.01)
+        return (gbp, gbp_minus_vat)
+
+    def get_trade(self):
+        # handle trade
+        trade = int(self.list_price) if self.list_price not in [" ", "", None] else 0
+
+        # handle trade minus vat
+        trade_minus_vat = 100 * round(((trade * 0.85) / 1.2) * 0.01)
+        return (trade, trade_minus_vat)
 
     def __str__(self):
         return f"{self.cat_series_item}: {self.cat_series_item.return_translation()}"

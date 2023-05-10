@@ -17,4 +17,10 @@ urlpatterns = [
         "gbp_tear_sheets/",
         include("react_views.r_tear_sheets.r_gbp.urls", namespace="r_gbp"),
     ),
+    path(
+        "form_gbp_tear_sheets/",
+        include(
+            "react_views.r_formula_tear_sheets.r_form_gbp.urls", namespace="r_form_gbp"
+        ),
+    ),
 ]
