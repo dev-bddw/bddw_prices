@@ -1,5 +1,3 @@
-<script type="module" crossorigin src="{% static "index.b56c007c.js" %}"></script>
-<link rel="stylesheet" href="/static/index.b0016798.css">
 {% extends 'react_base.html' %}
 {% load static %}
 
@@ -7,8 +5,8 @@
 
 {% block javascript %}
   {{block.super}}
- <script type="module" crossorigin src="#"></script>
- <link rel="stylesheet" href="#">
+ <script type="module" crossorigin src="{% static "index.b56c007c.js" %}"></script>
+<link rel="stylesheet" href="{% static "index.b0016798.css" %}">
 
 {% endblock javascript %}
 
@@ -25,7 +23,7 @@
 		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
 		 'auth_token': read_context.auth_token,
 		 'tearsheet' : read_context.tearsheet,
-		 'tearsheets_list': '{% url 'tearsheets:list' %}',
+		 'tearsheets_list': '{% url 'formula_tearsheets:list' %}',
 		 'edit_tearsheet' : '{% url 'react_views:r_gbp:edit-tearsheet' id %}',
 		 'print' : '{% url 'react_views:r_gbp:print' id %}',
 		 'print_list' : '{% url 'react_views:r_gbp:print-list' id %}',

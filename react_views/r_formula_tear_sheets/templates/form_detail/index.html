@@ -23,12 +23,12 @@
 		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
 		 'auth_token': read_context.auth_token,
 		 'tearsheet' : read_context.tearsheet,
-		 'tearsheets_list': '{% url 'tearsheets:list' %}',
-		 'edit_tearsheet' : '{% url 'react_views:r_tear_sheets:edit-tearsheet' id %}',
-		 'print' : '{% url 'react_views:r_tear_sheets:print' id %}',
-		 'print_list' : '{% url 'react_views:r_tear_sheets:print-list' id %}',
-		 'detail_view_for_print' : '{% url 'react_views:r_tear_sheets:detail-view-for-print' id %}',
-		 'print_all' : '{% url 'react_views:r_tear_sheets:print_all' %}',
+		 'tearsheets_list': '{% url 'formula_tearsheets:list' %}',
+		 'edit_tearsheet' : '{% url 'react_views:r_formula_tear_sheets:edit-tearsheet' id %}',
+		 'print' : '{% url 'react_views:r_formula_tear_sheets:print' id %}',
+		 'print_list' : '{% url 'react_views:r_formula_tear_sheets:print-list' id %}',
+		 'detail_view_for_print' : '{% url 'react_views:r_formula_tear_sheets:detail-view-for-print' id %}',
+		 'print_all' : '{% url 'react_views:r_formula_tear_sheets:print_all' %}',
 		};
 	</script>
 {% endblock inline_javascript %}

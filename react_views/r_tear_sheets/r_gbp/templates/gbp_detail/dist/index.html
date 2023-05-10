@@ -23,7 +23,7 @@
 		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
 		 'auth_token': read_context.auth_token,
 		 'tearsheet' : read_context.tearsheet,
-		 'tearsheets_list': '{% url 'tearsheets:list' %}',
+		 'tearsheets_list': '{% url 'formula_tearsheets:list' %}',
 		 'edit_tearsheet' : '{% url 'react_views:r_gbp:edit-tearsheet' id %}',
 		 'print' : '{% url 'react_views:r_gbp:print' id %}',
 		 'print_list' : '{% url 'react_views:r_gbp:print-list' id %}',
