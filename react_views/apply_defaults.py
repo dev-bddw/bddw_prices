@@ -1,3 +1,5 @@
+from price_record.models import FormulaPriceRecord
+
 from formula_tear_sheets.models import (
     FormulaTearSheet,
     gbp_sdata_json_default,
@@ -6,6 +8,7 @@ from formula_tear_sheets.models import (
 from tear_sheets.models import TearSheet
 
 
+# funcs must be imported and run in django shell
 # this file provides functions to help with updating the live site
 # change the defaults on normal tearsheets for for normal and gbp attributes
 def update_tearsheets():
@@ -34,6 +37,8 @@ def update_formula_tearsheets():
     """
     and do the same for formula tearsheets
     """
+    for record in FormulaPriceRecord.objects.all():
+        record.save()
 
     for tearsheet in FormulaTearSheet.objects.all():
         tearsheet.sdata = json_default()

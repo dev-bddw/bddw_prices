@@ -9,21 +9,20 @@ def image_upload_to(instance, filename):
 
 def gbp_sdata_json_default():
     return {
-        "d_col_1": 93,
-        "d_col_2": 690,
-        "col_1": 95,
-        "col_2": 475,
-        "col_3": 69,
-        "col_4": 60,
-        "col_5": 60,
-        "col_6": 120,
-        "col_7": 0,
-        "pt_cap": 0,
-        "pt_detail": 13,
-        "pt_footer": 13,
-        "pt_pr": 0,
         "pt": 5,
-        "font_size": 9,
+        "col_1": 202,
+        "col_2": 402,
+        "col_3": 74,
+        "col_4": 80,
+        "col_5": 72,
+        "col_6": 84,
+        "pt_pr": 5,
+        "pt_cap": 5,
+        "d_col_1": 87,
+        "d_col_2": 703,
+        "font_size": 10,
+        "pt_detail": 5,
+        "pt_footer": 5,
     }
 
 
