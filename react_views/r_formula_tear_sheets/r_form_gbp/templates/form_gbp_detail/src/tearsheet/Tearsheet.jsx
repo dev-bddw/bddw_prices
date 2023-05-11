@@ -8,7 +8,6 @@ import Heading from './Heading'
 import Captions from './Captions'
 import Details from './Details'
 import FooterDetails from './FooterDetail'
-import Footer from './Footer'
 
 export default function Tearsheet() {
 
@@ -80,7 +79,6 @@ export default function Tearsheet() {
 								<Details sdata={sdata} details={details}/>
 								{renderTemplate(template) }
 								<FooterDetails sdata={sdata} footers={footer_details} />
-							{/*<Footer/>*/}
 						</td>
 						<td>
 						</td>

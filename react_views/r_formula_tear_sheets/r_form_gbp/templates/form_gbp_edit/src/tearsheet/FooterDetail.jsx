@@ -5,7 +5,7 @@ export default function FooterDetails({showCreateInputs, footers, sdata}) {
 	return(
     <>
 		<div style={{'height': sdata.pt_footer}}/>
-			<table style={{'width': '850px'}} className="mx-auto table-auto">
+			<table className="table-auto">
 				<thead className="text-gray-400 text-left">
 					<th></th>
 					<th></th>

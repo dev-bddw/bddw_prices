@@ -8,7 +8,6 @@ import Heading from './Heading'
 import Captions from './Captions'
 import Details from './Details'
 import FooterDetails from './FooterDetail'
-import Footer from './Footer'
 import ConfigPanel from './ConfigPanel'
 
 export default function Tearsheet() {

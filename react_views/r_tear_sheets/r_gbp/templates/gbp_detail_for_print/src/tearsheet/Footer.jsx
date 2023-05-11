@@ -3,8 +3,8 @@ export default function Footer() {
 	const current_year = new Date().getFullYear()
 
 	return(
-		<div style={{'font-size': '9px', 'letter-spacing': '2px','left':'170px','top': '1345px', 'position': 'absolute'}} className='text-gray-300'>
-			BDDW - 5 CROSBY STREET NEW YORK NY 10013 - T 212 625 1230 - INFO@BDDW.COM - WWW.BDDW.COM - {current_year}
+		<div style={{'font-size': '10px', 'letter-spacing': '2px','left':'200px','top': '1355px', 'position': 'absolute'}} className='text-gray-400'>
+			BDDW - 5 MOUNT STREET LONDON - T +44 (0) 20 3941 7300 - INFO@BDDW.COM - WWW.BDDW.COM - {current_year}
 		</div>
 	)
 }

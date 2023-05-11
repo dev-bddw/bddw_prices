@@ -305,10 +305,10 @@ def print_all(request):
         url_string = (
             settings.PDF_APP_URL
             + settings.SITE_URL
-            + tear_sheet.get_printing_url_no_list()
+            + tear_sheet.get_gbp_printing_url_no_list()
         )
 
-        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
+        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-GBP-TEAR-SHEET.pdf"
 
         parameter = f"&attachmentName={pdf_file_name}"
 
@@ -328,10 +328,10 @@ def print_all(request):
 
     for tear_sheet in TearSheet.objects.all():
         url_string = (
-            settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+            settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_gbp_printing_url()
         )
 
-        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-NET.pdf"
+        pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-GBP-TRADE.pdf"
 
         parameter = f"&attachmentName={pdf_file_name}"
 

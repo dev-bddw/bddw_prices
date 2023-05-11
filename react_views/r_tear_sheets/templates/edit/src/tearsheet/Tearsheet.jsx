@@ -8,7 +8,6 @@ import Heading from './Heading'
 import Captions from './Captions'
 import Details from './Details'
 import FooterDetails from './FooterDetail'
-import Footer from './Footer'
 import ConfigPanel from './ConfigPanel'
 
 export default function Tearsheet() {
@@ -79,7 +78,6 @@ export default function Tearsheet() {
 								<Details showCreateInputs={showCreateInputs} sdata={sdata} details={details}/>
 								{renderTemplate(template) }
 								<FooterDetails showCreateInputs={showCreateInputs} sdata={sdata} footers={footer_details} />
-								{/*<Footer/>*/}
 						</td>
 						<td>
 								<ConfigPanel showCreateInputs={showCreateInputs}  setShowCreateInputs={setShowCreateInputs} template={template} setTemplate={setTemplate} sdata={sdata} setSheetData={setSheetData} />
