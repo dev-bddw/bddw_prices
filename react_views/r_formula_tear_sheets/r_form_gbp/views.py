@@ -419,7 +419,7 @@ def detail_view_for_printing(request, id):
 
         return render(
             request,
-            "form_detail_for_print/dist/index.html",
+            "form_gbp_detail_for_print/dist/index.html",
             {"id": id, "context": context},
         )
 
@@ -467,7 +467,7 @@ def detail_view_for_printing_list(request, id):
 
         return render(
             request,
-            "form_detail_for_print_list/dist/index.html",
+            "form_gbp_detail_for_print_list/dist/index.html",
             {"id": id, "context": context},
         )
 
@@ -479,7 +479,7 @@ def redirect_detail_view_to_pdf(request, id):
     tear_sheet = FormulaTearSheet.objects.get(pk=id)
 
     url_string = (
-        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url()
+        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_gbp_printing_url()
     )
 
     parameter = (
@@ -501,7 +501,9 @@ def redirect_detail_view_to_pdf_list(request, id):
     tear_sheet = FormulaTearSheet.objects.get(id=id)
 
     url_string = (
-        settings.PDF_APP_URL + settings.SITE_URL + tear_sheet.get_printing_url_no_list()
+        settings.PDF_APP_URL
+        + settings.SITE_URL
+        + tear_sheet.get_gbp_printing_url_no_list()
     )
 
     parameter = (

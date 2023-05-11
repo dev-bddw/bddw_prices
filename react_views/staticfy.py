@@ -10,14 +10,22 @@ place in the application root
 cwd = dir_path = os.path.dirname(os.path.realpath(__file__))
 
 template_dirs = [
+    # tearsheets
     "/r_tear_sheets/templates/edit/",
     "/r_tear_sheets/templates/detail/",
     "/r_tear_sheets/templates/detail_for_print/",
     "/r_tear_sheets/templates/detail_for_print_list/",
+    # formula
     "/r_formula_tear_sheets/templates/form_edit/",
     "/r_formula_tear_sheets/templates/form_detail/",
     "/r_formula_tear_sheets/templates/form_detail_for_print/",
     "/r_formula_tear_sheets/templates/form_detail_for_print_list/",
+    # formula gbp
+    "/r_formula_tear_sheets/r_form_gbp/templates/form_gbp_edit/",
+    "/r_formula_tear_sheets/r_form_gbp/templates/form_gbp_detail/",
+    "/r_formula_tear_sheets/r_form_gbp/templates/form_gbp_detail_for_print/",
+    "/r_formula_tear_sheets/r_form_gbp/templates/form_gbp_detail_for_print_list/",
+    # gbp
     "/r_tear_sheets/r_gbp/templates/gbp_detail/",
     "/r_tear_sheets/r_gbp/templates/gbp_edit/",
     "/r_tear_sheets/r_gbp/templates/gbp_detail_for_print/",
