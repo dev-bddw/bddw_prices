@@ -303,7 +303,7 @@ def print_all(request):
             + settings.SITE_URL
             + tear_sheet.get_printing_url_no_list()
         )
-
+        print(url_string)
         pdf_file_name = f"{tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
 
         parameter = f"&attachmentName={pdf_file_name}"
