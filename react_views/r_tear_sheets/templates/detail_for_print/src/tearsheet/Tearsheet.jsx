@@ -69,7 +69,7 @@ export default function Tearsheet() {
 							'padding-left': '75px',
 							'width':'816px',
 							'line-height': '1.5',
-							'font-weight': '200',
+							'font-weight': '400',
 							'letter-spacing': '.05em',
 							'font-size': `${sdata.font_size}px`
 							}}>
