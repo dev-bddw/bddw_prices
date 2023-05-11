@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+a {
+  color: #9ca3af;
+}
+
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+  line-height: 1.5;
+	text-transform: uppercase;
+}
