@@ -1,5 +1,5 @@
 <script type="module" crossorigin src="{% static "index.e003289a.js" %}"></script>
-<link rel="stylesheet" href="/static/index.0c983795.css">
+<link rel="stylesheet" href="{% static "index.0c983795.css" %}">
 {% extends 'react_base.html' %}
 {% load static %}
 

@@ -29,7 +29,7 @@ export default function Heading({title}) {
 
 	return (
 		<div className="text-left">
-			<span style={{'display': 'block', 'font-size': '30px'}} className="w-full py-2 text-left">{title}</span>
+			<span style={{'display': 'block', 'font-size': '30px'}} className="text-gray-500 w-full py-2 text-left">{title}</span>
 	</div>
 	)
 }
