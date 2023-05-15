@@ -14,6 +14,7 @@ from .models import (
 )
 
 
+@login_required
 def list_view(request):
 
     return render(
@@ -25,6 +26,7 @@ def list_view(request):
     )
 
 
+@login_required
 def detail_view(request, pk):
 
     tear_sheet = FormulaTearSheet.objects.get(pk=pk)
@@ -44,6 +46,7 @@ def detail_view(request, pk):
     )
 
 
+@login_required
 def edit_view(request, pk):
 
     tear_sheet = FormulaTearSheet.objects.get(pk=pk)
@@ -101,6 +104,7 @@ def change_title_hx(request, pk):
         )
 
 
+@login_required
 def change_image_hx(request, pk):
 
     tear_sheet = FormulaTearSheet.objects.get(pk=pk)
@@ -117,6 +121,7 @@ def change_image_hx(request, pk):
         pass
 
 
+@login_required
 def change_caption_hx(request, pk):
 
     caption = FormulaImageCaption.objects.get(pk=pk)
@@ -149,6 +154,7 @@ def change_caption_hx(request, pk):
         )
 
 
+@login_required
 def change_detail_hx(request, pk):
     detail = FormulaTearSheetDetail.objects.get(pk=pk)
 
@@ -177,6 +183,7 @@ def change_detail_hx(request, pk):
         )
 
 
+@login_required
 def change_footer_detail_hx(request, pk):
     footer_detail = FormulaTearSheetFooterDetail.objects.get(pk=pk)
 
