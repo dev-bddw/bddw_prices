@@ -11,6 +11,7 @@
           <tr>
             <th scope="col">ID</th>
             <th scope="col">NAME</th>
+            <th scope="col">EDIT</th>
             <th scope="col">
                 <button style="font-size:9px;" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-get="{% url 'react_views:r_gbp:print_all' %}">ZIP ALL</button>
             </th>
@@ -23,6 +24,7 @@
           <tr>
             <th scope="row">{{tearsheet.pk}}</th>
 			<td><a href="{% url 'react_views:r_gbp:view-tearsheet' tearsheet.pk  %}" >{{tearsheet}}</a></td>
+			<td><a href="{% url 'react_views:r_gbp:edit-tearsheet' tearsheet.pk  %}" >EDIT</a></td>
             <td>
               <a style="" href="{% url 'react_views:r_gbp:print' tearsheet.pk %}" target="_blank">
                   view pdf

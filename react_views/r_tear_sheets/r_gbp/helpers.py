@@ -1,6 +1,123 @@
+import json
+
+from rest_framework.authtoken.models import Token
+
 from price_records.models import PriceRecord
 from products.models import CatSeriesItem
-from tear_sheets.models import TearSheetDetail
+from tear_sheets.models import (
+    ImageCaption,
+    TearSheet,
+    TearSheetDetail,
+    TearSheetFooterDetail,
+)
+
+
+def return_context(request, id: int) -> str:
+    """
+    builds context str for react consumption
+
+    {
+        "auth_token": get_or_create_token(),
+        "tearsheet": {
+            "id": id,
+            "title": x.title,
+            "sdata": x.gbp_sdata,
+            "template": x.gbp_template,
+            "img": x.image.url,
+            "price_records": price_records(),
+            "captions": captions(),
+            "details": details(),
+            "footer_details": footer_details(),
+    },
+
+    """
+    x = TearSheet.objects.get(id=id)
+
+    def get_or_create_token():
+        """
+        if user return token (or create one)
+        else return none
+
+        """
+        user = request.user if request.user.is_authenticated else None
+
+        if user is not None:
+            try:
+                token = Token.objects.get(user=user)
+            except Token.DoesNotExist:
+                token = Token.objects.create(user=user)
+            return token.key
+        else:
+            return None
+
+    def price_records():
+        """
+        get all price records for tearsheet, sorted by rule type
+        pricerecords are linked to tearsheet through category series item
+
+        """
+
+        price_records = return_price_records_by_rule_type(id)
+
+        return price_records if price_records is not None else []
+
+    def captions():
+        """
+        get all captions for tearsheet
+
+        """
+
+        captions = ImageCaption.objects.filter(tear_sheet_id=id)
+
+        return (
+            [
+                {"id": c.id, "caption_title": c.caption_title, "caption": c.caption}
+                for c in captions
+            ]
+            if captions is not None
+            else []
+        )  # noqa
+
+    def details():
+        """
+        get all details for tearsheet sorted by title
+
+        """
+
+        details = return_details_by_title(id)
+
+        return details if details is not None else []
+
+    def footer_details():
+        """
+        get all footer_details for tearsheet
+
+        """
+
+        footer_details = TearSheetFooterDetail.objects.filter(tear_sheet_id=id)
+
+        return (
+            [{"id": f.id, "name": f.name, "details": f.details} for f in footer_details]
+            if footer_details is not None
+            else []
+        )
+
+    return json.dumps(
+        {
+            "auth_token": get_or_create_token(),
+            "tearsheet": {
+                "id": id,
+                "title": x.title,
+                "sdata": x.gbp_sdata,
+                "template": x.gbp_template,
+                "img": x.image.url,
+                "price_records": price_records(),
+                "captions": captions(),
+                "details": details(),
+                "footer_details": footer_details(),
+            },
+        }
+    )
 
 
 def return_price_records_by_rule_type(pk: int):

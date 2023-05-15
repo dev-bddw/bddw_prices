@@ -1,6 +1,123 @@
-from formula_tear_sheets.models import FormulaTearSheetDetail
+import json
+
+from rest_framework.authtoken.models import Token
+
+from formula_tear_sheets.models import (
+    FormulaImageCaption,
+    FormulaTearSheet,
+    FormulaTearSheetDetail,
+    FormulaTearSheetFooterDetail,
+)
 from price_records.models import FormulaPriceRecord
 from products.models import CatSeriesItem
+
+
+def return_context(request, id: int) -> str:
+    """
+    builds context str for react consumption
+
+    {
+        "auth_token": get_or_create_token(),
+        "tearsheet": {
+            "id": id,
+            "title": x.title,
+            "sdata": x.sdata,
+            "template": x.template,
+            "img": x.image.url,
+            "price_records": price_records(),
+            "captions": captions(),
+            "details": details(),
+            "footer_details": footer_details(),
+    },
+
+    """
+    x = FormulaTearSheet.objects.get(id=id)
+
+    def get_or_create_token():
+        """
+        if user return token (or create one)
+        else return none
+
+        """
+        user = request.user if request.user.is_authenticated else None
+
+        if user is not None:
+            try:
+                token = Token.objects.get(user=user)
+            except Token.DoesNotExist:
+                token = Token.objects.create(user=user)
+            return token.key
+        else:
+            return None
+
+    def price_records():
+        """
+        get all price records for formula tearsheet, sorted by rule type
+        pricerecords are linked to tearsheet through category series item
+
+        """
+
+        price_records = return_price_records_by_rule_type(id)
+
+        return price_records if price_records is not None else []
+
+    def captions():
+        """
+        get all captions for tearsheet
+
+        """
+
+        captions = FormulaImageCaption.objects.filter(tear_sheet_id=id)
+
+        return (
+            [
+                {"id": c.id, "caption_title": c.caption_title, "caption": c.caption}
+                for c in captions
+            ]
+            if captions is not None
+            else []
+        )  # noqa
+
+    def details():
+        """
+        get all details for formula tearsheet sorted by title
+
+        """
+
+        details = return_details_by_title(id)
+
+        return details if details is not None else []
+
+    def footer_details():
+        """
+        get all footer_details for formula tearsheet
+
+        """
+
+        footer_details = FormulaTearSheetFooterDetail.objects.filter(tear_sheet_id=id)
+
+        return (
+            [{"id": f.id, "name": f.name, "details": f.details} for f in footer_details]
+            if footer_details is not None
+            else []
+        )
+
+    return json.dumps(
+        {
+            "auth_token": get_or_create_token(),
+            "tearsheet": {
+                "id": id,
+                "title": x.title,
+                "sdata": x.sdata,
+                "template": x.template,
+                "img": x.image.url,
+                "price_records": price_records(),
+                "captions": captions(),
+                "details": details(),
+                "footer_details": footer_details(),
+            },
+        }
+    )
 
 
 def return_price_records_by_rule_type(pk: int):

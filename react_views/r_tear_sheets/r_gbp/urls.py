@@ -1,19 +1,20 @@
 from django.urls import path
 
-from .views import (
+from .views import detail_view_entry, edit_view_entry
+from .views_api import (
     create_caption_api,
     create_detail_api,
     create_footer_api,
-    detail_view_entry,
-    detail_view_for_printing,
-    detail_view_for_printing_list,
     edit_caption_api,
     edit_detail_api,
     edit_footer_api,
     edit_image_api,
     edit_pricerecord_api,
     edit_tearsheet_api,
-    edit_view_entry,
+)
+from .views_print import (
+    detail_view_for_printing,
+    detail_view_for_printing_list,
     print_all,
     redirect_detail_view_to_pdf,
     redirect_detail_view_to_pdf_list,
