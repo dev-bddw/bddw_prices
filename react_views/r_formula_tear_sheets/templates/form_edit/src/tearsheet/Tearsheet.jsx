@@ -79,7 +79,7 @@ export default function Tearsheet() {
 								{renderTemplate(template) }
 								<FooterDetails showCreateInputs={showCreateInputs} sdata={sdata} footers={footer_details} />
 						</td>
-						<td>
+						<td className="align-top">
 								<ConfigPanel showCreateInputs={showCreateInputs}  setShowCreateInputs={setShowCreateInputs} template={template} setTemplate={setTemplate} sdata={sdata} setSheetData={setSheetData} />
 						</td>
 					</tr>

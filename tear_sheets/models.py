@@ -44,7 +44,7 @@ class TearSheetFooterDetail(Detail):
 class TearSheet(models.Model):
     def json_default():
         return {
-            "d_col_1": 87,
+            "d_col_1": 82,
             "d_col_2": 703,
             "col_1": 87,
             "col_2": 173,

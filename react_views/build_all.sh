@@ -1,4 +1,9 @@
 #!/bin/bash
+# helpful script to rebuild every react template
+# templates still need to be manually changed so tha tthe
+# react js and react css are in the correct template position
+# then run run_static.sh to apply static template tags to the
+# react templates (index.html)
 cd /home/lance/dev/django-projects/bddw_prices/react_views/
 ./r_tear_sheets/templates/edit/build.sh
 ./r_tear_sheets/templates/detail/build.sh

@@ -1,10 +1,9 @@
-from price_record.models import FormulaPriceRecord
-
 from formula_tear_sheets.models import (
     FormulaTearSheet,
     gbp_sdata_json_default,
     json_default,
 )
+from price_records.models import FormulaPriceRecord
 from tear_sheets.models import TearSheet
 
 
@@ -18,6 +17,7 @@ def update_tearsheets():
     """
     for tearsheet in TearSheet.objects.all():
         tearsheet.sdata = TearSheet.json_default()
+        tearsheet.template = "B"
         tearsheet.save()
 
 
@@ -34,7 +34,9 @@ def update_tearsheets_gbp():
 
 
 def update_formula_tearsheets():
+
     """
+    ** these records have to be saved to generate new values
     and do the same for formula tearsheets
     """
     for record in FormulaPriceRecord.objects.all():

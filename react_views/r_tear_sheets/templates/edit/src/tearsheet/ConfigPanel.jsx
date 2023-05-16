@@ -15,35 +15,48 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData}) {
 
 	const default_values ={
-		'd_col_1': 87,
+		'font_size': 10,
+		'pt_cap': 5,
+		'd_col_1': 83,
 		'd_col_2': 703,
+		'pt_detail': 5,
+		'pt_pr': 5,
 		'col_1': 87,
 		'col_2': 173,
 		'col_3': 499,
 		'col_4': 80,
 		'col_5': 54,
-		'pt_cap': 5,
-		'pt_detail': 5,
 		'pt_footer': 5,
-		'pt_pr': 5,
-		'pt': 5,
-		'font_size': 10
+	}
+
+	const easy_defs = {
+		'd_col_1': 'Details Column One Width',
+		'd_col_2': 'Details Column Two Width',
+		'col_1': 'Price Record Column One Width',
+		'col_2': 'Price Record Column Two Width',
+		'col_3': 'Price Record Column Three Width',
+		'col_4': 'Price Record Column Four Width',
+		'col_5': 'Price Record Column Five Width',
+		'pt_cap': 'Padding Top Captions',
+		'pt_detail': 'Padding Top Detail',
+		'pt_footer': 'Padding Top Footer',
+		'pt_pr': 'Padding Top Price Records',
+		'font_size': 'Font Size'
 	}
 
 	const initial_values = useRef( {
+		'font_size': CONTEXT.tearsheet.sdata.font_size,
+		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
 		'd_col_1': CONTEXT.tearsheet.sdata.d_col_1,
 		'd_col_2': CONTEXT.tearsheet.sdata.d_col_2,
+		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
+		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
 		'col_1': CONTEXT.tearsheet.sdata.col_1,
 		'col_2': CONTEXT.tearsheet.sdata.col_2,
 		'col_3': CONTEXT.tearsheet.sdata.col_3,
 		'col_4': CONTEXT.tearsheet.sdata.col_4,
 		'col_5': CONTEXT.tearsheet.sdata.col_5,
-		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
-		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
 		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
-		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
-		'pt': CONTEXT.tearsheet.sdata.pt,
-		'font_size': CONTEXT.tearsheet.sdata.font_size
 	})
 
 	const initial_template = useRef( template )
@@ -57,8 +70,6 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		setAdded(sum)
 	}, [sdata]
 )
-
-
 
 	const save = () => {
 		fetch(CONTEXT.edit_tearsheet_api, {
@@ -97,23 +108,6 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		setTemplate('B')
 		setMessage('Defaults applied. Not saved!')
 	}
-
-	const easy_defs = {
-		'd_col_1': 'Details Column One Width',
-		'd_col_2': 'Details Column Two Width',
-		'col_1': 'Price Record Column One Width',
-		'col_2': 'Price Record Column Two Width',
-		'col_3': 'Price Record Column Three Width',
-		'col_4': 'Price Record Column Four Width',
-		'col_5': 'Price Record Column Five Width',
-		'pt_cap': 'Padding Top Captions',
-		'pt_detail': 'Padding Top Detail',
-		'pt_footer': 'Padding Top Footer',
-		'pt_pr': 'Padding Top Price Records',
-		'pt': 'Padding top details/captions/footer',
-		'font_size': 'Font Size'
-	}
-
 
 	const handleChange = (event, key) => {
 	  const updatedValue = { [key] : event.target.value }
