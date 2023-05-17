@@ -14,38 +14,36 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData}) {
 	const default_values ={
-        "pt": 5,
+        "font_size": 10,
+				"pt_cap": 5,
+        "d_col_1": 87,
+        "d_col_2": 703,
+				"pt_detail": 5,
+        "pt_pr": 5,
         "col_1": 202,
         "col_2": 402,
         "col_3": 74,
         "col_4": 80,
         "col_5": 72,
         "col_6": 84,
-        "pt_pr": 5,
-        "pt_cap": 5,
-        "d_col_1": 87,
-        "d_col_2": 703,
-        "font_size": 10,
-        "pt_detail": 5,
         "pt_footer": 5,
  	}
 
 	const initial_values = useRef( {
+		'font_size': CONTEXT.tearsheet.sdata.font_size,
+		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
 		'd_col_1': CONTEXT.tearsheet.sdata.d_col_1,
 		'd_col_2': CONTEXT.tearsheet.sdata.d_col_2,
+		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
+		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
 		'col_1': CONTEXT.tearsheet.sdata.col_1,
 		'col_2': CONTEXT.tearsheet.sdata.col_2,
 		'col_3': CONTEXT.tearsheet.sdata.col_3,
 		'col_4': CONTEXT.tearsheet.sdata.col_4,
 		'col_5': CONTEXT.tearsheet.sdata.col_5,
-		'col_6': CONTEXT.tearsheet.sdata.col_5,
-		'col_7': CONTEXT.tearsheet.sdata.col_6,
-		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
-		'pt_detail': CONTEXT.tearsheet.sdata.pt_detail,
+		'col_6': CONTEXT.tearsheet.sdata.col_6,
+		'col_7': CONTEXT.tearsheet.sdata.col_7,
 		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
-		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
-		'pt': CONTEXT.tearsheet.sdata.pt,
-		'font_size': CONTEXT.tearsheet.sdata.font_size
 	})
 
 	const easy_defs = {
@@ -62,7 +60,6 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'pt_detail': 'Padding Top Details',
 		'pt_footer': 'Padding Top Footer Detail',
 		'pt_pr': 'Padding Top Price Records',
-		'pt': 'Padding top details/captions/footer',
 		'font_size': 'Font Size'
 	}
 
