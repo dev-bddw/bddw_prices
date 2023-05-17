@@ -15,7 +15,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData}) {
 
 	const default_values ={
-        "font_size": 10,
+        "font_size": 9,
         "pt_cap": 5,
         "d_col_1": 87,
         "d_col_2": 703,

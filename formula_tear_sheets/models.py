@@ -20,7 +20,7 @@ def gbp_sdata_json_default():
         "pt_cap": 5,
         "d_col_1": 87,
         "d_col_2": 703,
-        "font_size": 10,
+        "font_size": 9,
         "pt_detail": 5,
         "pt_footer": 5,
     }
