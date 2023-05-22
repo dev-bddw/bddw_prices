@@ -1,0 +1,37 @@
+{% extends 'react_base.html' %}
+{% load static %}
+
+{% block title %}GBP TEARSHEET EDIT{% endblock title %}
+
+{% block javascript %}
+  {{block.super}}
+ <script type="module" crossorigin src="#"></script>
+ <link rel="stylesheet" href="#">
+ <script type="module" src="/src/main.jsx"></script>
+{% endblock javascript %}
+
+{% block content %}
+<div id="root"></div>
+    {{context|json_script:"context"}}
+	{% csrf_token %}
+{% endblock content %}
+
+{% block inline_javascript %}
+	<script>
+	 const read_context = JSON.parse(JSON.parse(document.getElementById('context').textContent));
+	 const CONTEXT = {
+		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+		 'auth_token': read_context.auth_token,
+		 'tearsheet' : read_context.tearsheet,
+		 'edit_tearsheet_api' : '{% url 'react_views:r_form_gbp:edit-tearsheet-api' id  %}',
+		 'edit_image_api' : '{% url 'react_views:r_form_gbp:edit-image-api' id %}',
+		 'create_caption_api' : '{% url 'react_views:r_form_gbp:create-caption-api' id %}',
+		 'edit_caption_api' : '{% url 'react_views:r_form_gbp:edit-caption-api' %}',
+		 'create_detail_api' : '{% url 'react_views:r_form_gbp:create-detail-api' id %}',
+		 'edit_detail_api' : '{% url 'react_views:r_form_gbp:edit-detail-api' %}',
+		 'create_footer_api' : '{% url 'react_views:r_form_gbp:create-footer-api' id %}',
+		 'edit_footer_api' : '{% url 'react_views:r_form_gbp:edit-footer-api' %}',
+		 'view_tearsheet' : '{% url 'react_views:r_form_gbp:view-tearsheet' id %}',
+		};
+	</script>
+{% endblock inline_javascript %}

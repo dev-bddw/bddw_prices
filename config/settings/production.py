@@ -1,5 +1,18 @@
+import sentry_sdk
+
 from .base import *  # noqa
 from .base import env
+
+# SENTRY
+# -----------------------------------------------------------------------------
+
+sentry_sdk.init(
+    dsn="https://af2da3c6e13149989380ecfb14086c1c@o4504686058930176.ingest.sentry.io/4505121514258432",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+)
 
 # GENERAL
 # ------------------------------------------------------------------------------

@@ -42,11 +42,55 @@ class TearSheetFooterDetail(Detail):
 
 
 class TearSheet(models.Model):
+    def json_default():
+        return {
+            "d_col_1": 82,
+            "d_col_2": 703,
+            "col_1": 87,
+            "col_2": 173,
+            "col_3": 499,
+            "col_4": 80,
+            "col_5": 54,
+            "pt_cap": 5,
+            "pt_detail": 5,
+            "pt_footer": 5,
+            "pt_pr": 5,
+            "pt": 5,
+            "font_size": 10,
+        }
+
+    def sdata_json_default(self):
+        return self.json_default()
+
+    def gbp_sdata_json_default():
+        return {
+            "d_col_1": 93,
+            "d_col_2": 690,
+            "col_1": 95,
+            "col_2": 475,
+            "col_3": 69,
+            "col_4": 60,
+            "col_5": 60,
+            "col_6": 120,
+            "col_7": 0,
+            "pt_cap": 0,
+            "pt_detail": 13,
+            "pt_footer": 13,
+            "pt_pr": 0,
+            "pt": 5,
+            "font_size": 9,
+        }
+
     class TearSheetTemplate(models.TextChoices):
         a = "A", "ONE COLUMN DISPLAY"
         b = "B", "TWO COLUMN DISPLAY"
         c = "C", "RULE TYPE ABOVE"
 
+    sdata = models.JSONField(default=sdata_json_default, blank=True, null=True)
+    gbp_sdata = models.JSONField(default=gbp_sdata_json_default, blank=True, null=True)
+    gbp_template = models.CharField(
+        choices=TearSheetTemplate.choices, default="C", max_length=1000
+    )
     template = models.CharField(
         choices=TearSheetTemplate.choices, default="B", max_length=1000
     )
@@ -74,22 +118,35 @@ class TearSheet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("tearsheets:detail", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_tear_sheets:view-tearsheet", kwargs={"id": self.pk}
+        )
 
     def get_edit_url(self):
-        return reverse("tearsheets:edit", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_tear_sheets:edit-tearsheet", kwargs={"id": self.pk}
+        )
 
     def get_printing_url(self):
-        return reverse("tearsheets:detail-view-for-print", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_tear_sheets:detail-view-for-print", kwargs={"id": self.pk}
+        )
 
     def get_printing_url_no_list(self):
-        return reverse("tearsheets:detail-view-for-print-list", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_tear_sheets:detail-view-for-print-list",
+            kwargs={"id": self.pk},
+        )
 
     def get_gbp_printing_url(self):
-        return reverse("gbp:detail-view-for-print", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_gbp:detail-view-for-print", kwargs={"id": self.pk}
+        )
 
     def get_gbp_printing_url_no_list(self):
-        return reverse("gbp:detail-view-for-print-list", kwargs={"pk": self.pk})
+        return reverse(
+            "react_views:r_gbp:detail-view-for-print-list", kwargs={"id": self.pk}
+        )
 
     def get_slug_title(self):
         return slugify(self.title)

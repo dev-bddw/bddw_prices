@@ -3,5 +3,5 @@
 USE_DOCKER=yes
 IPYTHONDIR=/app/.ipython
 
-SITE_URL=https://test.bddwsalestools.com
-PDF_APP_URL=https://bddw-pdf-api.herokuapp.com/api/render?url=
+SITE_URL=http://localhost:8000
+PDF_APP_URL=http://localhost:9000/api/render?url=

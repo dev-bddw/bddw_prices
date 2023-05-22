@@ -2,15 +2,18 @@
 {% load static %}
 
 {% block content %}
-<div class="pt-5">
+<div>
+		<h1>GBP TEARSHEETS</h1>
+		<p class="text-right">Tearsheets for cousins ourseas</p>
     <table class="table table-striped">
         <thead>
           <caption>GBP TEARSHEETS</caption>
           <tr>
             <th scope="col">ID</th>
             <th scope="col">NAME</th>
+            <th scope="col">EDIT</th>
             <th scope="col">
-                <button style="font-size:9px;" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-get="{% url 'gbp:print_all' %}">ZIP ALL</button>
+                <button style="font-size:9px;" hx-trigger="click" hx-target="this" hx-swap="outerHTML" hx-get="{% url 'react_views:r_gbp:print_all' %}">ZIP ALL</button>
             </th>
 
             <th scope="col">UPDATED ON</th>
@@ -20,21 +23,22 @@
           {% for tearsheet in tearsheets  %}
           <tr>
             <th scope="row">{{tearsheet.pk}}</th>
-			<td><a href="{% url 'gbp:detail' tearsheet.pk  %}" >{{tearsheet}}</a></td>
+			<td><a href="{% url 'react_views:r_gbp:view-tearsheet' tearsheet.pk  %}" >{{tearsheet}}</a></td>
+			<td><a href="{% url 'react_views:r_gbp:edit-tearsheet' tearsheet.pk  %}" >EDIT</a></td>
             <td>
-              <a style="" href="{% url 'gbp:print' tearsheet.pk %}" target="_blank">
+              <a style="" href="{% url 'react_views:r_gbp:print' tearsheet.pk %}" target="_blank">
                   view pdf
               </a>
               -
-              <a style="" href="{% url 'gbp:print' tearsheet.pk %}?justDownload=True">
+              <a style="" href="{% url 'react_views:r_gbp:print' tearsheet.pk %}?justDownload=True">
                   download pdf
               </a>
               -
-              <a style="" href="{% url 'gbp:print-list' tearsheet.pk %}" target="_blank">
+              <a style="" href="{% url 'react_views:r_gbp:print-list' tearsheet.pk %}" target="_blank">
                   view list pdf
               </a>
               -
-              <a style="" href="{% url 'gbp:print-list' tearsheet.pk %}?justDownload=True">
+              <a style="" href="{% url 'react_views:r_gbp:print-list' tearsheet.pk %}?justDownload=True">
                   download list pdf
               </a>
             </td>
