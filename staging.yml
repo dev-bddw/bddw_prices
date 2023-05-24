@@ -1,8 +1,13 @@
 version: '3'
 
+# note related to the postgres data -- this yaml is designed to work on a copy of a production
+# server (amazon ami)
+# so copy of the ami of your production server, copy your .envs/.production to .envs/.staging then run this staging environment and and point your DNS
+# to test.bddwsalestools.com and then run sudo docker-compose -f staging.yml up --build
+
 volumes:
-  staging_postgres_data: {}
-  staging_postgres_data_backups: {}
+  production_postgres_data: {}
+  production_postgres_data_backups: {}
   staging_traefik: {}
 
 services:
@@ -26,8 +31,8 @@ services:
       dockerfile: ./compose/staging/postgres/Dockerfile
     image: bddw_prices_staging_postgres
     volumes:
-      - staging_postgres_data:/var/lib/postgresql/data:Z
-      - staging_postgres_data_backups:/backups:z
+      - production_postgres_data:/var/lib/postgresql/data:Z
+      - production_postgres_data_backups:/backups:z
     env_file:
       - ./.envs/.staging/.postgres
 
@@ -54,4 +59,4 @@ services:
     env_file:
       - ./.envs/.staging/.django
     volumes:
-      - staging_postgres_data_backups:/backups:z
+      - production_postgres_data_backups:/backups:z
