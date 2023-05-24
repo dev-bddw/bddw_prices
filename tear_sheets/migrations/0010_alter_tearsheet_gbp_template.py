@@ -4,15 +4,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tear_sheets', '0009_tearsheet_gbp_template'),
+        ("tear_sheets", "0009_tearsheet_gbp_template"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='tearsheet',
-            name='gbp_template',
-            field=models.CharField(choices=[('A', 'ONE COLUMN DISPLAY'), ('B', 'TWO COLUMN DISPLAY'), ('C', 'RULE TYPE ABOVE')], default='C', max_length=1000),
+            model_name="tearsheet",
+            name="gbp_template",
+            field=models.CharField(
+                choices=[
+                    ("A", "ONE COLUMN DISPLAY"),
+                    ("B", "TWO COLUMN DISPLAY"),
+                    ("C", "RULE TYPE ABOVE"),
+                ],
+                default="C",
+                max_length=1000,
+            ),
         ),
     ]

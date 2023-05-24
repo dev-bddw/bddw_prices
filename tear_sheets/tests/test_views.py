@@ -14,7 +14,6 @@ from tear_sheets.models import (
 
 class TearSheetTest(TestCase):
     def setUp(self):
-
         User = get_user_model()
 
         self.user = User.objects.create(username="bilbo", password="baggins")
@@ -59,7 +58,6 @@ class TearSheetTest(TestCase):
         self.print_url_no_list = self.tear_sheet.get_printing_url_no_list()
 
     def test_detail_view(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -71,7 +69,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, self.price_record.rule_display_1)
 
     def test_edit_view(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -82,7 +79,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, self.tear_sheet.title)
 
     def test_printing_view(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -92,7 +88,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, self.tear_sheet.title)
 
     def test_printing_view_no_list(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -103,7 +98,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, self.tear_sheet.title)
 
     def test_change_template_hx(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -117,7 +111,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, "RULE DISPLAY ABOVE")
 
     def test_change_title_hx(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -134,7 +127,6 @@ class TearSheetTest(TestCase):
     #     pass
 
     def test_change_caption_hx(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -150,7 +142,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, "Two men by the river.")
 
     def test_change_detail_hx(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -166,7 +157,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, "Two colors to choose from.")
 
     def test_change_price_record_hx(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -191,7 +181,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, "Manhattan")
 
     def test_change_footer_detail_hx(self):
-
         client = Client()
 
         client.force_login(self.user)
@@ -209,7 +198,6 @@ class TearSheetTest(TestCase):
         self.assertContains(response, "BDDW loves its customers!")
 
     def test_create_caption_hx(self):
-
         client = Client()
 
         client.force_login(self.user)

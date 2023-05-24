@@ -14,9 +14,7 @@ def process_records(records: list):
     report = []
 
     for record in records:
-
         if record["is_tearsheet"] or record["is_pricelist"]:
-
             category, created = Category.objects.get_or_create(
                 name=record["category"].upper()
             )
@@ -44,7 +42,6 @@ def process_records(records: list):
             report.append(csi_record)
 
             if not record["is_formula"]:
-
                 if record["is_tearsheet"] is True:
                     (
                         new_price_record,

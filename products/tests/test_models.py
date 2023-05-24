@@ -6,7 +6,6 @@ from tear_sheets.models import TearSheet
 
 class TestCategorySeriesItems(TestCase):
     def setUp(self):
-
         self.storage, cat_create = Category.objects.get_or_create(name="STORAGE")
         self.lake, series_create = Series.objects.get_or_create(name="LAKE")
         self.credenza, item_create = Item.objects.get_or_create(name="CREDENZA")
@@ -20,15 +19,12 @@ class TestCategorySeriesItems(TestCase):
         )
 
     def test_simple_save(self):
-
         self.CSI.save()
 
     def test_duplicate(self):
-
         with self.assertRaisesMessage(
             ValueError, "This Category Series Item already exists"
         ):
-
             self.CSI, csi_create = CatSeriesItem.objects.get_or_create(
                 category=self.storage,
                 series=self.lake,

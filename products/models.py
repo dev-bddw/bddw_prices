@@ -17,7 +17,6 @@ class Category(models.Model):
         return f"{self.name}"
 
     def save(self, *args, **kwargs):
-
         for obj in CatSeriesItem.objects.filter(category=self):
             if (obj.cat_order is not None) and (obj.cat_order != ""):
                 self.order = obj.cat_order
@@ -112,9 +111,7 @@ class CatSeriesItem(models.Model):
         return f"{self.category} - {self.series} - {self.item}"
 
     def return_translation(self):
-
         try:
-
             f = self.formula.replace("[", "").replace("]", "")
 
             import re
@@ -124,7 +121,6 @@ class CatSeriesItem(models.Model):
             return formula
 
         except AttributeError:
-
             pass
 
     def return_price_records(self):

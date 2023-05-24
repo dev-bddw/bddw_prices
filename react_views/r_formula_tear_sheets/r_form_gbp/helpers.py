@@ -128,7 +128,6 @@ def return_price_records_by_rule_type(pk: int):
     category_series_items = CatSeriesItem.objects.filter(formula_tear_sheet=pk)
 
     if len(category_series_items) != 0:
-
         list_of_price_records = FormulaPriceRecord.objects.filter(
             cat_series_item__in=category_series_items
         )
@@ -175,7 +174,6 @@ def return_details_by_title(pk: int):
     details = FormulaTearSheetDetail.objects.filter(tear_sheet__pk=pk)
 
     if len(details) != 0:
-
         names = []
 
         for x in details:
@@ -196,5 +194,4 @@ def return_details_by_title(pk: int):
         return detail_records
 
     else:
-
         return None

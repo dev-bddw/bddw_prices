@@ -92,9 +92,7 @@ def print_all(request):
     # process tuples into the zip archive buffer
 
     with zipfile.ZipFile(archive, "w") as zip_archive:
-
         for path, data in pdf_list:
-
             file = zipfile.ZipInfo(path)
             zip_archive.writestr(file, data.getvalue())
 
@@ -120,7 +118,6 @@ def detail_view_for_printing(request, id):
     the view the printer app uses to create pdfs
     """
     if request.method == "GET":
-
         context = return_context(request, id)
 
         return render(
@@ -133,7 +130,6 @@ def detail_view_for_printing_list(request, id):
     detail view pdf app uses to create list pdfs
     """
     if request.method == "GET":
-
         context = return_context(request, id)
 
         return render(

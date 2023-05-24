@@ -5,7 +5,6 @@ import tear_sheets.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("tear_sheets", "0006_alter_tearsheet_template"),
     ]

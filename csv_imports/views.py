@@ -23,7 +23,6 @@ from .helpers import process_records
 
 @login_required
 def price_records_template(request):
-
     date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     response = HttpResponse(
         content_type="text/csv",
@@ -176,7 +175,6 @@ def export_all_pricelist_records(request):
 
 @login_required
 def upload(request):
-
     """
     Takes csv from bin
     creates CatSeriesItems
@@ -211,14 +209,12 @@ def upload(request):
     }
 
     if request.method == "POST":
-
         csv_file = request.FILES["file"]
         data_set = csv_file.read().decode("UTF-8")
         io_string = io.StringIO(data_set)
         next(io_string)
 
         for row in csv.reader(io_string, delimiter=",", quotechar='"'):
-
             record = {
                 "category": row[columns["category"]],
                 "series": row[columns["series"]],
@@ -251,7 +247,6 @@ def upload(request):
         return render(request, "lot-upload.html", {"report": report})
 
     else:
-
         return render(request, "lot-upload.html", {})
 
 
@@ -262,9 +257,7 @@ def upload(request):
 
 @login_required
 def sorting_upload(request):
-
     if request.method == "POST":
-
         csv_file = request.FILES["file"]
 
         data_set = csv_file.read().decode("UTF-8")
@@ -329,7 +322,6 @@ def sorting_upload(request):
         return render(request, "lot-upload.html", {"report": report})
 
     if request.method == "GET":
-
         date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
         response = HttpResponse(
             content_type="text/csv",
@@ -410,7 +402,6 @@ def export_sorting_records(request):
 
 @login_required
 def upload_formula_price_records(request):
-
     columns = {
         "id": 0,
         "category": 1,
@@ -436,7 +427,6 @@ def upload_formula_price_records(request):
     }
 
     if request.method == "POST":
-
         csv_file = request.FILES["file"]
 
         data_set = csv_file.read().decode("UTF-8")
@@ -447,7 +437,6 @@ def upload_formula_price_records(request):
         report = []
 
         for row in csv.reader(io_string, delimiter=",", quotechar='"'):
-
             category, created = Category.objects.get_or_create(
                 name=row[columns["category"]].upper()
             )
@@ -463,7 +452,6 @@ def upload_formula_price_records(request):
             )
 
             if row[columns["tearsheet_include"]] in [1, "1"]:
-
                 (
                     tearsheet_record,
                     tsr_created,
@@ -547,7 +535,6 @@ def upload_formula_price_records(request):
                     )
 
             if row[columns["price_list_include"]] in [1, "1"]:
-
                 (
                     pricelist_record,
                     plr_created,
@@ -634,7 +621,6 @@ def upload_formula_price_records(request):
 
 @login_required
 def export_all_formula_price_records(request):
-
     tearsheet_records = FormulaPriceRecord.objects.all().values_list(
         "id",
         "rule_type",
@@ -747,7 +733,6 @@ def export_all_formula_price_records(request):
 
 @login_required
 def formula_records_template(request):
-
     date = datetime.datetime.now().strftime("%Y_%m_%d-%I:%M:%S_%p")
     response = HttpResponse(
         content_type="text/csv",

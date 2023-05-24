@@ -14,7 +14,6 @@ from tear_sheets.models import TearSheet
 
 class PriceRecordTests(TestCase):
     def setUp(self):
-
         """
         setup one CSI w/ tearsheet, one CSI without
         setup one PriceRecord w/ list_price, another without
@@ -61,13 +60,11 @@ class PriceRecordTests(TestCase):
         )
 
     def test_price_error(self):
-
         self.assertEqual(
             self.no_price_record.get_net_price(), "LIST PRICE MUST HAVE INT VALUE."
         )
 
     def test_get_net_price(self):
-
         lp = int(self.record.list_price)
         multiplier = settings.NET_PRICE_MULTIPLIER
 
@@ -85,7 +82,6 @@ class PriceRecordTests(TestCase):
 
 class PriceListRecordTests(TestCase):
     def setUp(self):
-
         self.storage, cat_create = Category.objects.get_or_create(name="STORAGE")
         self.lake, series_create = Series.objects.get_or_create(name="LAKE")
         self.credenza, item_create = Item.objects.get_or_create(name="CREDENZA")
@@ -128,14 +124,12 @@ class PriceListRecordTests(TestCase):
         )
 
     def test_price_error(self):
-
         self.assertEqual(
             self.no_price_record.get_net_price(),
             "Please make sure your LIST PRICE has an integer value.",
         )
 
     def test_get_net_price(self):
-
         self.assertEqual("850", self.record.get_net_price())
 
     def test_save_net_price(self):
@@ -150,7 +144,6 @@ class PriceListRecordTests(TestCase):
 
 class FormulaPriceRecordTests(TestCase):
     def setUp(self):
-
         self.storage, cat_create = Category.objects.get_or_create(name="STORAGE")
         self.lake, series_create = Series.objects.get_or_create(name="LAKE")
         self.credenza, item_create = Item.objects.get_or_create(name="CREDENZA")
@@ -196,13 +189,11 @@ class FormulaPriceRecordTests(TestCase):
         )
 
     def test_price_no_formula(self):
-
         self.no_formula_record.save()
 
         self.assertEqual(self.no_formula_record.list_price, 0)
 
     def test_net_price(self):
-
         self.record.save()
         self.no_formula_record.save()
 
@@ -212,19 +203,16 @@ class FormulaPriceRecordTests(TestCase):
         self.assertEqual(self.no_formula_record.get_net_price(), "0")
 
     def test_price_formula(self):
-
         self.record.save()
 
         self.assertEqual(self.record.list_price, 1000)
 
     def test_formula_translation(self):
-
         translation = self.record.return_rule_display_1()
 
         self.assertEqual(translation, "20 L X 50 X D")
 
     def test_value_dict(self):
-
         value_dict = self.record.return_value_dict()
 
         self.assertEqual(type({}), type(value_dict))
@@ -234,7 +222,6 @@ class FormulaPriceRecordTests(TestCase):
 
 class FormulaPriceListPriceRecordTests(TestCase):
     def setUp(self):
-
         self.storage, cat_create = Category.objects.get_or_create(name="STORAGE")
         self.lake, series_create = Series.objects.get_or_create(name="LAKE")
         self.credenza, item_create = Item.objects.get_or_create(name="CREDENZA")
@@ -283,19 +270,16 @@ class FormulaPriceListPriceRecordTests(TestCase):
         )
 
     def test_price_formula(self):
-
         self.record.save()
 
         self.assertEqual(self.record.list_price, 1000)
 
     def test_price_no_formula(self):
-
         self.no_formula_record.save()
 
         self.assertEqual(self.no_formula_record.list_price, 0)
 
     def test_net_price(self):
-
         self.record.save()
         self.no_formula_record.save()
 
@@ -305,13 +289,11 @@ class FormulaPriceListPriceRecordTests(TestCase):
         self.assertEqual(self.no_formula_record.get_net_price(), "0")
 
     def test_formula_translation(self):
-
         translation = self.record.return_rule_display_1()
 
         self.assertEqual(translation, "20 L X 50 X D")
 
     def test_value_dict(self):
-
         value_dict = self.record.return_value_dict()
 
         self.assertEqual(type({}), type(value_dict))

@@ -1,0 +1,29 @@
+{% extends 'react_base.html' %}
+{% load static %}
+
+{% block title %}SEARCH TEARSHEETS{% endblock title %}
+
+{% block javascript %}
+  {{block.super}}
+ <script type="module" crossorigin src="#"></script>
+ <link rel="stylesheet" href="#">
+ <script type="module" src="/src/main.jsx"></script>
+{% endblock javascript %}
+
+{% block content %}
+<div id="root"></div>
+    {{context|json_script:"context"}}
+	{% csrf_token %}
+{% endblock content %}
+
+{% block inline_javascript %}
+	<script>
+	 const read_context = JSON.parse(JSON.parse(document.getElementById('context').textContent));
+	 const CONTEXT = {
+		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+		 'auth_token': read_context.auth_token,
+		 'tearsheets' : read_context.tearsheets,
+     'search_api' : '{% url 'react_views:r_search:search-api'  %}',
+		};
+	</script>
+{% endblock inline_javascript %}

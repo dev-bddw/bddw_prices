@@ -5,15 +5,16 @@ import formula_tear_sheets.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('formula_tear_sheets', '0004_formulatearsheet_template'),
+        ("formula_tear_sheets", "0004_formulatearsheet_template"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='formulatearsheet',
-            name='sdata',
-            field=models.JSONField(blank=True, default=formula_tear_sheets.models.json_default, null=True),
+            model_name="formulatearsheet",
+            name="sdata",
+            field=models.JSONField(
+                blank=True, default=formula_tear_sheets.models.json_default, null=True
+            ),
         ),
     ]

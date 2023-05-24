@@ -5,20 +5,27 @@ import tear_sheets.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tear_sheets', '0007_tearsheet_sdata'),
+        ("tear_sheets", "0007_tearsheet_sdata"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tearsheet',
-            name='gbp_sdata',
-            field=models.JSONField(blank=True, default=tear_sheets.models.TearSheet.gbp_sdata_json_default, null=True),
+            model_name="tearsheet",
+            name="gbp_sdata",
+            field=models.JSONField(
+                blank=True,
+                default=tear_sheets.models.TearSheet.gbp_sdata_json_default,
+                null=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='tearsheet',
-            name='sdata',
-            field=models.JSONField(blank=True, default=tear_sheets.models.TearSheet.sdata_json_default, null=True),
+            model_name="tearsheet",
+            name="sdata",
+            field=models.JSONField(
+                blank=True,
+                default=tear_sheets.models.TearSheet.sdata_json_default,
+                null=True,
+            ),
         ),
     ]

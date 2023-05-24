@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("price_records", "0021_alter_formulapricerecord_cat_series_item"),
     ]

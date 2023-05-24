@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("price_records", "0008_alter_formulapricelistpricerecord_rule_display_2"),
     ]

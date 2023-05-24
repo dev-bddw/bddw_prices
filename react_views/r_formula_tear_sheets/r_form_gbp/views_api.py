@@ -11,7 +11,6 @@ from formula_tear_sheets.models import (
 
 @api_view(["POST"])
 def edit_tearsheet_api(request, id):
-
     if request.method == "POST":
         print(request.data["data"])
 
@@ -25,9 +24,7 @@ def edit_tearsheet_api(request, id):
 
 @api_view(["POST"])
 def edit_image_api(request, id):
-
     if request.method == "POST":
-
         image = request.FILES.get("image")
         tearsheet = FormulaTearSheet.objects.get(id=id)
         tearsheet.image = image
@@ -43,15 +40,12 @@ def edit_image_api(request, id):
 
 @api_view(["POST"])
 def edit_detail_api(request):
-
     errors = None
 
     if request.data["data"]["name"] == "" and request.data["data"]["details"] == "":
-
         FormulaTearSheetDetail.objects.filter(id=request.data["data"]["id"]).delete()
 
     else:
-
         FormulaTearSheetDetail.objects.filter(id=request.data["data"]["id"]).update(
             **request.data["data"]
         )
@@ -61,11 +55,9 @@ def edit_detail_api(request):
 
 @api_view(["POST"])
 def create_detail_api(request, id):
-
     errors = None
 
     if request.method == "POST":
-
         order_no = len(FormulaTearSheetDetail.objects.filter(tear_sheet_id=id))
         request.data["data"].update({"order": order_no + 1})
         FormulaTearSheetDetail.objects.create(**request.data["data"])
@@ -80,11 +72,9 @@ def create_detail_api(request, id):
 
 @api_view(["POST"])
 def create_caption_api(request, id):
-
     errors = None
 
     if request.method == "POST":
-
         order_no = len(FormulaImageCaption.objects.filter(tear_sheet_id=id))
         request.data["data"].update({"order_no": order_no + 1})
 
@@ -100,18 +90,15 @@ def create_caption_api(request, id):
 
 @api_view(["POST"])
 def edit_caption_api(request):
-
     errors = None
 
     if (
         request.data["data"]["caption_title"] == ""
         and request.data["data"]["caption"] == ""
     ):
-
         FormulaImageCaption.objects.filter(id=request.data["data"]["id"]).delete()
 
     else:
-
         FormulaImageCaption.objects.filter(id=request.data["data"]["id"]).update(
             **request.data["data"]
         )
@@ -121,17 +108,14 @@ def edit_caption_api(request):
 
 @api_view(["POST"])
 def edit_footer_api(request):
-
     errors = None
 
     if request.data["data"]["name"] == "" and request.data["data"]["details"] == "":
-
         FormulaTearSheetFooterDetail.objects.filter(
             id=request.data["data"]["id"]
         ).delete()
 
     else:
-
         FormulaTearSheetFooterDetail.objects.filter(
             id=request.data["data"]["id"]
         ).update(**request.data["data"])
@@ -141,11 +125,9 @@ def edit_footer_api(request):
 
 @api_view(["POST"])
 def create_footer_api(request, id):
-
     errors = None
 
     if request.method == "POST":
-
         order_no = len(FormulaTearSheetFooterDetail.objects.filter(tear_sheet_id=id))
         request.data["data"].update({"order": order_no + 1})
         FormulaTearSheetFooterDetail.objects.create(**request.data["data"])

@@ -1,5 +1,6 @@
 from django.urls import include, path
 
+# /react/
 app_name = "react_views"
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
             "react_views.r_formula_tear_sheets.r_form_gbp.urls", namespace="r_form_gbp"
         ),
     ),
+    path("search/", include("react_views.r_search.urls", namespace="r_search")),
 ]

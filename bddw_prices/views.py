@@ -14,7 +14,6 @@ from tear_sheets.models import TearSheet
 
 @login_required
 def snapshot(request):
-
     return render(
         request,
         "snapshot.html",

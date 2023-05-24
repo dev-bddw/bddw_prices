@@ -6,7 +6,6 @@ from formula_tear_sheets.models import FormulaTearSheet
 
 @login_required
 def list_view(request):
-
     return render(
         request,
         "form_gbp_list_view.html",

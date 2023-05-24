@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("products", "0006_alter_catseriesitem_options"),
         ("price_records", "0006_alter_formulapricerecord_rule_display_1"),

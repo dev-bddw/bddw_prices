@@ -13,9 +13,7 @@ from tear_sheets.models import (
 
 @api_view(["POST"])
 def edit_tearsheet_api(request, id):
-
     if request.method == "POST":
-
         TearSheet.objects.filter(id=id).update(**request.data["data"])
 
         return JsonResponse({"errors": []})
@@ -26,9 +24,7 @@ def edit_tearsheet_api(request, id):
 
 @api_view(["POST"])
 def edit_image_api(request, id):
-
     if request.method == "POST":
-
         image = request.FILES.get("image")
         tearsheet = TearSheet.objects.get(id=id)
         tearsheet.image = image
@@ -44,15 +40,12 @@ def edit_image_api(request, id):
 
 @api_view(["POST"])
 def edit_detail_api(request):
-
     errors = None
 
     if request.data["data"]["name"] == "" and request.data["data"]["details"] == "":
-
         TearSheetDetail.objects.filter(id=request.data["data"]["id"]).delete()
 
     else:
-
         TearSheetDetail.objects.filter(id=request.data["data"]["id"]).update(
             **request.data["data"]
         )
@@ -62,11 +55,9 @@ def edit_detail_api(request):
 
 @api_view(["POST"])
 def create_detail_api(request, id):
-
     errors = None
 
     if request.method == "POST":
-
         order_no = len(TearSheetDetail.objects.filter(tear_sheet_id=id))
         request.data["data"].update({"order": order_no + 1})
         TearSheetDetail.objects.create(**request.data["data"])
@@ -81,11 +72,9 @@ def create_detail_api(request, id):
 
 @api_view(["POST"])
 def create_caption_api(request, id):
-
     errors = None
 
     if request.method == "POST":
-
         order_no = len(ImageCaption.objects.filter(tear_sheet_id=id))
         request.data["data"].update({"order_no": order_no + 1})
 
@@ -101,18 +90,15 @@ def create_caption_api(request, id):
 
 @api_view(["POST"])
 def edit_caption_api(request):
-
     errors = None
 
     if (
         request.data["data"]["caption_title"] == ""
         and request.data["data"]["caption"] == ""
     ):
-
         ImageCaption.objects.filter(id=request.data["data"]["id"]).delete()
 
     else:
-
         ImageCaption.objects.filter(id=request.data["data"]["id"]).update(
             **request.data["data"]
         )
@@ -122,15 +108,12 @@ def edit_caption_api(request):
 
 @api_view(["POST"])
 def edit_footer_api(request):
-
     errors = None
 
     if request.data["data"]["name"] == "" and request.data["data"]["details"] == "":
-
         TearSheetFooterDetail.objects.filter(id=request.data["data"]["id"]).delete()
 
     else:
-
         TearSheetFooterDetail.objects.filter(id=request.data["data"]["id"]).update(
             **request.data["data"]
         )
@@ -140,11 +123,9 @@ def edit_footer_api(request):
 
 @api_view(["POST"])
 def create_footer_api(request, id):
-
     errors = None
 
     if request.method == "POST":
-
         order_no = len(TearSheetFooterDetail.objects.filter(tear_sheet_id=id))
         request.data["data"].update({"order": order_no + 1})
         TearSheetFooterDetail.objects.create(**request.data["data"])
@@ -163,7 +144,6 @@ def edit_pricerecord_api(request):
 
     # PUT FULL UPDATES RESOURCES
     if request.method == "POST":
-
         PriceRecord.objects.filter(id=data["id"]).update(**data)
 
         return HttpResponse(status=200)

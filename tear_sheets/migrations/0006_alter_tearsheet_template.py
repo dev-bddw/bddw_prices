@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("tear_sheets", "0005_alter_tearsheet_template"),
     ]

@@ -34,7 +34,6 @@ def update_tearsheets_gbp():
 
 
 def update_formula_tearsheets():
-
     """
     ** these records have to be saved to generate new values
     and do the same for formula tearsheets

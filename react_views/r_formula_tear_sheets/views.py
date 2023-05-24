@@ -11,7 +11,6 @@ def detail_view_entry(request, id):
 
     """
     if request.method == "GET":
-
         context = return_context(request, id)
 
         return render(
@@ -27,7 +26,6 @@ def edit_view_entry(request, id):
     """
 
     if request.method == "GET":
-
         context = return_context(request, id)
 
         return render(

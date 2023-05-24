@@ -9,7 +9,6 @@ def return_price_records_by_rule_type(tear_sheet_pk):
     category_series_items = CatSeriesItem.objects.filter(formula_tear_sheet=tear_sheet)
 
     if len(category_series_items) != 0:
-
         list_of_price_records = FormulaPriceRecord.objects.filter(
             cat_series_item__in=category_series_items
         )

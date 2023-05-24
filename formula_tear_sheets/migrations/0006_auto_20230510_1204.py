@@ -5,20 +5,31 @@ import formula_tear_sheets.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('formula_tear_sheets', '0005_formulatearsheet_sdata'),
+        ("formula_tear_sheets", "0005_formulatearsheet_sdata"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='formulatearsheet',
-            name='gbp_sdata',
-            field=models.JSONField(blank=True, default=formula_tear_sheets.models.gbp_sdata_json_default, null=True),
+            model_name="formulatearsheet",
+            name="gbp_sdata",
+            field=models.JSONField(
+                blank=True,
+                default=formula_tear_sheets.models.gbp_sdata_json_default,
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='formulatearsheet',
-            name='gbp_template',
-            field=models.CharField(choices=[('A', 'ONE COLUMN DISPLAY'), ('B', 'TWO COLUMN DISPLAY'), ('C', 'RULE TYPE ABOVE')], default='C', max_length=1000),
+            model_name="formulatearsheet",
+            name="gbp_template",
+            field=models.CharField(
+                choices=[
+                    ("A", "ONE COLUMN DISPLAY"),
+                    ("B", "TWO COLUMN DISPLAY"),
+                    ("C", "RULE TYPE ABOVE"),
+                ],
+                default="C",
+                max_length=1000,
+            ),
         ),
     ]

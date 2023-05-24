@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("products", "0013_alter_category_pricelist_ignore"),
     ]

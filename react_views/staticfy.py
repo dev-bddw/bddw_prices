@@ -58,7 +58,6 @@ def static_my_react_dependences(path_tuple):
 
     with fileinput.FileInput(index, inplace=True, backup=".bak") as file:
         for line in file:
-
             # replace line matching the old css that we saved to memory already
             print(line.replace(css_old, ""), end="")
 
@@ -70,7 +69,6 @@ def static_my_react_dependences(path_tuple):
 
     with fileinput.FileInput(index, inplace=True, backup=".bak") as file:
         for line in file:
-
             # replace the css path html tag with django url tag
             print(line.replace(css_boil, css_old), end="")
 
@@ -82,7 +80,6 @@ def static_my_react_dependences(path_tuple):
 
     with fileinput.FileInput(index, inplace=True, backup=".bak") as file:
         for line in file:
-
             # replace the css path html tag with django url tag
             print(line.replace(css_old, css_new), end="")
 
@@ -115,6 +112,8 @@ if __name__ == "__main__":
         "/r_tear_sheets/r_gbp/templates/gbp_edit/",
         "/r_tear_sheets/r_gbp/templates/gbp_detail_for_print/",
         "/r_tear_sheets/r_gbp/templates/gbp_detail_for_print_list/",
+        # search
+        "/r_search/templates/r_search/search/",
     ]
 
     paths = [

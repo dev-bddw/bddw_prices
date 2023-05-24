@@ -19,7 +19,6 @@ class TestUploadViews(TestCase):
     """
 
     def setUp(self):
-
         User = get_user_model()
 
         self.user = User.objects.create(username="bilbo", password="baggins")
@@ -31,11 +30,9 @@ class TestUploadViews(TestCase):
         self.sorting_csv_upload_url = reverse("csv_imports:sorting_upload")
 
     def test_pricing_upload(self):
-
         with open(
             settings.ROOT_DIR / "csv_imports/tests/test_csv/pricing_upload.csv"
         ) as csv_file:
-
             response = self.client.post(self.pricing_csv_upload_url, {"file": csv_file})
 
         created_records, created_pricelist_records = (
@@ -51,7 +48,6 @@ class TestUploadViews(TestCase):
         with open(
             settings.ROOT_DIR / "csv_imports/tests/test_csv/formula_upload.csv"
         ) as csv_file:
-
             response = self.client.post(self.formula_csv_upload_url, {"file": csv_file})
 
         created_records, created_pricelist_records = (
@@ -73,7 +69,6 @@ class TestUploadViews(TestCase):
         with open(
             settings.ROOT_DIR / "csv_imports/tests/test_csv/sorting_upload.csv"
         ) as csv_file:
-
             response = self.client.post(self.sorting_csv_upload_url, {"file": csv_file})
 
         category = Category.objects.get(name="STORAGE")
@@ -128,25 +123,21 @@ class TestExportViews(TestCase):
         self.export_price_records_url = reverse("csv_imports:export_pricelist_records")
 
     def test_export_sorting(self):
-
         response = self.client.get(self.export_sorting_records_url)
 
         self.assertEqual(response.status_code, 200)
 
     def test_export_formula(self):
-
         response = self.client.get(self.export_formula_records_url)
 
         self.assertEqual(response.status_code, 200)
 
     def test_export_pricelist(self):
-
         response = self.client.get(self.export_pricelist_records_url)
 
         self.assertEqual(response.status_code, 200)
 
     def test_export_price(self):
-
         response = self.client.get(self.export_price_records_url)
 
         self.assertEqual(response.status_code, 200)
@@ -169,19 +160,16 @@ class TestTemplateViews(TestCase):
         self.sorting_template_url = reverse("csv_imports:sorting_upload")
 
     def test_normal_template(self):
-
         response = self.client.get(self.normal_template_url)
 
         self.assertEqual(response.status_code, 200)
 
     def test_formula_template(self):
-
         response = self.client.get(self.formula_template_url)
 
         self.assertEqual(response.status_code, 200)
 
     def test_sorting_template(self):
-
         response = self.client.get(self.sorting_template_url)
 
         self.assertEqual(response.status_code, 200)

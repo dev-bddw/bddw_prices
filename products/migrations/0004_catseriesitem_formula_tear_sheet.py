@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("formula_tear_sheets", "0001_initial"),
         ("products", "0003_alter_catseriesitem_tear_sheet"),

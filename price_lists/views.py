@@ -9,7 +9,6 @@ from products.models import Category, CatSeriesItem
 
 @login_required
 def list(request):
-
     """
     returns a list of all price records by category
     series item
@@ -21,11 +20,9 @@ def list(request):
 
     # create a dict by category
     for category in Category.objects.filter(pricelist_ignore=False):
-
         price_records_by_category.update({f"{category}": {}})
 
         for csi in CatSeriesItem.objects.filter(category=category):
-
             # for each CSI matching category
             # if CSI has price records
             # include them by Series Item, if not, do nothing
@@ -34,7 +31,6 @@ def list(request):
                 len(csi.pricelistpricerecord_set.all()) > 0
                 or len(csi.formulapricelistpricerecord_set.all()) > 0
             ):
-
                 price_records_by_category[f"{category}"].update(
                     {
                         f"{csi.return_series_item()}": [
@@ -60,11 +56,9 @@ def list(request):
 
 
 def print(request):
-
     new_dict = {}
 
     for category in Category.objects.filter(pricelist_ignore=False):
-
         new_dict.update({f"{category}": {}})
 
         for csi in CatSeriesItem.objects.filter(category=category):

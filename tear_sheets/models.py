@@ -117,6 +117,9 @@ class TearSheet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_gbp_url(self):
+        return reverse("react_views:r_gbp:view-tearsheet", kwargs={"id": self.pk})
+
     def get_absolute_url(self):
         return reverse(
             "react_views:r_tear_sheets:view-tearsheet", kwargs={"id": self.pk}

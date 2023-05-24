@@ -256,7 +256,6 @@ class FormulaPriceRecord(models.Model):
         super(FormulaPriceRecord, self).save(*args, **kwargs)
 
     def return_value_dict(self):
-
         return {
             "depth": self.depth,
             "length": self.length,
@@ -290,7 +289,6 @@ class FormulaPriceRecord(models.Model):
         )
 
     def return_rule_display_1_translation(self):
-
         f = self.rule_display_1.replace("[", "{").replace("]", "}")
 
         import re
@@ -301,7 +299,6 @@ class FormulaPriceRecord(models.Model):
 
     def return_rule_display_1(self):
         if "[" in self.rule_display_1:
-
             template = self.return_rule_display_1_translation()
             variables = self.return_value_dict()
             return template.format(**variables)
@@ -401,7 +398,6 @@ class FormulaPriceListPriceRecord(models.Model):
         super(FormulaPriceListPriceRecord, self).save(*args, **kwargs)
 
     def return_value_dict(self):
-
         return {
             "depth": self.depth,
             "length": self.length,
@@ -428,7 +424,6 @@ class FormulaPriceListPriceRecord(models.Model):
             return "Please make sure your LIST PRICE has an integer value."
 
     def return_rule_display_1_translation(self):
-
         f = self.rule_display_1.replace("[", "{").replace("]", "}")
 
         import re
@@ -439,7 +434,6 @@ class FormulaPriceListPriceRecord(models.Model):
 
     def return_rule_display_1(self):
         if "[" in self.rule_display_1:
-
             template = self.return_rule_display_1_translation()
             variables = self.return_value_dict()
             return template.format(**variables)

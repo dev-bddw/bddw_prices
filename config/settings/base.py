@@ -91,7 +91,8 @@ LOCAL_APPS = [
     "react_views.r_tear_sheets",
     "react_views.r_tear_sheets.r_gbp",
     "react_views.r_formula_tear_sheets",
-    "react_views.r_formula_tear_sheets.r_form_gbp"
+    "react_views.r_formula_tear_sheets.r_form_gbp",
+    "react_views.r_search"
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -180,6 +181,8 @@ STATICFILES_DIRS = [
     "/app/react_views/r_formula_tear_sheets/r_form_gbp/templates/form_gbp_detail_for_print/dist/assets/",
     "/app/react_views/r_formula_tear_sheets/r_form_gbp/templates/form_gbp_detail_for_print_list/dist/assets/",
     "/app/react_views/r_formula_tear_sheets/r_form_gbp/templates/form_gbp_edit/dist/assets/",
+    # search
+    "/app/react_views/r_search/templates/r_search/search/dist/assets/",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders

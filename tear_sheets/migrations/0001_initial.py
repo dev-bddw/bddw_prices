@@ -6,7 +6,6 @@ import tear_sheets.models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = []

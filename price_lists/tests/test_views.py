@@ -8,7 +8,6 @@ from tear_sheets.models import TearSheet
 
 class TestListView(TestCase):
     def setUp(self):
-
         self.storage, cat_create = Category.objects.get_or_create(name="STORAGE")
         self.lake, series_create = Series.objects.get_or_create(name="LAKE")
         self.credenza, item_create = Item.objects.get_or_create(name="CREDENZA")
@@ -61,7 +60,6 @@ class TestListView(TestCase):
         self.list_url = reverse("pricelists:list")
 
     def test_list_view(self):
-
         response = self.client.get(self.list_url)
 
         self.assertEqual(response.status_code, 200)
