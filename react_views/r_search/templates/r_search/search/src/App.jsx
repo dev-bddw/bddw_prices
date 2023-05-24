@@ -51,8 +51,8 @@ function App() {
       <input style={{width: "300px"}} className="shadow appearance-none border rounded py-2 px-1 my-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outliney-1" type='text' onChange={ (event)=> onChangeHandler(event)} value={search}></input>
       <div className="text-left py-3 text-xs">Displaying {tearsheets.length} results...</div>
       <div>
-          <table className="border w-1200 text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="border w-1200 text-sm text-left text-gray-500">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
                 <th className="px-2">type</th>
                 <th className="px-2">tearsheet name</th>
@@ -61,23 +61,23 @@ function App() {
              </thead>
               <tbody>
     { is_empty ?
-            <tr className="bg-white dark:bg-gray-900 dark:border-gray-700">
+            <tr className="bg-white">
               <td style={{width: '150px'}} className="px-2">
                no results
               </td>
-              <td style={{width: '500px'}} className="px-2  font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              <td style={{width: '500px'}} className="px-2  font-medium text-gray-900 whitespace-nowrap">
               </td>
               <td style={{width: '300px'}} className="px-2 ">
               </td>
             </tr>
     :
                tearsheets.map( (tearsheet) => { return(
-                  <tr className="bg-white dark:bg-gray-900 dark:border-gray-700">
+                  <tr className="bg-white">
                      <td style={{width: '150px'}} className="px-2 ">
                         {tearsheet.type}
                       </td>
-                      <td style={{width:'500px'}} className="px-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          <a style={{'color': 'black'}} href={tearsheet.url} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">{tearsheet.title}</a>
+                      <td style={{width:'500px'}} className="px-2 font-medium text-gray-900 whitespace-nowrap">
+                          <a style={{'color': 'black'}} href={tearsheet.url} className="font-medium text-blue-600 hover:underline">{tearsheet.title}</a>
                       </td>
                       <td style={{width: '300px'}} className="px-2 ">
                         {tearsheet.updated_on}
