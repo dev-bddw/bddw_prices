@@ -5,8 +5,8 @@
 
 {% block javascript %}
   {{block.super}}
-<script type="module" crossorigin src="/static/index.655e30ff.js"></script>
-<link rel="stylesheet" href="/static/index.9a585dae.css">
+<script type="module" crossorigin src="/static/index.beda618d.js"></script>
+<link rel="stylesheet" href="/static/index.b0fb5c50.css">
 
 {% endblock javascript %}
 
@@ -24,6 +24,7 @@
 		 'auth_token': read_context.auth_token,
 		 'tearsheets' : read_context.tearsheets,
      'search_api' : '{% url 'react_views:r_search:search-api'  %}',
+     'logo_url' : '{% static 'images/bddwlogo.svg' %}',
 		};
 	</script>
 {% endblock inline_javascript %}

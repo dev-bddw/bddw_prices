@@ -10,7 +10,7 @@
 		<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
 		<title>EDIT TEARSHEET</title>
 	 <script type="module" crossorigin src="{% static "index.1c28349e.js" %}"></script>
-	 <link rel="stylesheet" href="{% static "index.d8d22097.css" %}">
+	 <link rel="stylesheet" href="/static/index.d8d22097.css">
 
 
   </head>
