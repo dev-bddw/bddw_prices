@@ -1,5 +1,6 @@
 import json
 
+from django.urls import reverse
 from rest_framework.authtoken.models import Token
 
 from formula_tear_sheets.models import FormulaTearSheet
@@ -43,6 +44,15 @@ def return_context(request):
                         "image": obj.image.url,
                         "updated_on": obj.updated_on,
                         "type": "tearsheet",
+                        "view": obj.get_absolute_url(),
+                        "edit": obj.get_edit_url(),
+                        "pdf": reverse(
+                            "react_views:r_tear_sheets:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_tear_sheets:print-list",
+                            kwargs={"id": obj.id},
+                        ),
                     }
                 )
 
@@ -55,6 +65,16 @@ def return_context(request):
                         "image": obj.image.url,
                         "updated_on": obj.updated_on,
                         "type": "gbp",
+                        "view": obj.get_absolute_gbp_url(),
+                        "edit": reverse(
+                            "react_views:r_gbp:edit-tearsheet", kwargs={"id": obj.id}
+                        ),
+                        "pdf": reverse(
+                            "react_views:r_gbp:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_gbp:print-list", kwargs={"id": obj.id}
+                        ),
                     }
                 )
 
@@ -67,6 +87,16 @@ def return_context(request):
                         "image": obj.image.url,
                         "updated_on": obj.updated_on,
                         "type": "formula",
+                        "view": obj.get_absolute_url(),
+                        "edit": obj.get_edit_url(),
+                        "pdf": reverse(
+                            "react_views:r_formula_tear_sheets:print",
+                            kwargs={"id": obj.id},
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_formula_tear_sheets:print-list",
+                            kwargs={"id": obj.id},
+                        ),
                     }
                 )
 
@@ -79,6 +109,16 @@ def return_context(request):
                         "image": obj.image.url,
                         "updated_on": obj.updated_on,
                         "type": "formula gbp",
+                        "edit": reverse(
+                            "react_views:r_form_gbp:edit-tearsheet",
+                            kwargs={"id": obj.id},
+                        ),
+                        "pdf": reverse(
+                            "react_views:r_form_gbp:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_form_gbp:print-list", kwargs={"id": obj.id}
+                        ),
                     }
                 )
 
@@ -123,6 +163,14 @@ def return_search_results(query):
                     "image": obj.image.url,
                     "updated_on": obj.updated_on,
                     "type": "tearsheet",
+                    "view": obj.get_absolute_url(),
+                    "edit": obj.get_edit_url(),
+                    "pdf": reverse(
+                        "react_views:r_tear_sheets:print", kwargs={"id": obj.id}
+                    ),
+                    "pdf_list": reverse(
+                        "react_views:r_tear_sheets:print-list", kwargs={"id": obj.id}
+                    ),
                 }
             )
 
@@ -135,6 +183,14 @@ def return_search_results(query):
                     "image": obj.image.url,
                     "updated_on": obj.updated_on,
                     "type": "gbp",
+                    "view": obj.get_absolute_gbp_url(),
+                    "edit": reverse(
+                        "react_views:r_gbp:edit-tearsheet", kwargs={"id": obj.id}
+                    ),
+                    "pdf": reverse("react_views:r_gbp:print", kwargs={"id": obj.id}),
+                    "pdf_list": reverse(
+                        "react_views:r_gbp:print-list", kwargs={"id": obj.id}
+                    ),
                 }
             )
 
@@ -147,6 +203,15 @@ def return_search_results(query):
                     "image": obj.image.url,
                     "updated_on": obj.updated_on,
                     "type": "formula",
+                    "view": obj.get_absolute_url(),
+                    "edit": obj.get_edit_url(),
+                    "pdf": reverse(
+                        "react_views:r_formula_tear_sheets:print", kwargs={"id": obj.id}
+                    ),
+                    "pdf_list": reverse(
+                        "react_views:r_formula_tear_sheets:print-list",
+                        kwargs={"id": obj.id},
+                    ),
                 }
             )
 
@@ -159,6 +224,15 @@ def return_search_results(query):
                     "image": obj.image.url,
                     "updated_on": obj.updated_on,
                     "type": "formula gbp",
+                    "edit": reverse(
+                        "react_views:r_form_gbp:edit-tearsheet", kwargs={"id": obj.id}
+                    ),
+                    "pdf": reverse(
+                        "react_views:r_form_gbp:print", kwargs={"id": obj.id}
+                    ),
+                    "pdf_list": reverse(
+                        "react_views:r_form_gbp:print-list", kwargs={"id": obj.id}
+                    ),
                 }
             )
 

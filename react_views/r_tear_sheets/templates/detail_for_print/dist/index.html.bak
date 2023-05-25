@@ -9,10 +9,10 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
 		<title>EDIT TEARSHEET</title>
-	 <script type="module" crossorigin src="{% static "index.1c28349e.js" %}"></script>
-	 <link rel="stylesheet" href="{% static "index.d8d22097.css" %}">
-
-
+	 <script type="module" crossorigin src="#"></script>
+	 <link rel="stylesheet" href="#">
+    <script type="module" crossorigin src="/assets/index.1c28349e.js"></script>
+    <link rel="stylesheet" href="/assets/index.d8d22097.css">
   </head>
   <body>
 		<div>
