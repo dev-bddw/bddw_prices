@@ -152,7 +152,7 @@ def redirect_detail_view_to_pdf(request, id):
     )
 
     parameter = (
-        f"&attachmentName={tear_sheet.get_slug_title().upper()}-NET.pdf"
+        f"&attachmentName={tear_sheet.get_slug_title().upper()}-GBP-TRADE.pdf"
         if request.GET.get("justDownload") == "True"
         else ""
     )
@@ -176,7 +176,7 @@ def redirect_detail_view_to_pdf_list(request, id):
     )
 
     parameter = (
-        f"&attachmentName={tear_sheet.get_slug_title().upper()}-TEAR-SHEET.pdf"
+        f"&attachmentName={tear_sheet.get_slug_title().upper()}-GBP-TEAR-SHEET.pdf"
         if request.GET.get("justDownload") == "True"
         else ""
     )
