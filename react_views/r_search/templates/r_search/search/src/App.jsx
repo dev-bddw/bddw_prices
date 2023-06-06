@@ -127,7 +127,7 @@ function FilterBox({filter, setFilter}) {
        <li>
           <div className="px-5">
             <input onChange={()=> handleChange('gbp')} checked={filter.gbp} id="gbp" type="checkbox" value=""/>
-            <label className="pl-2" for="gbp">GBP Tearsheets</label>
+            <label className="pl-2" for="gbp">GBP</label>
           </div>
         </li>
         <li>
