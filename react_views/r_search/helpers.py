@@ -29,101 +29,118 @@ def return_context(request):
         else:
             return None
 
+    filter = {"tearsheet": True, "gbp": True, "formula": True, "gbp_formula": True}
+
     return json.dumps(
-        {"auth_token": get_or_create_token(), "tearsheets": get_tearsheets()}
+        {"auth_token": get_or_create_token(), "tearsheets": get_tearsheets(filter)}
     )
 
 
-def get_tearsheets():
+def get_tearsheets(filter):
     """
     return list of ALL tearsheet objects
+
     """
     all_tearsheets = []
 
     def add_tearsheets():
-        for obj in TearSheet.objects.all():
-            all_tearsheets.append(
-                {
-                    "title": obj.title,
-                    "url": obj.get_absolute_url(),
-                    "image": obj.image.url,
-                    "updated_on": obj.updated_on,
-                    "type": "tearsheet",
-                    "view": obj.get_absolute_url(),
-                    "edit": obj.get_edit_url(),
-                    "pdf": reverse(
-                        "react_views:r_tear_sheets:print", kwargs={"id": obj.id}
-                    ),
-                    "pdf_list": reverse(
-                        "react_views:r_tear_sheets:print-list",
-                        kwargs={"id": obj.id},
-                    ),
-                }
-            )
+        if filter["tearsheet"]:
+            for obj in TearSheet.objects.all():
+                all_tearsheets.append(
+                    {
+                        "title": obj.title,
+                        "url": obj.get_absolute_url(),
+                        "image": obj.image.url,
+                        "updated_on": obj.updated_on,
+                        "type": "tearsheet",
+                        "view": obj.get_absolute_url(),
+                        "edit": obj.get_edit_url(),
+                        "pdf": reverse(
+                            "react_views:r_tear_sheets:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_tear_sheets:print-list",
+                            kwargs={"id": obj.id},
+                        ),
+                    }
+                )
+        else:
+            pass
 
     def add_gbp_tearsheets():
-        for obj in TearSheet.objects.all():
-            all_tearsheets.append(
-                {
-                    "title": obj.title,
-                    "url": obj.get_absolute_gbp_url(),
-                    "image": obj.image.url,
-                    "updated_on": obj.updated_on,
-                    "type": "gbp",
-                    "view": obj.get_absolute_gbp_url(),
-                    "edit": reverse(
-                        "react_views:r_gbp:edit-tearsheet", kwargs={"id": obj.id}
-                    ),
-                    "pdf": reverse("react_views:r_gbp:print", kwargs={"id": obj.id}),
-                    "pdf_list": reverse(
-                        "react_views:r_gbp:print-list", kwargs={"id": obj.id}
-                    ),
-                }
-            )
+        if filter["gbp"]:
+            for obj in TearSheet.objects.all():
+                all_tearsheets.append(
+                    {
+                        "title": obj.title,
+                        "url": obj.get_absolute_gbp_url(),
+                        "image": obj.image.url,
+                        "updated_on": obj.updated_on,
+                        "type": "gbp",
+                        "view": obj.get_absolute_gbp_url(),
+                        "edit": reverse(
+                            "react_views:r_gbp:edit-tearsheet", kwargs={"id": obj.id}
+                        ),
+                        "pdf": reverse(
+                            "react_views:r_gbp:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_gbp:print-list", kwargs={"id": obj.id}
+                        ),
+                    }
+                )
+        else:
+            pass
 
     def add_form_tearsheets():
-        for obj in FormulaTearSheet.objects.all():
-            all_tearsheets.append(
-                {
-                    "title": obj.title,
-                    "url": obj.get_absolute_url(),
-                    "image": obj.image.url,
-                    "updated_on": obj.updated_on,
-                    "type": "formula",
-                    "view": obj.get_absolute_url(),
-                    "edit": obj.get_edit_url(),
-                    "pdf": reverse(
-                        "react_views:r_formula_tear_sheets:print",
-                        kwargs={"id": obj.id},
-                    ),
-                    "pdf_list": reverse(
-                        "react_views:r_formula_tear_sheets:print-list",
-                        kwargs={"id": obj.id},
-                    ),
-                }
-            )
+        if filter["formula"]:
+            for obj in FormulaTearSheet.objects.all():
+                all_tearsheets.append(
+                    {
+                        "title": obj.title,
+                        "url": obj.get_absolute_url(),
+                        "image": obj.image.url,
+                        "updated_on": obj.updated_on,
+                        "type": "formula",
+                        "view": obj.get_absolute_url(),
+                        "edit": obj.get_edit_url(),
+                        "pdf": reverse(
+                            "react_views:r_formula_tear_sheets:print",
+                            kwargs={"id": obj.id},
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_formula_tear_sheets:print-list",
+                            kwargs={"id": obj.id},
+                        ),
+                    }
+                )
+        else:
+            pass
 
     def add_form_gbp_tearsheets():
-        for obj in FormulaTearSheet.objects.all():
-            all_tearsheets.append(
-                {
-                    "title": obj.title,
-                    "url": obj.get_absolute_gbp_url(),
-                    "image": obj.image.url,
-                    "updated_on": obj.updated_on,
-                    "type": "formula gbp",
-                    "edit": reverse(
-                        "react_views:r_form_gbp:edit-tearsheet",
-                        kwargs={"id": obj.id},
-                    ),
-                    "pdf": reverse(
-                        "react_views:r_form_gbp:print", kwargs={"id": obj.id}
-                    ),
-                    "pdf_list": reverse(
-                        "react_views:r_form_gbp:print-list", kwargs={"id": obj.id}
-                    ),
-                }
-            )
+        if filter["gbp_formula"]:
+            for obj in FormulaTearSheet.objects.all():
+                all_tearsheets.append(
+                    {
+                        "title": obj.title,
+                        "url": obj.get_absolute_gbp_url(),
+                        "image": obj.image.url,
+                        "updated_on": obj.updated_on,
+                        "type": "formula gbp",
+                        "edit": reverse(
+                            "react_views:r_form_gbp:edit-tearsheet",
+                            kwargs={"id": obj.id},
+                        ),
+                        "pdf": reverse(
+                            "react_views:r_form_gbp:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_form_gbp:print-list", kwargs={"id": obj.id}
+                        ),
+                    }
+                )
+        else:
+            pass
 
     def sort_all_tearsheets():
         """sort the list of tearsheet objects"""
@@ -147,93 +164,110 @@ def get_tearsheets():
     return all_tearsheets
 
 
-def return_search_results(query):
+def return_search_results(query, filter):
     """
-    return list of tearsheet objects matching query
+    return list of tearsheet objects matching query and filter
     """
     matching_tearsheets = []
 
     def add_tearsheets():
-        for obj in TearSheet.objects.filter(title__contains=query):
-            matching_tearsheets.append(
-                {
-                    "title": obj.title,
-                    "url": obj.get_absolute_url(),
-                    "image": obj.image.url,
-                    "updated_on": obj.updated_on,
-                    "type": "tearsheet",
-                    "view": obj.get_absolute_url(),
-                    "edit": obj.get_edit_url(),
-                    "pdf": reverse(
-                        "react_views:r_tear_sheets:print", kwargs={"id": obj.id}
-                    ),
-                    "pdf_list": reverse(
-                        "react_views:r_tear_sheets:print-list", kwargs={"id": obj.id}
-                    ),
-                }
-            )
+        if filter["tearsheet"]:
+            for obj in TearSheet.objects.filter(title__icontains=query):
+                matching_tearsheets.append(
+                    {
+                        "title": obj.title,
+                        "url": obj.get_absolute_url(),
+                        "image": obj.image.url,
+                        "updated_on": obj.updated_on,
+                        "type": "tearsheet",
+                        "view": obj.get_absolute_url(),
+                        "edit": obj.get_edit_url(),
+                        "pdf": reverse(
+                            "react_views:r_tear_sheets:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_tear_sheets:print-list",
+                            kwargs={"id": obj.id},
+                        ),
+                    }
+                )
+        else:
+            pass
 
     def add_gbp_tearsheets():
-        for obj in TearSheet.objects.filter(title__contains=query):
-            matching_tearsheets.append(
-                {
-                    "title": obj.title,
-                    "url": obj.get_absolute_gbp_url(),
-                    "image": obj.image.url,
-                    "updated_on": obj.updated_on,
-                    "type": "gbp",
-                    "view": obj.get_absolute_gbp_url(),
-                    "edit": reverse(
-                        "react_views:r_gbp:edit-tearsheet", kwargs={"id": obj.id}
-                    ),
-                    "pdf": reverse("react_views:r_gbp:print", kwargs={"id": obj.id}),
-                    "pdf_list": reverse(
-                        "react_views:r_gbp:print-list", kwargs={"id": obj.id}
-                    ),
-                }
-            )
+        if filter["gbp"]:
+            for obj in TearSheet.objects.filter(title__icontains=query):
+                matching_tearsheets.append(
+                    {
+                        "title": obj.title,
+                        "url": obj.get_absolute_gbp_url(),
+                        "image": obj.image.url,
+                        "updated_on": obj.updated_on,
+                        "type": "gbp",
+                        "view": obj.get_absolute_gbp_url(),
+                        "edit": reverse(
+                            "react_views:r_gbp:edit-tearsheet", kwargs={"id": obj.id}
+                        ),
+                        "pdf": reverse(
+                            "react_views:r_gbp:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_gbp:print-list", kwargs={"id": obj.id}
+                        ),
+                    }
+                )
+        else:
+            pass
 
     def add_form_tearsheets():
-        for obj in FormulaTearSheet.objects.filter(title__contains=query):
-            matching_tearsheets.append(
-                {
-                    "title": obj.title,
-                    "url": obj.get_absolute_url(),
-                    "image": obj.image.url,
-                    "updated_on": obj.updated_on,
-                    "type": "formula",
-                    "view": obj.get_absolute_url(),
-                    "edit": obj.get_edit_url(),
-                    "pdf": reverse(
-                        "react_views:r_formula_tear_sheets:print", kwargs={"id": obj.id}
-                    ),
-                    "pdf_list": reverse(
-                        "react_views:r_formula_tear_sheets:print-list",
-                        kwargs={"id": obj.id},
-                    ),
-                }
-            )
+        if filter["formula"]:
+            for obj in FormulaTearSheet.objects.filter(title__icontains=query):
+                matching_tearsheets.append(
+                    {
+                        "title": obj.title,
+                        "url": obj.get_absolute_url(),
+                        "image": obj.image.url,
+                        "updated_on": obj.updated_on,
+                        "type": "formula",
+                        "view": obj.get_absolute_url(),
+                        "edit": obj.get_edit_url(),
+                        "pdf": reverse(
+                            "react_views:r_formula_tear_sheets:print",
+                            kwargs={"id": obj.id},
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_formula_tear_sheets:print-list",
+                            kwargs={"id": obj.id},
+                        ),
+                    }
+                )
+        else:
+            pass
 
     def add_form_gbp_tearsheets():
-        for obj in FormulaTearSheet.objects.filter(title__contains=query):
-            matching_tearsheets.append(
-                {
-                    "title": obj.title,
-                    "url": obj.get_absolute_gbp_url(),
-                    "image": obj.image.url,
-                    "updated_on": obj.updated_on,
-                    "type": "formula gbp",
-                    "edit": reverse(
-                        "react_views:r_form_gbp:edit-tearsheet", kwargs={"id": obj.id}
-                    ),
-                    "pdf": reverse(
-                        "react_views:r_form_gbp:print", kwargs={"id": obj.id}
-                    ),
-                    "pdf_list": reverse(
-                        "react_views:r_form_gbp:print-list", kwargs={"id": obj.id}
-                    ),
-                }
-            )
+        if filter["gbp_formula"]:
+            for obj in FormulaTearSheet.objects.filter(title__icontains=query):
+                matching_tearsheets.append(
+                    {
+                        "title": obj.title,
+                        "url": obj.get_absolute_gbp_url(),
+                        "image": obj.image.url,
+                        "updated_on": obj.updated_on,
+                        "type": "formula gbp",
+                        "edit": reverse(
+                            "react_views:r_form_gbp:edit-tearsheet",
+                            kwargs={"id": obj.id},
+                        ),
+                        "pdf": reverse(
+                            "react_views:r_form_gbp:print", kwargs={"id": obj.id}
+                        ),
+                        "pdf_list": reverse(
+                            "react_views:r_form_gbp:print-list", kwargs={"id": obj.id}
+                        ),
+                    }
+                )
+        else:
+            pass
 
     def sort_all_tearsheets():
         """sort the list of tearsheet dicts"""
@@ -248,7 +282,6 @@ def return_search_results(query):
             obj.update({"updated_on": date_time.__str__()})
 
     if query != " " and query != "":
-
         add_tearsheets()
         add_gbp_tearsheets()
         add_form_tearsheets()
@@ -257,7 +290,8 @@ def return_search_results(query):
         stringify_datetime()
 
     else:
+        # bug: when the
 
-        matching_tearsheets = get_tearsheets()
+        matching_tearsheets = get_tearsheets(filter)
 
     return matching_tearsheets

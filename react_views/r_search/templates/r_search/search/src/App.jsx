@@ -3,14 +3,19 @@ import {useRef, useState, useEffect} from 'react'
 function App() {
 
   const [search, setSearch] = useState('')
+  const [filter, setFilter] = useState({'tearsheet': true, 'gbp': true,'formula': true,'gbp_formula': true })
   const [tearsheets, setTearsheets] = useState(CONTEXT.tearsheets)
 
   function onChangeHandler(event) {
     setSearch(event.target.value)
   }
 	const isMounted = useRef(false)
+	const isMountedFilter = useRef(false)
   const is_empty = tearsheets.length == 0
 
+
+
+  // if search change, wait a moment, send data to django
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
 			if (isMounted.current) {
@@ -20,8 +25,9 @@ function App() {
 				}
     }, 100)
 		return( () => clearTimeout(delayDebounceFn) )
-  }, [search])
+  }, [search, filter])
 
+  // function for making api call
 	const SEARCH = () => {
 		fetch(CONTEXT.search_api, {
 			credentials: 'include',
@@ -33,26 +39,21 @@ function App() {
 				'Authorization': `Token ${CONTEXT.auth_token}`,
 				'X-CSRFToken': CONTEXT.csrf_token
 						},
-			body: JSON.stringify( {'data':{ search } } ),
+			body: JSON.stringify( {'data': { search, filter } } ),
 					})
 						.then(response => response.json())
 						.then(data => {
               setTearsheets(data.data)
-							//console.log(data);
+							//console.log(data.data);
 						})
 	}
-
-  const logo = () => {
-    return(
-      <img style={{height:'300px'}} className="item-center" src={CONTEXT.logo_url}/>
-     )
-  }
 
   return (
     <div className="w-full">
     <div className="grid grid cols-1 justify-center">
       <span style={{'letter-spacing':'.75rem', 'font-weight':'lighter', 'font-size':'40px'}}>SEARCH</span>
       <input style={{width: "300px"}} className="shadow appearance-none border rounded py-2 px-1 my-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outliney-1" type='text' onChange={ (event)=> onChangeHandler(event)} value={search}></input>
+      <FilterBox filter={filter} setFilter={setFilter}/>
       <div className="text-start py-3 text-gray-300 text-xs">Displaying {tearsheets.length} results...</div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="border rounded w-1200 text-sm text-left text-gray-500">
@@ -102,6 +103,49 @@ function App() {
 }
 
 export default App
+
+function FilterBox({filter, setFilter}) {
+
+  function handleChange(key) {
+    //set the value for this key to its opposite
+    const updated_value = { [key] : !filter[key] }
+    setFilter( filter => ({
+      ...filter,
+      ...updated_value
+    }))
+  }
+
+  return(
+    <div className="py-4">
+      <ul className="flex items-center">
+        <li>
+          <div className="pr-5">
+            <input onChange={()=> handleChange('tearsheet')} checked={filter.tearsheet} className="" id="tearsheets" type="checkbox" value=""/>
+            <label className="pl-2" for="tearsheets">Tearsheets</label>
+          </div>
+        </li>
+       <li>
+          <div className="px-5">
+            <input onChange={()=> handleChange('gbp')} checked={filter.gbp} id="gbp" type="checkbox" value=""/>
+            <label className="pl-2" for="gbp">GBP Tearsheets</label>
+          </div>
+        </li>
+        <li>
+          <div className="px-5">
+            <input onChange={()=> handleChange('formula')} checked={filter.formula} className="ml-5" id="formula" type="checkbox" value=""/>
+            <label className="pl-2" for="formula">Formula</label>
+          </div>
+        </li>
+       <li>
+          <div className="px-5">
+            <input onChange={()=> handleChange('gbp_formula')} checked={filter.gbp_formula} className="ml-5" id="gbp formula" type="checkbox" value=""/>
+            <label className="pl-2" for="gbp formula">Formula GBP</label>
+          </div>
+      </li>
+   </ul>
+    </div>
+ )
+}
 
 function TearSheetRow({tearsheet}) {
 

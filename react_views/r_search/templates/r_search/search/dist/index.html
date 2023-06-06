@@ -1,5 +1,3 @@
-
-
 {% extends 'react_base.html' %}
 {% load static %}
 
@@ -7,15 +5,14 @@
 
 {% block javascript %}
   {{block.super}}
- <script type="module" crossorigin src="{% static "index.26ec15ac.js" %}"></script>
- <link rel="stylesheet" href="{% static "index.3d863c1a.css" %}">
-
+  <script type="module" crossorigin src="/static/index.bd50c708.js"></script>
+  <link rel="stylesheet" href="/static/index.08c8b6cc.css">
 {% endblock javascript %}
 
 {% block content %}
 <div id="root"></div>
     {{context|json_script:"context"}}
-	{% csrf_token %}
+    {% csrf_token %}
 {% endblock content %}
 
 {% block inline_javascript %}
