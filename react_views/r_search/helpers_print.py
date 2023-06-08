@@ -16,6 +16,9 @@ def process_tearsheet(tearsheet):
     returns lists of tuples with pdf information
     for tearsheet type, for tearsheet version (trade/net/etc)
     each type of tearsheet has two version
+    i'm only like half aware of how this actually works -- I think the pdfs
+    are actually never saved until it comes time to zip them, until then they live in memory,
+    in a tuple with ( 'file name', bytes container'), then they are zipped, loaded into s3
     """
 
     if tearsheet["type"] == "tearsheet":
@@ -116,7 +119,7 @@ def print_tearsheets(tearsheets):
     bucket_name = settings.AWS_STORAGE_BUCKET_NAME
     object_dir = f"/var/tmp/{batch_name}/"
 
-    # make local directory to place pdf files
+    # make local directory to place rar
 
     os.makedirs(object_dir)
 
@@ -150,6 +153,6 @@ def print_tearsheets(tearsheets):
     s3.upload_file(object_dir + "all-tearsheets.zip", bucket_name, s3_path)
 
     return (
-        f"<a href='{settings.MEDIA_URL}"
-        + f"tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip'>download</a>"
+        f"{settings.MEDIA_URL}"
+        + f"tearsheet-batch-print/{batch_name}/TEARSHEET-ARCHIVE-{batch_name}.zip"
     )
