@@ -20,8 +20,13 @@ def process_tearsheet(tearsheet):
     are actually never saved until it comes time to zip them, until then they live in memory,
     in a tuple with ( 'file name', bytes container'), then they are zipped, loaded into s3
     """
-
+    # TEARSHEETS #
+    # TEARSHEETS #
+    # TEARSHEETS #
     if tearsheet["type"] == "tearsheet":
+        # TEARSHEETS #
+        # TEARSHEETS #
+        # TEARSHEETS #
 
         tear_sheet = TearSheet.objects.get(id=tearsheet["id"])
 
@@ -98,10 +103,98 @@ def process_tearsheet(tearsheet):
 
             return tuple_list
 
-    else:
-        return []
+        print("package tearsheet success")
+        return return_complete_package()
 
-    return return_complete_package()
+    # GBP TEARSHEETS #
+    # GBP TEARSHEETS #
+    # GBP TEARSHEETS #
+    if tearsheet["type"] == "gbp":
+        # GBP TEARSHEETS #
+        # GBP TEARSHEETS #
+        # GBP TEARSHEETS #
+
+        tear_sheet = TearSheet.objects.get(id=tearsheet["id"])
+
+        # PRINT TRADE AND LIST
+
+        def return_url_gbp_tearsheet():
+            """
+            get the full url for the printer
+            """
+            return (
+                settings.PDF_APP_URL
+                + settings.SITE_URL
+                + tear_sheet.get_gbp_printing_url()
+                + f"&attachmentName={tear_sheet.get_slug_title().upper()}-GBP-TRADE.pdf"
+            )
+
+        def return_file_name_gbp_tearsheet():
+            """
+            get the full filename for tearsheet pdf
+            """
+            return f"{tear_sheet.get_slug_title().upper()}-GBP-TRADE.pdf"
+
+        def package_gbp():
+            response = requests.get(
+                return_url_gbp_tearsheet()
+            )  # make the request for the pdf
+            bytes_container = BytesIO(response.content)  # store the pdf in a container
+            return (
+                return_file_name_gbp_tearsheet(),
+                bytes_container,
+            )  # add the name and reference to the list
+
+        # PRINT LIST ONLY
+
+        def return_url_gbp_tearsheet_no_list():
+            """
+            get the full url for the printer
+            """
+            return (
+                settings.PDF_APP_URL
+                + settings.SITE_URL
+                + tear_sheet.get_gbp_printing_url_no_list()
+                + f"&attachmentName={tear_sheet.get_slug_title().upper()}-GBP-TEAR-SHEET.pdf"
+            )
+
+        def return_file_name_gbp_tearsheet_no_list():
+            """
+            get the full filename for tearsheet pdf
+            """
+            return f"{tear_sheet.get_slug_title().upper()}-GBP-TEAR-SHEET.pdf"
+
+        def package_gbp_no_list():
+            """
+            make the request to the url and
+            save response content
+            and store reference in tuples
+            """
+            response = requests.get(
+                return_url_gbp_tearsheet_no_list()
+            )  # make the request for the pdf
+            bytes_container = BytesIO(response.content)  # store the pdf in a container
+            return (
+                return_file_name_gbp_tearsheet_no_list(),
+                bytes_container,
+            )  # add the name and reference to the list
+
+        def return_complete_gbp_package():
+            """
+            add both tuples to a list
+            """
+            tuple_list = []
+            tuple_list.append(package_gbp())
+            tuple_list.append(package_gbp_no_list())
+
+            return tuple_list
+
+        print("package gbp success")
+        return return_complete_gbp_package()
+
+    else:
+
+        return []
 
 
 def print_tearsheets(tearsheets):
