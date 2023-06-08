@@ -96,7 +96,8 @@ function App() {
           <span className="sr-only">Loading...</span>
         </div>)
       case 'Complete':
-        return(<a className="py-5 px-1" href={rar_url}>Download is ready</a>)
+        return(<a href={rar_url}><button className="bg-transparent hover:border-gray-500 text-sm text-green-700 my-5 py-1 px-2 border border-green-700 rounded">DOWNLOAD</button></a>
+)
     }
   }
 
