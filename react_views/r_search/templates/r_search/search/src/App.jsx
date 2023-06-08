@@ -10,9 +10,9 @@ function App() {
     setSearch(event.target.value)
   }
 	const isMounted = useRef(false)
-	const isMountedFilter = useRef(false)
   const is_empty = tearsheets.length == 0
-
+  const [print_status, setPrintStatus] = useState('None')
+  const [rar_url, setUrl] = useState('None')
 
 
   // if search change, wait a moment, send data to django
@@ -48,7 +48,6 @@ function App() {
 						})
 	}
 
-  const [print_status, setPrintStatus] = useState('None')
 
   // returns url for rar of all current tearsheet pdfs
   const PRINT = (tearsheets) => {
@@ -66,6 +65,7 @@ function App() {
 					})
 						.then(response => response.json())
 						.then(data => {
+              setUrl(data.data.url)
               setPrintStatus('Complete')
 							console.log(data.data);
 						})
@@ -94,7 +94,7 @@ function App() {
           <span className="sr-only">Loading...</span>
         </div>)
       case 'Complete':
-        return(<a href="">Download is ready</a>)
+        return(<a className="px-1" href={rar_url}>Download is ready</a>)
     }
   }
 
