@@ -11,7 +11,7 @@ function App() {
   }
 	const isMounted = useRef(false)
   const is_empty = tearsheets.length == 0
-  const [print_status, setPrintStatus] = useState('None')
+  const [print_status, setPrintStatus] = useState('None') //'None', 'Clicked', 'Complete'
   const [rar_url, setUrl] = useState('None')
 
 
@@ -20,6 +20,8 @@ function App() {
     const delayDebounceFn = setTimeout(() => {
 			if (isMounted.current) {
 			  SEARCH()
+        if (print_status == 'Complete') {
+          setPrintStatus('None') } else {}
 			} else {
 					isMounted.current = true
 				}
