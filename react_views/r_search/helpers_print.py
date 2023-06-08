@@ -103,7 +103,6 @@ def process_tearsheet(tearsheet):
 
             return tuple_list
 
-        print("package tearsheet success")
         return return_complete_package()
 
     # GBP TEARSHEETS #
@@ -189,16 +188,15 @@ def process_tearsheet(tearsheet):
 
             return tuple_list
 
-        print("package gbp success")
         return return_complete_gbp_package()
 
-    # TEARSHEETS #
-    # TEARSHEETS #
-    # TEARSHEETS #
+    #  FORMULA TEARSHEETS #
+    #  FORMULA TEARSHEETS #
+    #  FORMULA TEARSHEETS #
     if tearsheet["type"] == "formula":
-        # TEARSHEETS #
-        # TEARSHEETS #
-        # TEARSHEETS #
+        #  FORMULA TEARSHEETS #
+        #  FORMULA TEARSHEETS #
+        #  FORMULA TEARSHEETS #
 
         tear_sheet = FormulaTearSheet.objects.get(id=tearsheet["id"])
 
@@ -275,7 +273,6 @@ def process_tearsheet(tearsheet):
 
             return tuple_list
 
-        print("package formula tearsheet success")
         return return_complete_formula_package()
 
     # GBP FORMULA #
@@ -362,7 +359,6 @@ def process_tearsheet(tearsheet):
 
             return tuple_list
 
-        print("package form gbp success")
         return return_complete_form_gbp_package()
 
     else:
