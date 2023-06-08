@@ -281,7 +281,7 @@ def process_tearsheet(tearsheet):
     # GBP FORMULA #
     # GBP FORMULA #
     # GBP FORMULA #
-    if tearsheet["type"] == "gbp formula":
+    if tearsheet["type"] == "formula gbp":
         # GBP FORMULA #
         # GBP FORMULA #
         # GBP FORMULA #
