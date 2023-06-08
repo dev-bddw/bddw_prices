@@ -48,6 +48,7 @@ def get_tearsheets(filter):
             for obj in TearSheet.objects.all():
                 all_tearsheets.append(
                     {
+                        "id": obj.id,
                         "title": obj.title,
                         "url": obj.get_absolute_url(),
                         "image": obj.image.url,
@@ -72,6 +73,7 @@ def get_tearsheets(filter):
             for obj in TearSheet.objects.all():
                 all_tearsheets.append(
                     {
+                        "id": obj.id,
                         "title": obj.title,
                         "url": obj.get_absolute_gbp_url(),
                         "image": obj.image.url,
@@ -97,6 +99,7 @@ def get_tearsheets(filter):
             for obj in FormulaTearSheet.objects.all():
                 all_tearsheets.append(
                     {
+                        "id": obj.id,
                         "title": obj.title,
                         "url": obj.get_absolute_url(),
                         "image": obj.image.url,
@@ -122,6 +125,7 @@ def get_tearsheets(filter):
             for obj in FormulaTearSheet.objects.all():
                 all_tearsheets.append(
                     {
+                        "id": obj.id,
                         "title": obj.title,
                         "url": obj.get_absolute_gbp_url(),
                         "image": obj.image.url,
@@ -175,6 +179,7 @@ def return_search_results(query, filter):
             for obj in TearSheet.objects.filter(title__icontains=query):
                 matching_tearsheets.append(
                     {
+                        "id": obj.id,
                         "title": obj.title,
                         "url": obj.get_absolute_url(),
                         "image": obj.image.url,
@@ -199,6 +204,7 @@ def return_search_results(query, filter):
             for obj in TearSheet.objects.filter(title__icontains=query):
                 matching_tearsheets.append(
                     {
+                        "id": obj.id,
                         "title": obj.title,
                         "url": obj.get_absolute_gbp_url(),
                         "image": obj.image.url,
@@ -224,6 +230,7 @@ def return_search_results(query, filter):
             for obj in FormulaTearSheet.objects.filter(title__icontains=query):
                 matching_tearsheets.append(
                     {
+                        "id": obj.id,
                         "title": obj.title,
                         "url": obj.get_absolute_url(),
                         "image": obj.image.url,
@@ -249,6 +256,7 @@ def return_search_results(query, filter):
             for obj in FormulaTearSheet.objects.filter(title__icontains=query):
                 matching_tearsheets.append(
                     {
+                        "id": obj.id,
                         "title": obj.title,
                         "url": obj.get_absolute_gbp_url(),
                         "image": obj.image.url,

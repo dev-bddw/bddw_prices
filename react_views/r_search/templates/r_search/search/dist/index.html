@@ -1,5 +1,3 @@
-
-
 {% extends 'react_base.html' %}
 {% load static %}
 
@@ -7,8 +5,8 @@
 
 {% block javascript %}
   {{block.super}}
- <script type="module" crossorigin src="{% static "index.33560a06.js" %}"></script>
- <link rel="stylesheet" href="{% static "index.08c8b6cc.css" %}">
+  <script type="module" crossorigin src="/static/index.2dc5e34b.js"></script>
+  <link rel="stylesheet" href="/static/index.e1c3e5d1.css">
 
 {% endblock javascript %}
 
@@ -26,6 +24,7 @@
 		 'auth_token': read_context.auth_token,
 		 'tearsheets' : read_context.tearsheets,
      'search_api' : '{% url 'react_views:r_search:search-api'  %}',
+     'print_api' : '{% url 'react_views:r_search:print-api'  %}',
      'logo_url' : '{% static 'images/bddwlogo.svg' %}',
 		};
 	</script>

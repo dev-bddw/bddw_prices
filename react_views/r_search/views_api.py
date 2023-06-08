@@ -3,6 +3,7 @@ from django.shortcuts import HttpResponse
 from rest_framework.decorators import api_view
 
 from .helpers import return_search_results
+from .helpers_print import print_tearsheets
 
 
 @api_view(["POST"])
@@ -21,6 +22,23 @@ def search_api(request):
         tearsheets = return_search_results(query.upper(), filter)
 
         return JsonResponse({"data": tearsheets})
+
+    else:
+        return HttpResponse("Request method not supported")
+
+
+@api_view(["POST"])
+def print_api(request):
+    """
+    returns link for rar w/ all pdfs
+    """
+    if request.method == "POST":
+
+        tearsheets = request.data["data"]["tearsheets"]
+
+        rar_url = print_tearsheets(tearsheets)
+
+        return JsonResponse({"data": {"url": rar_url}})
 
     else:
         return HttpResponse("Request method not supported")
