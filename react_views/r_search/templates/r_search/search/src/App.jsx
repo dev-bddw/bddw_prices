@@ -2,6 +2,10 @@ import {useRef, useState, useEffect} from 'react'
 
 function App() {
 
+  // ATTENTION
+  // this app is the frontend search, sort, and print view for bddwsalestools.com
+  // ATTENTION
+
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState({'tearsheet': true, 'gbp': true,'formula': true,'gbp_formula': true })
   const [tearsheets, setTearsheets] = useState(CONTEXT.tearsheets)
@@ -50,7 +54,6 @@ function App() {
 						})
 	}
 
-
   // returns url for rar of all current tearsheet pdfs
   const PRINT = (tearsheets) => {
 		fetch(CONTEXT.print_api, {
@@ -97,7 +100,7 @@ function App() {
             <span className="sr-only">Loading...</span>
           </div>)
       case 'Complete':
-        return( <a href={rar_url} className="bg-transparent hover:border-gray-500 text-sm text-green-700 my-5 py-1 px-2 border border-green-700 rounded">DOWNLOAD</a>
+        return( <a href={rar_url} className="text-center bg-transparent hover:border-gray-500 text-sm text-green-700 my-5 py-1 px-2 border border-green-700 rounded">YOUR DOWNLOAD IS READY</a>
 )
     }
   }
