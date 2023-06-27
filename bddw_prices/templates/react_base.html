@@ -43,23 +43,21 @@
 	  <ul>
   </div>
 
+  <div class="pt-5 container">
+    <div style="height: 30px"></div>
+    {% comment %} {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %} {% endcomment %}
+    {% block content %}
 
-    <div class="pt-5 container">
-	    <div style="height: 30px"></div>
+    {% endblock content %}
 
-      {% comment %} {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endfor %}
-      {% endif %} {% endcomment %}
-      {% block content %}
-
-      {% endblock content %}
-
-    </div> <!-- /container -->
+  </div> <!-- /container -->
 
     {% block modal %}{% endblock modal %}
 

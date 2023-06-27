@@ -86,7 +86,7 @@ class TearSheet(models.Model):
         b = "B", "TWO COLUMN DISPLAY"
         c = "C", "RULE TYPE ABOVE"
 
-    sdata = models.JSONField(default=sdata_json_default, blank=True, null=True)
+    sdata = models.JSONField(default=json_default, blank=True, null=True)
     gbp_sdata = models.JSONField(default=gbp_sdata_json_default, blank=True, null=True)
     gbp_template = models.CharField(
         choices=TearSheetTemplate.choices, default="C", max_length=1000

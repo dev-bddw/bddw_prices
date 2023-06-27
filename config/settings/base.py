@@ -83,17 +83,14 @@ LOCAL_APPS = [
     "products",
     "csv_imports",
     "tear_sheets",
-    "tear_sheets.gbp",
     "formula_tear_sheets",
-    "formula_tear_sheets.form_gbp",
     "price_records",
     "price_lists",
     "react_views.r_tear_sheets",
     "react_views.r_tear_sheets.r_gbp",
     "react_views.r_formula_tear_sheets",
     "react_views.r_formula_tear_sheets.r_form_gbp",
-    "react_views.r_search"
-    # Your stuff: custom apps go here
+    "react_views.r_search",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
