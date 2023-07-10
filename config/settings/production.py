@@ -6,7 +6,10 @@ from .base import env
 # SENTRY
 # -----------------------------------------------------------------------------
 
+sentry_env = env("SENTRY_ENV", default="production")
+
 sentry_sdk.init(
+    environment=sentry_env,
     dsn="https://af2da3c6e13149989380ecfb14086c1c@o4504686058930176.ingest.sentry.io/4505121514258432",
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
