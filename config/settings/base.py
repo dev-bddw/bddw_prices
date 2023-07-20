@@ -91,6 +91,7 @@ LOCAL_APPS = [
     "react_views.r_formula_tear_sheets",
     "react_views.r_formula_tear_sheets.r_form_gbp",
     "react_views.r_search",
+    "react_views.r_price_lists",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -180,6 +181,10 @@ STATICFILES_DIRS = [
     "/app/react_views/r_formula_tear_sheets/r_form_gbp/templates/form_gbp_edit/dist/assets/",
     # search
     "/app/react_views/r_search/templates/r_search/search/dist/assets/",
+    # pricelists
+    "/app/react_views/r_price_lists/templates/r_price_lists/pricelist/dist/assets/",
+    "/app/react_views/r_price_lists/templates/r_price_lists/pricelist_print/dist/assets/",
+    "/app/react_views/r_price_lists/templates/r_price_lists/pricelist_print_gbp/dist/assets/",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders

@@ -128,6 +128,15 @@ class PriceListPriceRecord(models.Model):
         help_text="This value will be calculated on record save.",
     )
 
+    gbp_price = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_trade = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_price_no_vat = models.CharField(
+        max_length=200, default=None, blank=True, null=True
+    )
+    gbp_trade_no_vat = models.CharField(
+        max_length=200, default=None, blank=True, null=True
+    )
+
     order = models.IntegerField(
         help_text="The order number when this Price Record appears with others."
     )
@@ -172,6 +181,28 @@ class PriceListPriceRecord(models.Model):
             self.cat_series_item.tear_sheet.save()
 
         super(PriceListPriceRecord, self).save(*args, **kwargs)
+
+    def return_series_item(self):
+        return self.cat_series_item.return_series_item()
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "series_item": self.cat_series_item.return_series_item(),
+            "category": self.cat_series_item.category.name,
+            "cat_series_item": self.cat_series_item.__str__(),
+            "rule_type": self.rule_type,
+            "rule_display_1": self.rule_display_1,
+            "rule_display_2": self.rule_display_2,
+            # regular
+            "list_price": self.list_price,
+            "net_price": self.net_price,
+            # gbp
+            "gbp_price": self.gbp_price,
+            "gbp_trade": self.gbp_trade,
+            "gbp_price_no_vat": self.gbp_price_no_vat,
+            "gbp_trade_no_vat": self.gbp_trade_no_vat,
+        }
 
 
 class FormulaPriceRecord(models.Model):
@@ -363,6 +394,14 @@ class FormulaPriceListPriceRecord(models.Model):
     seat_back_height = models.IntegerField(null=True, blank=True)
     seat_height = models.IntegerField(null=True, blank=True)
     inset = models.IntegerField(null=True, blank=True)
+    gbp_price = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_trade = models.CharField(max_length=200, default=None, blank=True, null=True)
+    gbp_price_no_vat = models.CharField(
+        max_length=200, default=None, blank=True, null=True
+    )
+    gbp_trade_no_vat = models.CharField(
+        max_length=200, default=None, blank=True, null=True
+    )
 
     rule_display_1 = models.CharField(
         blank=True,
@@ -388,10 +427,18 @@ class FormulaPriceListPriceRecord(models.Model):
         self.list_price = self.get_price()
         self.net_price = self.get_net_price()
         self.rule_display_1 = self.return_rule_display_1()
+        self.gbp_price, self.gbp_price_no_vat = self.get_gbp()
+        self.gbp_trade, self.gbp_trade_no_vat = self.get_trade()
+
+        try:
+            order = int(self.list_price)
+        except ValueError:
+            order = 0
+
+        self.order = order
 
         if self.cat_series_item.formula_tear_sheet is None:
             pass
-
         else:
             self.cat_series_item.formula_tear_sheet.save()
 
@@ -464,6 +511,25 @@ class FormulaPriceListPriceRecord(models.Model):
 
     def __str__(self):
         return f"{self.cat_series_item}: {self.cat_series_item.return_translation()}".upper()
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "series_item": self.cat_series_item.return_series_item(),
+            "category": self.cat_series_item.category.name,
+            "cat_series_item": self.cat_series_item.__str__(),
+            "rule_type": self.rule_type,
+            "rule_display_1": self.rule_display_1,
+            "rule_display_2": self.rule_display_2,
+            # regular
+            "list_price": self.list_price,
+            "net_price": self.net_price,
+            # gbp
+            "gbp_price": self.gbp_price,
+            "gbp_trade": self.gbp_trade,
+            "gbp_price_no_vat": self.gbp_price_no_vat,
+            "gbp_trade_no_vat": self.gbp_trade_no_vat,
+        }
 
     class Meta:
         ordering = ["rule_type", "list_price"]

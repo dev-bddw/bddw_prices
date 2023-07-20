@@ -114,6 +114,10 @@ if __name__ == "__main__":
         "/r_tear_sheets/r_gbp/templates/gbp_detail_for_print_list/",
         # search
         "/r_search/templates/r_search/search/",
+        # pricelists
+        "/r_price_lists/templates/r_price_lists/pricelist/",
+        "/r_price_lists/templates/r_price_lists/pricelist_print/",
+        "/r_price_lists/templates/r_price_lists/pricelist_print_gbp/",
     ]
 
     paths = [

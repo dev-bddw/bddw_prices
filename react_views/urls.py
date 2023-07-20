@@ -25,4 +25,8 @@ urlpatterns = [
         ),
     ),
     path("search/", include("react_views.r_search.urls", namespace="r_search")),
+    path(
+        "price_list/",
+        include("react_views.r_price_lists.urls", namespace="r_price_lists"),
+    ),
 ]
