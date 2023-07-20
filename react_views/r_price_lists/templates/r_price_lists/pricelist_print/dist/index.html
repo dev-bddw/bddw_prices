@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>PRICELIST</title>
+   <script type="module" crossorigin src="{% static "index.221bb5be.js" %}"></script>
+   <link rel="stylesheet" href="{% static "index.81988151.css" %}">
+
+
+  </head>
+  <body>
+		<div>
+    <div style="background-color: white;" id="root"></div>
+    {{context|json_script:"context"}}
+		{% csrf_token %}
+	<script>
+	 const read_context = JSON.parse(JSON.parse(document.getElementById('context').textContent));
+	 const CONTEXT = {
+		 'csrf_token': document.querySelector('input[name="csrfmiddlewaretoken"]').value,
+		 'pricelist' : read_context.pricelist,
+		};
+	</script>
+
+
+  </body>
+</html>
