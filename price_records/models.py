@@ -531,5 +531,20 @@ class FormulaPriceListPriceRecord(models.Model):
             "gbp_trade_no_vat": self.gbp_trade_no_vat,
         }
 
+    def get_gbp(self):
+        # handle gbp
+        gbp = int(self.list_price) if self.list_price not in [" ", "", None] else 0
+        # handle gbp minus vat
+        gbp_minus_vat = 100 * round((gbp / 1.2) * 0.01)
+        return (gbp, gbp_minus_vat)
+
+    def get_trade(self):
+        # handle trade
+        trade = int(self.list_price) if self.list_price not in [" ", "", None] else 0
+
+        # handle trade minus vat
+        trade_minus_vat = 100 * round(((trade * 0.85) / 1.2) * 0.01)
+        return (trade, trade_minus_vat)
+
     class Meta:
         ordering = ["rule_type", "list_price"]
