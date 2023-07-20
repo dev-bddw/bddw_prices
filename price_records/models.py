@@ -150,7 +150,25 @@ class PriceListPriceRecord(models.Model):
     is_surcharge = models.BooleanField(default=False)
 
     class Meta:
+
         ordering = ["is_surcharge", "rule_type", "order"]
+
+    def set_gbp_prices(self):
+        # handle gbp
+        gbp = int(self.list_price) if self.list_price not in [" ", "", None] else 0
+        # handle gbp minus vat
+        gbp_minus_vat = 100 * round((gbp / 1.2) * 0.01)
+
+        self.gbp_price = gbp
+        self.gbp_price_no_vat = gbp_minus_vat
+
+        # handle trade
+        trade = int(self.list_price) if self.list_price not in [" ", "", None] else 0
+        # handle trade minus vat
+        trade_minus_vat = 100 * round(((trade * 0.85) / 1.2) * 0.01)
+        self.gbp_trade = trade
+        self.gbp_trade_no_vat = trade_minus_vat
+        self.save()
 
     def get_net_price(self):
         try:
