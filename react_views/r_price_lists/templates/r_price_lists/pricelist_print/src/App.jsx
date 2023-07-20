@@ -18,7 +18,7 @@ function App() {
       <div>
             {pricelist.map( (series_item, index, self)=> {
               return(<SeriesItemTable _all={self} gbp={gbp} index={index} series_item={series_item}/>
-              )})};
+              )})}
       </div>
     </div>
  )
