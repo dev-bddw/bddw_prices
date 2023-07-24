@@ -98,7 +98,6 @@ function SeriesItemTable( {gbp, series_item, index, _all} ) {
 }
 
 function GBPRow({priceRecord, index }) {
-  console.log(priceRecord)
   return(
     <tr key={priceRecord.id} className="border-b bg-white hover:bg-gray-200">
       <td className="px-2"></td>
