@@ -1,11 +1,13 @@
+
+
 {% extends 'react_base.html' %}
 {% load static %}
 
-{% block title %}PRICELIST{% endblock title %}
+{% block title %}SEARCH TEARSHEETS{% endblock title %}
 
 {% block javascript %}
   {{block.super}}
- <script type="module" crossorigin src="{% static "index.dbb801a8.js" %}"></script>
+ <script type="module" crossorigin src="{% static "index.15bdf99c.js" %}"></script>
  <link rel="stylesheet" href="{% static "index.6367708d.css" %}">
 
 {% endblock javascript %}
@@ -24,7 +26,6 @@
 		 'auth_token': read_context.auth_token,
 		 'tearsheets' : read_context.tearsheets,
      'search_api' : '{% url 'react_views:r_search:search-api'  %}',
-     'print_api' : '{% url 'react_views:r_search:print-api'  %}',
      'logo_url' : '{% static 'images/bddwlogo.svg' %}',
 		};
 	</script>

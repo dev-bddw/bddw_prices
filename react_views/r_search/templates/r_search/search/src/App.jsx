@@ -108,7 +108,6 @@ function App() {
   return (
     <div className="w-full">
     <div className="grid grid cols-1 justify-center">
-      <form>
           <label for="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
           <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -116,7 +115,6 @@ function App() {
               </div>
               <input style={{'width': '700px'}} onChange={ (event)=> onChangeHandler(event)} value={search} type="search" id="default-search" className="p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search tearsheets, gbp, formula, etc..." required/>
           </div>
-      </form>
       <FilterBox filter={filter} setFilter={setFilter}/>
       <div className="text-start py-1 text-gray-500 text-sm">Displaying {tearsheets.length} results...</div>
       {return_button_loading_or_link()}
