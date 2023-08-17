@@ -23,3 +23,5 @@ cd /home/lance/dev/django-projects/bddw_prices/react_views/
 ./r_tear_sheets/r_gbp/templates/gbp_detail_for_print_list/build.sh
 ./r_search/templates/r_search/search/build.sh
 ./r_price_lists/templates/r_price_lists/pricelist/build.sh
+# run static
+/home/lance/dev/django-projects/bddw_prices/react_views/staticfy.py

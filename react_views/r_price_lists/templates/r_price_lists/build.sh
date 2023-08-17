@@ -11,4 +11,4 @@ cd /home/lance/dev/django-projects/bddw_prices/react_views/r_price_lists/templat
 npm run build
 python3 replace.py
 
-bash /home/lance/dev/django-projects/bddw_prices/react_views/run_static.sh
+/home/lance/dev/django-projects/bddw_prices/react_views/staticfy.py
