@@ -9,7 +9,7 @@ function App() {
 
 
   return (
-    <div>
+    <div className="uppercase">
       <div style={{'width':'50px','font-size': '7px'}}>
         {categories.map( (category)=> {
           return(<p><a href={'#' + category}>{category}</a></p>)
