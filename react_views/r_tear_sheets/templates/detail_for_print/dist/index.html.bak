@@ -11,8 +11,8 @@
 		<title>EDIT TEARSHEET</title>
 	 <script type="module" crossorigin src="{% static "index.1c28349e.js" %}"></script>
 	 <link rel="stylesheet" href="{% static "index.d8d22097.css" %}">
-
-
+    
+    
   </head>
   <body>
 		<div>
@@ -39,6 +39,6 @@
 		};
 	</script>
 
-
+	
   </body>
 </html>
