@@ -56,3 +56,13 @@ INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+# Serve images from your live s3 bucket
+# ------------------------------------------------------------------------------
+USE_S3_BUCKET = True
+
+if USE_S3_BUCKET:
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=None)
+    aws_s3_domain = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    MEDIA_URL = f"https://{aws_s3_domain}/media/"
+

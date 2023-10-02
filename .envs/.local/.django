@@ -5,3 +5,4 @@ IPYTHONDIR=/app/.ipython
 
 SITE_URL=http://localhost:8000
 PDF_APP_URL=http://localhost:9000/api/render?url=
+AWS_STORAGE_BUCKET_NAME=bddwsalestools
