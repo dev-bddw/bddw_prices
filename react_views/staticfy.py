@@ -9,15 +9,6 @@ react files to django static files
 place in the application root
 """
 
-
-"""
-TBI:
-    look at the index.html (django template)
-    move the css and js dependencies to the css/jss template block
-
-"""
-
-
 def static_my_react_dependences(path_tuple):
     """
     take the dir / asset dir

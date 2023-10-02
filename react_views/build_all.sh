@@ -1,6 +1,6 @@
 #!/bin/bash
 # helpful script to rebuild every react template
-# templates still need to be manually changed so tha tthe
+# templates still need to be manually changed so
 # react js and react css are in the correct template position
 # then run run_static.sh to apply static template tags to the
 # react templates (index.html)
