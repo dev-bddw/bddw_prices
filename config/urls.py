@@ -14,6 +14,10 @@ urlpatterns += [
     path("react/", include("react_views.urls", namespace="react_views")),
 ]
 
+urlpatterns += [
+    path('api/v1/', include("api.urls", namespace="api"))
+    ]
+
 # other views
 urlpatterns += [
     path("pricelists/", include("price_lists.urls", namespace="pricelists")),

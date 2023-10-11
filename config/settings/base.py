@@ -92,6 +92,7 @@ LOCAL_APPS = [
     "react_views.r_formula_tear_sheets.r_form_gbp",
     "react_views.r_search",
     "react_views.r_price_lists",
+    'api'
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

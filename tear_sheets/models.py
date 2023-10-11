@@ -6,7 +6,6 @@ from django.utils.text import slugify
 def image_upload_to(instance, filename):
     return f"tear-sheet-images/{filename}"
 
-
 class Detail(models.Model):
     tear_sheet = models.ForeignKey(
         "TearSheet",
