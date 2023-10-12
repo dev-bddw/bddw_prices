@@ -13,7 +13,7 @@ urlpatterns = [path("", view=search_view_entry, name="home")]
 urlpatterns += [
     path("react/", include("react_views.urls", namespace="react_views")),
 ]
-
+# hi marc
 urlpatterns += [
     path('api/v1/', include("api.urls", namespace="api"))
     ]
