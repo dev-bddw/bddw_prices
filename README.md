@@ -17,4 +17,4 @@ Follow the prompts to create an admin user. Now you have access to the backend a
 
 # Questions
 
-For any questions, please reach out to lance@bddw.com
+For any questions, please reach out to lance@bddw.com !
