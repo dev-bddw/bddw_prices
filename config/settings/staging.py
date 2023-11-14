@@ -1,5 +1,6 @@
 from .base import *  # noqa
 from .base import env
+from boto3.session import Session
 
 # SENTRY
 # -----------------------------------------------------------------------------
@@ -130,64 +131,24 @@ ANYMAIL = {
 # https://github.com/antonagestam/collectfast#installation
 INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
 
-# LOGGING
-# ------------------------------------------------------------------------------
-# https://docs.djangoproject.com/en/dev/ref/settings/#logging
-# See https://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# LOGGING = {
-#     "version": 1,
-#     "disable_existing_loggers": False,
-#     "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
-#     "formatters": {
-#         "verbose": {
-#             "format": "%(levelname)s %(asctime)s %(module)s "
-#             "%(process)d %(thread)d %(message)s"
-#         }
-#     },
-#     "handlers": {
-#         "mail_admins": {
-#             "level": "ERROR",
-#             "filters": ["require_debug_false"],
-#             "class": "django.utils.log.AdminEmailHandler",
-#         },
-#         "console": {
-#             "level": "DEBUG",
-#             "class": "logging.StreamHandler",
-#             "formatter": "verbose",
-#         },
-#     },
-#     "root": {"level": "INFO", "handlers": ["console"]},
-#     "loggers": {
-#         "django.request": {
-#             "handlers": ["mail_admins"],
-#             "level": "ERROR",
-#             "propagate": True,
-#         },
-#         "django.security.DisallowedHost": {
-#             "level": "ERROR",
-#             "handlers": ["console", "mail_admins"],
-#             "propagate": True,
-#         },
-#     },
-# }
 
-# THE NEW LOGGING CONFIG FOR CLOUDWATCH
 
-from boto3.session import Session
+# AWS CLOUD WATCH LOGGING
+# --------------------------------------------------------------------------------
 
 CLOUDWATCH_AWS_ID = env('CLOUDWATCH_AWS_ID')
 CLOUDWATCH_AWS_KEY = env('CLOUDWATCH_AWS_KEY')
-AWS_DEFAULT_REGION = 'us-east-1'
+AWS_DEFAULT_REGION = env('AWS_DEFAULT_REGION', default='us-east-1')
 
-logger_boto3_session = Session(
+boto3_session = Session(
  aws_access_key_id=CLOUDWATCH_AWS_ID,
  aws_secret_access_key=CLOUDWATCH_AWS_KEY,
  region_name=AWS_DEFAULT_REGION,
 )
+
+
+logger_client = boto3_session.client('logs')
+
 
 LOGGING = {
     "version": 1,
@@ -202,11 +163,11 @@ LOGGING = {
         "watchtower": {
             "level": "INFO",
             "class": "watchtower.CloudWatchLogHandler",
-            # From step 2
-            "boto3_session": logger_boto3_session,
-            "log_group": "bddw-prices-staging",
-            # Different stream for each environment
-            "stream_name": f"ALL-LOGS",
+            "boto3_client": logger_client,
+            "log_group": "bddw-prices",
+            "stream_name": f"staging",
+            "create_log_group": True,
+            "create_log_stream": True,
             "formatter": "aws",
         },
         "console": {"class": "logging.StreamHandler", "formatter": "aws",},
