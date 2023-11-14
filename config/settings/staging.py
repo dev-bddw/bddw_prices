@@ -161,7 +161,7 @@ LOGGING = {
     },
     "handlers": {
         "watchtower": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "watchtower.CloudWatchLogHandler",
             "boto3_client": logger_client,
             "log_group": "bddw-prices",
