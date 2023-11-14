@@ -36,7 +36,7 @@ def return_context(request):
 
     tearsheets = get_tearsheets(filter)
 
-    logger.info(msg=f"retreiving context", extra={'tearsheets': tearsheets} )
+    logger.info({'msg': 'retreiving context', 'tearsheets': tearsheets} )
 
     return json.dumps(
         {"auth_token": get_or_create_token(), "tearsheets": tearsheets }
