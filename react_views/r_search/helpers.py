@@ -6,6 +6,9 @@ from rest_framework.authtoken.models import Token
 from formula_tear_sheets.models import FormulaTearSheet
 from tear_sheets.models import TearSheet
 
+import logging
+
+logger = logging.getLogger("watchtower")
 
 def return_context(request):
     """
@@ -31,8 +34,12 @@ def return_context(request):
 
     filter = {"tearsheet": True, "gbp": True, "formula": True, "gbp_formula": True}
 
+    tearsheets = get_tearsheets(filter)
+
+    logger.info(msg=f"retreiving context", extra={'tearsheets': tearsheets} )
+
     return json.dumps(
-        {"auth_token": get_or_create_token(), "tearsheets": get_tearsheets(filter)}
+        {"auth_token": get_or_create_token(), "tearsheets": tearsheets }
     )
 
 

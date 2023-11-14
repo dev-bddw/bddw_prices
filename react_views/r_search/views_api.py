@@ -5,7 +5,6 @@ from rest_framework.decorators import api_view
 from .helpers import return_search_results
 from .helpers_print import print_tearsheets
 
-
 @api_view(["POST"])
 def search_api(request):
     """
