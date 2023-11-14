@@ -176,27 +176,48 @@ INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
 # }
 
 # THE NEW LOGGING CONFIG FOR CLOUDWATCH
+
+from boto3.session import Session
+
+CLOUDWATCH_AWS_ID = env('CLOUDWATCH_AWS_ID')
+CLOUDWATCH_AWS_KEY = env('CLOUDWATCH_AWS_KEY')
+AWS_DEFAULT_REGION = 'us-east-1'
+
+logger_boto3_session = Session(
+ aws_access_key_id=CLOUDWATCH_AWS_ID,
+ aws_secret_access_key=CLOUDWATCH_AWS_KEY,
+ region_name=AWS_DEFAULT_REGION,
+)
+
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'watchtower': {
-            'level': 'DEBUG',
-            'class': 'watchtower.CloudWatchLogHandler',
-            'log_group': 'bddw-prices-staging',  # Replace with your CloudWatch Log Group name
-            'stream_name': 'ALL-LOGS',    # Replace with your CloudWatch Log Stream name
-            'create_log_group': True,
-            'create_log_stream': True,
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "aws": {
+            "format": "%(asctime)s [%(levelname)-8s] %(message)s [%(pathname)s:%(lineno)d]",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['watchtower'],
-            'level': 'INFO',
-            'propagate': True,
+    "handlers": {
+        "watchtower": {
+            "level": "INFO",
+            "class": "watchtower.CloudWatchLogHandler",
+            # From step 2
+            "boto3_session": logger_boto3_session,
+            "log_group": "bddw-prices-staging",
+            # Different stream for each environment
+            "stream_name": f"ALL-LOGS",
+            "formatter": "aws",
         },
+        "console": {"class": "logging.StreamHandler", "formatter": "aws",},
+    },
+    "loggers": {
+        # Use this logger to send data just to Cloudwatch
+        "watchtower": {"level": "INFO", "handlers": ["watchtower"], "propogate": False,}
     },
 }
+
+
 
 # Your stuff...
 # ------------------------------------------------------------------------------
