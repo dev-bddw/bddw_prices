@@ -184,9 +184,9 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'watchtower.CloudWatchLogHandler',
             'log_group': 'bddw-prices-staging',  # Replace with your CloudWatch Log Group name
-            #'stream_name': 'your-stream-name',    # Replace with your CloudWatch Log Stream name
+            'stream_name': 'ALL-LOGS',    # Replace with your CloudWatch Log Stream name
             'create_log_group': True,
-            #'create_log_stream': True,
+            'create_log_stream': True,
         },
     },
     'loggers': {
