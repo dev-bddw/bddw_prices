@@ -1,6 +1,7 @@
+from boto3.session import Session
+
 from .base import *  # noqa
 from .base import env
-from boto3.session import Session
 
 # SENTRY
 # -----------------------------------------------------------------------------
@@ -132,22 +133,21 @@ ANYMAIL = {
 INSTALLED_APPS = ["collectfast"] + INSTALLED_APPS  # noqa F405
 
 
-
 # AWS CLOUD WATCH LOGGING
 # --------------------------------------------------------------------------------
 
-CLOUDWATCH_AWS_ID = env('CLOUDWATCH_AWS_ID')
-CLOUDWATCH_AWS_KEY = env('CLOUDWATCH_AWS_KEY')
-AWS_DEFAULT_REGION = env('AWS_DEFAULT_REGION', default='us-east-1')
+CLOUDWATCH_AWS_ID = env("CLOUDWATCH_AWS_ID")
+CLOUDWATCH_AWS_KEY = env("CLOUDWATCH_AWS_KEY")
+AWS_DEFAULT_REGION = env("AWS_DEFAULT_REGION", default="us-east-1")
 
 boto3_session = Session(
- aws_access_key_id=CLOUDWATCH_AWS_ID,
- aws_secret_access_key=CLOUDWATCH_AWS_KEY,
- region_name=AWS_DEFAULT_REGION,
+    aws_access_key_id=CLOUDWATCH_AWS_ID,
+    aws_secret_access_key=CLOUDWATCH_AWS_KEY,
+    region_name=AWS_DEFAULT_REGION,
 )
 
 
-logger_client = boto3_session.client('logs')
+logger_client = boto3_session.client("logs")
 
 
 LOGGING = {
@@ -155,7 +155,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "aws": {
-            "format": "%(asctime)s [%(levelname)-8s] %(message)s [%(pathname)s:%(lineno)d]",
+            "format": "%(asctime)s [%(levelname)-8s] %(message)s %(extra)s [%(pathname)s:%(lineno)d]",
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
@@ -165,19 +165,25 @@ LOGGING = {
             "class": "watchtower.CloudWatchLogHandler",
             "boto3_client": logger_client,
             "log_group": "bddw-prices",
-            "stream_name": f"staging",
+            "stream_name": "staging",
             "create_log_group": True,
             "create_log_stream": True,
             "formatter": "aws",
         },
-        "console": {"class": "logging.StreamHandler", "formatter": "aws",},
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "aws",
+        },
     },
     "loggers": {
         # Use this logger to send data just to Cloudwatch
-        "watchtower": {"level": "INFO", "handlers": ["watchtower"], "propogate": False,}
+        "watchtower": {
+            "level": "INFO",
+            "handlers": ["watchtower"],
+            "propogate": False,
+        }
     },
 }
-
 
 
 # Your stuff...
