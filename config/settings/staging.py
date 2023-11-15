@@ -155,7 +155,7 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "aws": {
-            "format": "%(asctime)s [%(levelname)-8s] %(message)s %(extra)s [%(pathname)s:%(lineno)d]",
+            "format": "%(asctime)s [%(levelname)-8s] %(message)s Name: %(name)s [%(pathname)s:%(lineno)d]",
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },

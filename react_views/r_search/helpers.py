@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.urls import reverse
 from rest_framework.authtoken.models import Token
@@ -6,9 +7,8 @@ from rest_framework.authtoken.models import Token
 from formula_tear_sheets.models import FormulaTearSheet
 from tear_sheets.models import TearSheet
 
-import logging
-
 logger = logging.getLogger("watchtower")
+
 
 def return_context(request):
     """
@@ -36,11 +36,9 @@ def return_context(request):
 
     tearsheets = get_tearsheets(filter)
 
-    logger.info({'msg': 'retreiving context'}, extra={'test': 999})
+    logger.info({"msg": "retreiving context"}, extra={"name": "Lance Knickerbocker"})
 
-    return json.dumps(
-        {"auth_token": get_or_create_token(), "tearsheets": tearsheets }
-    )
+    return json.dumps({"auth_token": get_or_create_token(), "tearsheets": tearsheets})
 
 
 def get_tearsheets(filter):
