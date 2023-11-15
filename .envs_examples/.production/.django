@@ -31,6 +31,11 @@ DJANGO_AWS_ACCESS_KEY_ID=
 DJANGO_AWS_SECRET_ACCESS_KEY=
 DJANGO_AWS_STORAGE_BUCKET_NAME=bddwsalestools
 
+# AWS CLOUDWATCH
+# -----------------------------------------------------------------------------
+CLOUDWATCH_AWS_ID=
+CLOUDWATCH_AWS_KEY=
+
 # django-allauth
 # ------------------------------------------------------------------------------
 DJANGO_ACCOUNT_ALLOW_REGISTRATION=
