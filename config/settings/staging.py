@@ -149,13 +149,12 @@ boto3_session = Session(
 
 logger_client = boto3_session.client("logs")
 
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
         "aws": {
-            "format": "%(asctime)s [%(levelname)-8s] %(message)s %(bddw_name)s [%(pathname)s:%(lineno)d]",
+            "format": "%(asctime)s [%(levelname)-8s] %(message)s [%(pathname)s:%(lineno)d]",
             "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
