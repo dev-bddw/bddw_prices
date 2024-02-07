@@ -37,8 +37,8 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           cd /home/${{secrets.BDDW_EC2_USER}}/django-projects/bddw_prices/
-          chmod +x deploy-staging.sh
-          ./deploy-staging.sh
+          chmod +x deploy-production.sh
+          ./deploy-production.sh
 
   # # With no caching at all the entire ci process takes 4m 30s to complete!
   # pytest:
