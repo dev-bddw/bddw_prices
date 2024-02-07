@@ -8,12 +8,9 @@ env:
 
 on:
   pull_request:
-    branches: ['staging']
-    paths-ignore: ['docs/**']
-
-  push:
-    branches: ['staging']
-    paths-ignore: ['docs/**']
+    branches:
+      - staging
+    types: [closed]
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
