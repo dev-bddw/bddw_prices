@@ -2,7 +2,7 @@
 
 Create and manage beautiful tearsheets.
 
-# GETTING STARTED
+## GETTING STARTED
 
 This is a django application that uses docker. To begin, clone the repository. Then:
 
