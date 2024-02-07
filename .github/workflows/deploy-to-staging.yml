@@ -1,6 +1,7 @@
 name: CI
 
 # Enable Buildkit and let compose use it to speed up image building
+# testing
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
