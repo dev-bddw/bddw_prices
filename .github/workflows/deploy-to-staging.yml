@@ -39,8 +39,8 @@ jobs:
         username: ${{ secrets.BDDW_EC2_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          chmod +x /home/ubuntu/django-projects/deploy-staging.sh
-          /home/ubuntu/django-projects/deploy-staging.sh
+          chmod +x /home/ubuntu/django-projects/bddw_prices/deploy-staging.sh
+          /home/ubuntu/django-projects/bddw_prices/deploy-staging.sh
 
   # # With no caching at all the entire ci process takes 4m 30s to complete!
   # pytest:
