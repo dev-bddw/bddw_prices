@@ -39,7 +39,7 @@ jobs:
         username: ${{ secrets.BDDW_EC2_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          cd /home/ubuntu/django-projects/bddw_prices/
+          cd /home/${{secrets.BDDW_EC2_USER}}/django-projects/bddw_prices/
           chmod +x deploy-staging.sh
           ./deploy-staging.sh
 
