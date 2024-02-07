@@ -9,15 +9,27 @@ from .models import (
 
 
 class PriceRecordAdmin(admin.ModelAdmin):
-    search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
+    list_display = [
+        "cat_series_item",
+        "rule_type",
+        "rule_display_1",
+        "list_price",
+        "net_price",
     ]
-    list_per_page = 10000
+    search_fields = ["cat_series_item__name", "rule_type", "rule_display_1"]
+    list_filter = ["rule_type"]
+    ordering = ["order", "rule_display_1"]
 
 
 class FormulaPriceRecordAdmin(admin.ModelAdmin):
+
+    list_display = [
+        "cat_series_item",
+        "rule_type",
+        "rule_display_1",
+        "list_price",
+        "net_price",
+    ]
     search_fields = [
         "cat_series_item__category__name",
         "cat_series_item__series__name",
@@ -27,15 +39,14 @@ class FormulaPriceRecordAdmin(admin.ModelAdmin):
 
 
 class PriceListPriceRecordAdmin(admin.ModelAdmin):
-    search_fields = [
-        "cat_series_item__category__name",
-        "cat_series_item__series__name",
-        "cat_series_item__item__name",
-    ]
-    list_per_page = 10000
+    list_display = ("cat_series_item", "rule_type", "rule_display_1", "list_price")
+    search_fields = ("cat_series_item__name", "rule_display_1")
+    list_filter = ("rule_type", "is_surcharge")
+    ordering = ("order",)
 
 
 class FormulaPriceListPriceRecordAdmin(admin.ModelAdmin):
+    list_display = ("cat_series_item", "rule_type", "rule_display_1", "list_price")
     search_fields = [
         "cat_series_item__category__name",
         "cat_series_item__series__name",
