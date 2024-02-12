@@ -1,6 +1,6 @@
 version: '3'
 
-# note related to the postgres data -- this yaml is designed to work on a copy of a production
+# Note related to the postgres data -- this yaml is designed to work on a copy of a production
 # server (amazon ami)
 # so copy of the ami of your production server, copy your .envs/.production to .envs/.staging then run this staging environment and and point your DNS
 # to test.bddwsalestools.com and then run sudo docker-compose -f staging.yml up --build
