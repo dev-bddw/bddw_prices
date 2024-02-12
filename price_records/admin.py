@@ -10,6 +10,7 @@ from .models import (
 
 class PriceRecordAdmin(admin.ModelAdmin):
     list_display = [
+        "bin_id",
         "cat_series_item",
         "rule_type",
         "rule_display_1",
