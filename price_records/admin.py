@@ -16,7 +16,13 @@ class PriceRecordAdmin(admin.ModelAdmin):
         "list_price",
         "net_price",
     ]
-    search_fields = ["cat_series_item__name", "rule_type", "rule_display_1"]
+    search_fields = [
+        "cat_series_item__category__name",
+        "cat_series_item__series__name",
+        "cat_series_item__item__name",
+        "rule_type",
+        "rule_display_1",
+    ]
     list_filter = ["rule_type"]
     ordering = ["order", "rule_display_1"]
 
