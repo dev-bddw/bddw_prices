@@ -40,6 +40,28 @@ function RuleTypeGroup({sdata, price_records, rule_type, setPriceRecords, price_
 		setItems(price_records)
 	}, [price_records])
 
+	const handleVisibilityToggle = (recordId, isActive) => {
+		if (!isActive) {
+			// Remove from local items
+			setItems(items.filter(item => 
+				(item.selection_id || item.id) !== recordId
+			))
+			
+			// Update parent state
+			const updatedPriceRecords = price_records_all.map(obj => {
+				const entries = Object.entries(obj)
+				const [key, value] = entries[0]
+				if (key === rule_type) {
+					return {[key]: value.filter(item => 
+						(item.selection_id || item.id) !== recordId
+					)}
+				}
+				return obj
+			})
+			setPriceRecords(updatedPriceRecords)
+		}
+	}
+
 	function handleDragEnd(event) {
 		const {active, over} = event
 
@@ -119,6 +141,7 @@ function RuleTypeGroup({sdata, price_records, rule_type, setPriceRecords, price_
 				<table className={`table-auto`}>
 					<thead className="text-gray-400 text-left">
 						<th style={{'width': '20px'}}></th>
+						<th style={{'width': '30px'}}></th>
 						<th></th>
 						<th></th>
 						<th></th>
@@ -127,7 +150,16 @@ function RuleTypeGroup({sdata, price_records, rule_type, setPriceRecords, price_
 					</thead>
 					<tbody>
 						<SortableContext items={items.map(item => item.selection_id || item.id)} strategy={verticalListSortingStrategy}>
-							{items.map( (price_record, index) =>  <TableRow key={price_record.selection_id || price_record.id} sdata={sdata} index={index} price_record={price_record} />)}
+							{items.map( (price_record, index) =>  
+								<TableRow 
+									key={price_record.selection_id || price_record.id} 
+									sdata={sdata} 
+									index={index} 
+									price_record={price_record}
+									tearsheet_id={tearsheet_id}
+									onToggleVisibility={handleVisibilityToggle}
+								/>
+							)}
 						</SortableContext>
 					</tbody>
 				</table>
@@ -136,7 +168,7 @@ function RuleTypeGroup({sdata, price_records, rule_type, setPriceRecords, price_
 	)
 }
 
-function TableRow({sdata, price_record, index}) {
+function TableRow({sdata, price_record, index, tearsheet_id, onToggleVisibility}) {
 	const {
 		attributes,
 		listeners,
@@ -163,6 +195,7 @@ function TableRow({sdata, price_record, index}) {
 	const [display_two, setTwo] = useState(price_record.rule_display_2)
 	const [list, setList] = useState(price_record.list_price)
 	const [net, setNet] = useState(price_record.net_price)
+	const [isVisible, setIsVisible] = useState(true) // All shown records are active by default
 
 	const isMounted = useRef(false)
 	const onClickHandler = (setter) => {
@@ -171,6 +204,46 @@ function TableRow({sdata, price_record, index}) {
 
 	const onChangeHandler = (event, setter) => {
 		setter(event.target.value)
+	}
+
+	const handleVisibilityToggle = async (e) => {
+		e.stopPropagation() // Prevent row click events
+		const recordId = price_record.id
+		const recordType = 'price_record' // Default to price_record, could be enhanced to detect formula_price_record
+		
+		try {
+			const response = await fetch(
+				`/api/tearsheets/${tearsheet_id}/toggle-record/${recordId}/`,
+				{
+					credentials: 'include',
+					mode: 'same-origin',
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						"Accept": 'application/json',
+						'Authorization': `Token ${CONTEXT.auth_token}`,
+						'X-CSRFToken': CONTEXT.csrf_token
+					},
+					body: JSON.stringify({
+						'type': recordType
+					}),
+				}
+			)
+			
+			const data = await response.json()
+			
+			if (response.ok) {
+				setIsVisible(data.is_active)
+				// If hidden, remove from view
+				if (!data.is_active && onToggleVisibility) {
+					onToggleVisibility(recordId, data.is_active)
+				}
+			} else {
+				console.error('Toggle visibility error:', data)
+			}
+		} catch (error) {
+			console.error('Toggle visibility error:', error)
+		}
 	}
 
 	// add a delay, then execute the api call on cleanup
@@ -229,6 +302,15 @@ function TableRow({sdata, price_record, index}) {
 						<circle cx="6" cy="10" r="1"/>
 						<circle cx="10" cy="10" r="1"/>
 					</svg>
+				</td>
+				<td style={{'width': '30px', 'text-align': 'center'}} onClick={(e) => e.stopPropagation()}>
+					<input
+						type="checkbox"
+						checked={isVisible}
+						onChange={handleVisibilityToggle}
+						title={isVisible ? "Hide this record" : "Show this record"}
+						style={{'cursor': 'pointer'}}
+					/>
 				</td>
 				{
 				edit_type ?
