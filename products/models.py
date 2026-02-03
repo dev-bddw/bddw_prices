@@ -123,25 +123,34 @@ class Series(models.Model):
                 all_formula_price_records.extend(FormulaPriceRecord.objects.filter(cat_series_item=csi))
             
             # Create TearSheetPriceRecord entries for all price records
+            # If tearsheet is new, make records visible; if existing, preserve existing state or default to visible
             for pr in all_price_records:
-                TearSheetPriceRecord.objects.get_or_create(
+                tspr, tspr_created = TearSheetPriceRecord.objects.get_or_create(
                     tear_sheet=target_tearsheet,
                     price_record=pr,
                     defaults={
                         'display_order': pr.order if pr.order else 0,
-                        'is_active': True,
+                        'is_active': created,  # True for new tearsheets, True for reorganization
                     }
                 )
+                # If this is a new TearSheetPriceRecord on an existing tearsheet, make it visible (reorganization case)
+                if not created and tspr_created:
+                    tspr.is_active = True
+                    tspr.save()
             
             for fpr in all_formula_price_records:
-                TearSheetPriceRecord.objects.get_or_create(
+                tspr, tspr_created = TearSheetPriceRecord.objects.get_or_create(
                     tear_sheet=target_tearsheet,
                     formula_price_record=fpr,
                     defaults={
                         'display_order': fpr.order if fpr.order else 0,
-                        'is_active': True,
+                        'is_active': created,  # True for new tearsheets, True for reorganization
                     }
                 )
+                # If this is a new TearSheetPriceRecord on an existing tearsheet, make it visible (reorganization case)
+                if not created and tspr_created:
+                    tspr.is_active = True
+                    tspr.save()
             
             # Clean up old tearsheets that are no longer needed
             for old_ts in old_tearsheets:
@@ -186,25 +195,34 @@ class Series(models.Model):
             formula_price_records = FormulaPriceRecord.objects.filter(cat_series_item=csi)
             
             # Create TearSheetPriceRecord entries
+            # If tearsheet is new, make records visible; if existing, preserve existing state or default to visible
             for pr in price_records:
-                TearSheetPriceRecord.objects.get_or_create(
+                tspr, tspr_created = TearSheetPriceRecord.objects.get_or_create(
                     tear_sheet=target_tearsheet,
                     price_record=pr,
                     defaults={
                         'display_order': pr.order if pr.order else 0,
-                        'is_active': True,
+                        'is_active': created,  # True for new tearsheets, True for reorganization
                     }
                 )
+                # If this is a new TearSheetPriceRecord on an existing tearsheet, make it visible (reorganization case)
+                if not created and tspr_created:
+                    tspr.is_active = True
+                    tspr.save()
             
             for fpr in formula_price_records:
-                TearSheetPriceRecord.objects.get_or_create(
+                tspr, tspr_created = TearSheetPriceRecord.objects.get_or_create(
                     tear_sheet=target_tearsheet,
                     formula_price_record=fpr,
                     defaults={
                         'display_order': fpr.order if fpr.order else 0,
-                        'is_active': True,
+                        'is_active': created,  # True for new tearsheets, True for reorganization
                     }
                 )
+                # If this is a new TearSheetPriceRecord on an existing tearsheet, make it visible (reorganization case)
+                if not created and tspr_created:
+                    tspr.is_active = True
+                    tspr.save()
             
             # Clean up old tearsheet if it was series-level and no longer needed
             if old_tearsheet and old_tearsheet != target_tearsheet:

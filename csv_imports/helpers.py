@@ -187,25 +187,37 @@ def process_records(records: list):
         
         # Create TearSheetPriceRecord entries for regular price records
         for pr in all_price_records:
-            TearSheetPriceRecord.objects.get_or_create(
+            tspr, tspr_created = TearSheetPriceRecord.objects.get_or_create(
                 tear_sheet=tearsheet,
                 price_record=pr,
                 defaults={
                     'display_order': pr.order if pr.order else 0,
-                    'is_active': True,
+                    # If tearsheet is new, make records visible
+                    # If tearsheet exists but TearSheetPriceRecord is new, make it hidden
+                    'is_active': ts_created,  # True for new tearsheets, False for existing
                 }
             )
+            # If this is a new TearSheetPriceRecord on an existing tearsheet, ensure it's hidden
+            if not ts_created and tspr_created:
+                tspr.is_active = False
+                tspr.save()
         
         # Create TearSheetPriceRecord entries for formula price records
         for fpr in all_formula_price_records:
-            TearSheetPriceRecord.objects.get_or_create(
+            tspr, tspr_created = TearSheetPriceRecord.objects.get_or_create(
                 tear_sheet=tearsheet,
                 formula_price_record=fpr,
                 defaults={
                     'display_order': fpr.order if fpr.order else 0,
-                    'is_active': True,
+                    # If tearsheet is new, make records visible
+                    # If tearsheet exists but TearSheetPriceRecord is new, make it hidden
+                    'is_active': ts_created,  # True for new tearsheets, False for existing
                 }
             )
+            # If this is a new TearSheetPriceRecord on an existing tearsheet, ensure it's hidden
+            if not ts_created and tspr_created:
+                tspr.is_active = False
+                tspr.save()
         
         # Add tearsheet creation to report
         ts_record = {

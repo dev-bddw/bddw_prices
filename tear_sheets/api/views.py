@@ -49,13 +49,35 @@ class TearSheetViewSet(viewsets.ModelViewSet):
             FormulaPriceRecordSerializer,
             PriceRecordSerializer,
         )
+        
+        # Get existing selections to include status
+        existing_selections = TearSheetPriceRecord.objects.filter(
+            tear_sheet=tearsheet
+        )
+        pr_selection_map = {sel.price_record_id: sel for sel in existing_selections if sel.price_record_id}
+        fpr_selection_map = {sel.formula_price_record_id: sel for sel in existing_selections if sel.formula_price_record_id}
+        
+        # Serialize with selection status
+        pr_data = []
+        for pr in price_records:
+            pr_serialized = PriceRecordSerializer(pr).data
+            selection = pr_selection_map.get(pr.id)
+            pr_serialized['is_selected'] = selection.is_active if selection else False
+            pr_serialized['selection_id'] = selection.id if selection else None
+            pr_data.append(pr_serialized)
+        
+        fpr_data = []
+        for fpr in formula_price_records:
+            fpr_serialized = FormulaPriceRecordSerializer(fpr).data
+            selection = fpr_selection_map.get(fpr.id)
+            fpr_serialized['is_selected'] = selection.is_active if selection else False
+            fpr_serialized['selection_id'] = selection.id if selection else None
+            fpr_data.append(fpr_serialized)
 
         return Response(
             {
-                "price_records": PriceRecordSerializer(price_records, many=True).data,
-                "formula_price_records": FormulaPriceRecordSerializer(
-                    formula_price_records, many=True
-                ).data,
+                "price_records": pr_data,
+                "formula_price_records": fpr_data,
             }
         )
 
