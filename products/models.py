@@ -43,6 +43,177 @@ class Series(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Store the original tearsheet_grouping value to detect changes
+        self._original_tearsheet_grouping = self.tearsheet_grouping
+    
+    def refresh_from_db(self, using=None, fields=None):
+        """Override to update _original_tearsheet_grouping after refresh"""
+        super().refresh_from_db(using=using, fields=fields)
+        self._original_tearsheet_grouping = self.tearsheet_grouping
+    
+    def save(self, *args, **kwargs):
+        # Check if tearsheet_grouping has changed
+        tearsheet_grouping_changed = (
+            self.pk is not None and  # Only reorganize if this is an existing instance
+            self._original_tearsheet_grouping != self.tearsheet_grouping
+        )
+        
+        # Save the model first
+        super().save(*args, **kwargs)
+        
+        # Reorganize tearsheets if the grouping changed
+        if tearsheet_grouping_changed:
+            self._reorganize_tearsheets()
+    
+    def _reorganize_tearsheets(self):
+        """
+        Reorganize tearsheets for this series based on the current tearsheet_grouping setting.
+        """
+        from django.db import transaction
+        
+        with transaction.atomic():
+            if self.tearsheet_grouping == self.TearSheetGrouping.BY_SERIES.value:
+                self._reorganize_to_series_grouping()
+            else:
+                self._reorganize_to_item_grouping()
+    
+    def _reorganize_to_series_grouping(self):
+        """Merge item-level tearsheets into series-level tearsheets"""
+        from tear_sheets.models import TearSheet
+        from price_records.models import PriceRecord, FormulaPriceRecord, TearSheetPriceRecord
+        
+        # Group CatSeriesItems by Category
+        categories = CatSeriesItem.objects.filter(series=self).values_list('category', flat=True).distinct()
+        
+        for category_id in categories:
+            category_csis = CatSeriesItem.objects.filter(series=self, category_id=category_id)
+            category = category_csis.first().category
+            
+            # Determine the target tearsheet title
+            target_title = f"{category} - {self}"
+            
+            # Get or create the series-level tearsheet
+            target_tearsheet, created = TearSheet.objects.get_or_create(
+                title=target_title,
+                defaults={
+                    'template': 'B',
+                    'gbp_template': 'C',
+                }
+            )
+            
+            # Collect all price records from all items in this category-series
+            all_price_records = []
+            all_formula_price_records = []
+            old_tearsheets = set()
+            
+            for csi in category_csis:
+                # Collect old tearsheet for cleanup
+                if csi.tear_sheet:
+                    old_tearsheets.add(csi.tear_sheet)
+                
+                # Link CSI to target tearsheet
+                csi.tear_sheet = target_tearsheet
+                csi.save()
+                
+                # Collect price records
+                all_price_records.extend(PriceRecord.objects.filter(cat_series_item=csi))
+                all_formula_price_records.extend(FormulaPriceRecord.objects.filter(cat_series_item=csi))
+            
+            # Create TearSheetPriceRecord entries for all price records
+            for pr in all_price_records:
+                TearSheetPriceRecord.objects.get_or_create(
+                    tear_sheet=target_tearsheet,
+                    price_record=pr,
+                    defaults={
+                        'display_order': pr.order if pr.order else 0,
+                        'is_active': True,
+                    }
+                )
+            
+            for fpr in all_formula_price_records:
+                TearSheetPriceRecord.objects.get_or_create(
+                    tear_sheet=target_tearsheet,
+                    formula_price_record=fpr,
+                    defaults={
+                        'display_order': fpr.order if fpr.order else 0,
+                        'is_active': True,
+                    }
+                )
+            
+            # Clean up old tearsheets that are no longer needed
+            for old_ts in old_tearsheets:
+                if old_ts != target_tearsheet:
+                    # Check if this tearsheet has any other CatSeriesItems
+                    other_csis = CatSeriesItem.objects.filter(tear_sheet=old_ts).exclude(
+                        series=self, category_id=category_id
+                    )
+                    if not other_csis.exists():
+                        # Delete TearSheetPriceRecords for this tearsheet
+                        TearSheetPriceRecord.objects.filter(tear_sheet=old_ts).delete()
+                        old_ts.delete()
+    
+    def _reorganize_to_item_grouping(self):
+        """Split series-level tearsheets into item-level tearsheets"""
+        from tear_sheets.models import TearSheet
+        from price_records.models import PriceRecord, FormulaPriceRecord, TearSheetPriceRecord
+        
+        # Get all CatSeriesItems for this series
+        csis = CatSeriesItem.objects.filter(series=self)
+        
+        for csi in csis:
+            # Determine the target tearsheet title
+            target_title = f"{csi.category} - {csi.series} - {csi.item}"
+            
+            # Get or create the item-level tearsheet
+            target_tearsheet, created = TearSheet.objects.get_or_create(
+                title=target_title,
+                defaults={
+                    'template': 'B',
+                    'gbp_template': 'C',
+                }
+            )
+            
+            # Link CSI to target tearsheet
+            old_tearsheet = csi.tear_sheet
+            csi.tear_sheet = target_tearsheet
+            csi.save()
+            
+            # Get price records for this specific CSI
+            price_records = PriceRecord.objects.filter(cat_series_item=csi)
+            formula_price_records = FormulaPriceRecord.objects.filter(cat_series_item=csi)
+            
+            # Create TearSheetPriceRecord entries
+            for pr in price_records:
+                TearSheetPriceRecord.objects.get_or_create(
+                    tear_sheet=target_tearsheet,
+                    price_record=pr,
+                    defaults={
+                        'display_order': pr.order if pr.order else 0,
+                        'is_active': True,
+                    }
+                )
+            
+            for fpr in formula_price_records:
+                TearSheetPriceRecord.objects.get_or_create(
+                    tear_sheet=target_tearsheet,
+                    formula_price_record=fpr,
+                    defaults={
+                        'display_order': fpr.order if fpr.order else 0,
+                        'is_active': True,
+                    }
+                )
+            
+            # Clean up old tearsheet if it was series-level and no longer needed
+            if old_tearsheet and old_tearsheet != target_tearsheet:
+                # Check if this tearsheet has any other CatSeriesItems
+                other_csis = CatSeriesItem.objects.filter(tear_sheet=old_tearsheet).exclude(pk=csi.pk)
+                if not other_csis.exists():
+                    # Delete TearSheetPriceRecords for this tearsheet
+                    TearSheetPriceRecord.objects.filter(tear_sheet=old_tearsheet).delete()
+                    old_tearsheet.delete()
 
 
 class Item(models.Model):
