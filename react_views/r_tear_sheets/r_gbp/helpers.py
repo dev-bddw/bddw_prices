@@ -2,7 +2,7 @@ import json
 
 from rest_framework.authtoken.models import Token
 
-from price_records.models import PriceRecord
+from price_records.models import PriceRecord, TearSheetPriceRecord
 from products.models import CatSeriesItem
 from tear_sheets.models import (
     ImageCaption,
@@ -124,13 +124,22 @@ def return_price_records_by_rule_type(pk: int):
     """
     lookup all pricerecords using tearsheet pk
     organize into dict by rule type
+    Only includes price records that are selected (is_active=True) in TearSheetPriceRecord
     """
-    category_series_items = CatSeriesItem.objects.filter(tear_sheet=pk)
+    # Get all active TearSheetPriceRecord selections for this tearsheet
+    active_selections = TearSheetPriceRecord.objects.filter(
+        tear_sheet_id=pk, is_active=True
+    ).order_by("display_order")
 
-    if len(category_series_items) != 0:
-        list_of_price_records = PriceRecord.objects.filter(
-            cat_series_item__in=category_series_items
-        )
+    if active_selections.exists():
+        # Get the actual price records from the selections
+        list_of_price_records = []
+        for selection in active_selections:
+            if selection.price_record:
+                list_of_price_records.append(selection.price_record)
+
+        if not list_of_price_records:
+            return None
 
         rule_types = []
 
@@ -162,7 +171,45 @@ def return_price_records_by_rule_type(pk: int):
         return price_records
 
     else:
-        return None
+        # Fallback to old behavior if no selections exist (for backward compatibility)
+        category_series_items = CatSeriesItem.objects.filter(tear_sheet=pk)
+
+        if len(category_series_items) != 0:
+            list_of_price_records = PriceRecord.objects.filter(
+                cat_series_item__in=category_series_items
+            )
+
+            rule_types = []
+
+            for x in list_of_price_records:
+                if x.rule_type not in rule_types:
+                    rule_types.append(x.rule_type)
+
+            price_records = []
+
+            for p in rule_types:
+                price_records.append(
+                    {
+                        f"{p}": [
+                            {
+                                "id": y.id,
+                                "rule_type": y.rule_type,
+                                "gbp_price": y.gbp_price,
+                                "gbp_trade": y.gbp_trade,
+                                "gbp_price_no_vat": y.gbp_price_no_vat,
+                                "gbp_trade_no_vat": y.gbp_trade_no_vat,
+                                "rule_display_1": y.rule_display_1,
+                                "rule_display_2": y.rule_display_2,
+                            }
+                            for y in list_of_price_records
+                            if y.rule_type == p
+                        ]
+                    }
+                )
+            return price_records
+
+        else:
+            return None
 
 
 def return_details_by_title(pk: int):

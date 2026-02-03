@@ -190,3 +190,26 @@ class ImageCaption(models.Model):
     def save(self, *args, **kwargs):
         self.tear_sheet.save()
         super(ImageCaption, self).save(*args, **kwargs)
+
+
+class TearSheetFormatting(models.Model):
+    """
+    Stores formatting preferences for a tearsheet to preserve them during CSV rebuilds.
+    """
+    tear_sheet = models.OneToOneField(
+        "TearSheet",
+        on_delete=models.CASCADE,
+        related_name="formatting_snapshot",
+    )
+    last_updated = models.DateTimeField(auto_now=True)
+    formatting_data = models.JSONField(
+        default=dict,
+        help_text="Stores sdata, gbp_sdata, template choices, and other formatting preferences",
+    )
+
+    class Meta:
+        verbose_name = "Tearsheet Formatting Snapshot"
+        verbose_name_plural = "Tearsheet Formatting Snapshots"
+
+    def __str__(self):
+        return f"Formatting for {self.tear_sheet} (updated {self.last_updated})"

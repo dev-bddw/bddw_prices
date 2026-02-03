@@ -566,3 +566,63 @@ class FormulaPriceListPriceRecord(models.Model):
 
     class Meta:
         ordering = ["rule_type", "list_price"]
+
+
+class TearSheetPriceRecord(models.Model):
+    """
+    Junction model to track which price records are displayed on which tearsheet.
+    Allows tearsheets to select a subset of available price records from BIN inventory.
+    """
+    tear_sheet = models.ForeignKey(
+        "tear_sheets.TearSheet",
+        blank=False,
+        null=False,
+        on_delete=models.CASCADE,
+        related_name="price_record_selections",
+    )
+    price_record = models.ForeignKey(
+        "price_records.PriceRecord",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="tearsheet_selections",
+        help_text="Regular price record (null if using formula_price_record)",
+    )
+    formula_price_record = models.ForeignKey(
+        "price_records.FormulaPriceRecord",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="tearsheet_selections",
+        help_text="Formula-based price record (null if using price_record)",
+    )
+    display_order = models.IntegerField(
+        default=0,
+        help_text="Custom ordering for this record on this tearsheet",
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="If False, this record is hidden on the tearsheet",
+    )
+
+    class Meta:
+        ordering = ["display_order", "id"]
+        # Note: We can't use unique_together with nullable fields directly
+        # The clean() method enforces the constraint at the application level
+
+    def __str__(self):
+        record = self.price_record or self.formula_price_record
+        status = "active" if self.is_active else "hidden"
+        return f"{self.tear_sheet} - {record} ({status})"
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        if not self.price_record and not self.formula_price_record:
+            raise ValidationError("Either price_record or formula_price_record must be set")
+        if self.price_record and self.formula_price_record:
+            raise ValidationError("Cannot set both price_record and formula_price_record")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)

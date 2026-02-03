@@ -1,5 +1,6 @@
 from django.urls import path
 
+from .api.views import inventory_sync
 from .views import (
     export_all_formula_price_records,
     export_all_price_records,
@@ -38,4 +39,6 @@ urlpatterns = [
     path("form-records-template/", view=formula_records_template, name="form_template"),
     path("sorting-upload/", view=sorting_upload, name="sorting_upload"),
     path("sorting-export/", view=export_sorting_records, name="sorting_export"),
+    # API endpoint
+    path("api/sync/", inventory_sync, name="inventory_sync"),
 ]
