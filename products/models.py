@@ -26,7 +26,17 @@ class Category(models.Model):
 
 
 class Series(models.Model):
+    class TearSheetGrouping(models.TextChoices):
+        BY_ITEM = "by_item", "By Item (one tearsheet per Category-Series-Item)"
+        BY_SERIES = "by_series", "By Series (one tearsheet per Category-Series)"
+
     name = models.CharField(unique=True, blank=True, null=True, max_length=200)
+    tearsheet_grouping = models.CharField(
+        choices=TearSheetGrouping.choices,
+        default=TearSheetGrouping.BY_ITEM,
+        max_length=20,
+        help_text="Controls whether tearsheets are grouped by individual items or by the entire series",
+    )
 
     class Meta:
         verbose_name_plural = "Series"

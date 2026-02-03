@@ -1,5 +1,11 @@
-from price_records.models import PriceListPriceRecord, PriceRecord
+from price_records.models import (
+    FormulaPriceRecord,
+    PriceListPriceRecord,
+    PriceRecord,
+    TearSheetPriceRecord,
+)
 from products.models import Category, CatSeriesItem, Item, Series
+from tear_sheets.models import TearSheet
 
 
 def process_records(records: list):
@@ -8,10 +14,13 @@ def process_records(records: list):
     creates category series items
     creates tearsheet price records
     create pricelist price records
+    automatically creates tearsheets for CatSeriesItems with price records
     returns report of record creation
 
     """
     report = []
+    # Track which CatSeriesItems need tearsheets
+    csi_with_tearsheet_records = set()
 
     for record in records:
         if record["is_tearsheet"] or record["is_pricelist"]:
@@ -63,6 +72,9 @@ def process_records(records: list):
                             "gbp_trade_no_vat": record["gbp_trade_no_vat"],
                         },
                     )
+                    # Track this CatSeriesItem for tearsheet creation
+                    csi_with_tearsheet_records.add(cat_series_item.pk)
+                    
                     that_record = record.copy()
 
                     that_record.update(
@@ -110,5 +122,101 @@ def process_records(records: list):
                     )
 
                     report.append(this_record)
+            else:
+                # Handle formula price records
+                if record["is_tearsheet"] is True:
+                    # Track this CatSeriesItem for tearsheet creation
+                    csi_with_tearsheet_records.add(cat_series_item.pk)
+
+    # After processing all records, create tearsheets for CatSeriesItems with price records
+    # Group by Series grouping preference
+    processed_tearsheets = set()  # Track tearsheets we've already processed
+    
+    for csi_id in csi_with_tearsheet_records:
+        cat_series_item = CatSeriesItem.objects.get(pk=csi_id)
+        series = cat_series_item.series
+        
+        # Check if this series should be grouped by series or by item
+        if series.tearsheet_grouping == Series.TearSheetGrouping.BY_SERIES.value:
+            # Group by Category-Series (all items in the series together)
+            tearsheet_key = (cat_series_item.category.pk, series.pk)
+            tearsheet_title = f"{cat_series_item.category} - {cat_series_item.series}"
+        else:
+            # Group by Category-Series-Item (default behavior)
+            tearsheet_key = (cat_series_item.category.pk, series.pk, cat_series_item.item.pk)
+            tearsheet_title = f"{cat_series_item.category} - {cat_series_item.series} - {cat_series_item.item}"
+        
+        # Skip if we've already processed this tearsheet
+        if tearsheet_key in processed_tearsheets:
+            continue
+        
+        # Create or get tearsheet
+        tearsheet, ts_created = TearSheet.objects.get_or_create(
+            title=tearsheet_title,
+            defaults={
+                'template': 'B',  # default template
+                'gbp_template': 'C',
+            }
+        )
+        processed_tearsheets.add(tearsheet_key)
+        
+        # Get all CatSeriesItems that should be in this tearsheet
+        if series.tearsheet_grouping == Series.TearSheetGrouping.BY_SERIES.value:
+            # Get all items in this Category-Series combination
+            csi_items = CatSeriesItem.objects.filter(
+                category=cat_series_item.category,
+                series=series
+            )
+        else:
+            # Just this specific Category-Series-Item
+            csi_items = CatSeriesItem.objects.filter(pk=cat_series_item.pk)
+        
+        # Link all relevant CatSeriesItems to tearsheet and collect price records
+        all_price_records = []
+        all_formula_price_records = []
+        
+        for csi in csi_items:
+            # Link CatSeriesItem to tearsheet
+            if csi.tear_sheet != tearsheet:
+                csi.tear_sheet = tearsheet
+                csi.save()
+            
+            # Collect price records for this CatSeriesItem
+            all_price_records.extend(PriceRecord.objects.filter(cat_series_item=csi))
+            all_formula_price_records.extend(FormulaPriceRecord.objects.filter(cat_series_item=csi))
+        
+        # Create TearSheetPriceRecord entries for regular price records
+        for pr in all_price_records:
+            TearSheetPriceRecord.objects.get_or_create(
+                tear_sheet=tearsheet,
+                price_record=pr,
+                defaults={
+                    'display_order': pr.order if pr.order else 0,
+                    'is_active': True,
+                }
+            )
+        
+        # Create TearSheetPriceRecord entries for formula price records
+        for fpr in all_formula_price_records:
+            TearSheetPriceRecord.objects.get_or_create(
+                tear_sheet=tearsheet,
+                formula_price_record=fpr,
+                defaults={
+                    'display_order': fpr.order if fpr.order else 0,
+                    'is_active': True,
+                }
+            )
+        
+        # Add tearsheet creation to report
+        ts_record = {
+            "type": "Tearsheet",
+            "status": "created" if ts_created else "updated",
+            "category": cat_series_item.category.name,
+            "series": cat_series_item.series.name,
+            "item": cat_series_item.item.name if series.tearsheet_grouping == Series.TearSheetGrouping.BY_ITEM.value else "All Items",
+            "tearsheet_title": tearsheet_title,
+            "grouping": series.get_tearsheet_grouping_display(),
+        }
+        report.append(ts_record)
 
     return report

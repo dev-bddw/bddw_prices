@@ -20,6 +20,8 @@ class SeriesAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     list_per_page = 10000
     ordering = ["name"]
+    list_display = ["name", "tearsheet_grouping"]
+    list_editable = ["tearsheet_grouping"]
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "series":
