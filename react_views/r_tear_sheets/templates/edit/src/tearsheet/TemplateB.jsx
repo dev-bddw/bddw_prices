@@ -1,47 +1,162 @@
 import {useEffect, useRef, useState} from 'react'
+import {
+	DndContext,
+	closestCenter,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core'
+import {
+	arrayMove,
+	SortableContext,
+	sortableKeyboardCoordinates,
+	useSortable,
+	verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import {CSS} from '@dnd-kit/utilities'
 
 //TWO COLUMN
-export default function TemplateA({price_records, sdata}) {
+export default function TemplateB({price_records, sdata, setPriceRecords, tearsheet_id}) {
 	return(
 		<>
-								{/*iterate over the price records objects, each objectL key == rule type, value = the list of price record objects*/}
-								{  price_records.map(  ( obj )  => { return( Object.entries(obj).map( ([key, value]) => { return( <RuleTypeGroup sdata={sdata} price_records={value} rule_type={key} />)})) })}
-								{/*<AddRow price_records={price_records} setPriceRecords={setPriceRecords} tearsheet_id={tearsheet_id}/>*/}
-	</>
+			{/*iterate over the price records objects, each object key == rule type, value = the list of price record objects*/}
+			{  price_records.map(  ( obj )  => { return( Object.entries(obj).map( ([key, value]) => { return( <RuleTypeGroup key={key} sdata={sdata} price_records={value} rule_type={key} setPriceRecords={setPriceRecords} price_records_all={price_records} tearsheet_id={tearsheet_id} />)})) })}
+		</>
 	)
 }
 
-function RuleTypeGroup({sdata, price_records, rule_type}) {
-  //TODO rewrite so variables stay the same from model to user
+function RuleTypeGroup({sdata, price_records, rule_type, setPriceRecords, price_records_all, tearsheet_id}) {
+	const [items, setItems] = useState(price_records)
+	
+	const sensors = useSensors(
+		useSensor(PointerSensor),
+		useSensor(KeyboardSensor, {
+			coordinateGetter: sortableKeyboardCoordinates,
+		})
+	)
 
+	useEffect(() => {
+		setItems(price_records)
+	}, [price_records])
 
-  return(
+	function handleDragEnd(event) {
+		const {active, over} = event
+
+		if (over && active.id !== over.id) {
+			setItems((items) => {
+				const oldIndex = items.findIndex(item => (item.selection_id || item.id) === active.id)
+				const newIndex = items.findIndex(item => (item.selection_id || item.id) === over.id)
+				const newItems = arrayMove(items, oldIndex, newIndex)
+				
+				// Update the parent price_records state
+				const updatedPriceRecords = price_records_all.map(obj => {
+					const entries = Object.entries(obj)
+					const [key, value] = entries[0]
+					if (key === rule_type) {
+						return {[key]: newItems}
+					}
+					return obj
+				})
+				setPriceRecords(updatedPriceRecords)
+				
+				// Collect all selection IDs across all rule types in order
+				const allSelectionIds = []
+				updatedPriceRecords.forEach(obj => {
+					const entries = Object.entries(obj)
+					const [key, value] = entries[0]
+					value.forEach(item => {
+						if (item.selection_id) {
+							allSelectionIds.push(item.selection_id)
+						} else if (item.id) {
+							// Fallback: if no selection_id, we can't reorder via API
+							// This shouldn't happen with the updated helper, but handle gracefully
+							console.warn('Price record missing selection_id:', item)
+						}
+					})
+				})
+				
+				// Call API to update order for all records
+				reorderPriceRecords(allSelectionIds)
+				
+				return newItems
+			})
+		}
+	}
+
+	function reorderPriceRecords(selectionIds) {
+		fetch(`/api/tearsheets/${tearsheet_id}/reorder_records/`, {
+			credentials: 'include',
+			mode: 'same-origin',
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"Accept": 'application/json',
+				'Authorization': `Token ${CONTEXT.auth_token}`,
+				'X-CSRFToken': CONTEXT.csrf_token
+			},
+			body: JSON.stringify({
+				'record_ids': selectionIds
+			}),
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log('Reorder success:', data);
+		})
+		.catch(error => {
+			console.error('Reorder error:', error);
+		})
+	}
+
+	return(
 		<>
 			<div style={{'height': sdata.pt_pr}}></div>
-			<table className={`table-auto`}>
-							<thead className="text-gray-400 text-left">
-									<th></th>
-									<th></th>
-									<th></th>
-									<th style={{'font-weight': 'normal'}} className="py-1">LIST</th>
-									<th style={{'font-weight': 'normal'}} className="py-1">NET</th>
-							</thead>
-							<tbody>
-		{ price_records.map( (price_record, index) =>  <TableRow sdata={sdata} index={index} price_record={price_record} />)}
-								</tbody>
-						</table>
+			<DndContext
+				sensors={sensors}
+				collisionDetection={closestCenter}
+				onDragEnd={handleDragEnd}
+			>
+				<table className={`table-auto`}>
+					<thead className="text-gray-400 text-left">
+						<th style={{'width': '20px'}}></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th style={{'font-weight': 'normal'}} className="py-1">LIST</th>
+						<th style={{'font-weight': 'normal'}} className="py-1">NET</th>
+					</thead>
+					<tbody>
+						<SortableContext items={items.map(item => item.selection_id || item.id)} strategy={verticalListSortingStrategy}>
+							{items.map( (price_record, index) =>  <TableRow key={price_record.selection_id || price_record.id} sdata={sdata} index={index} price_record={price_record} />)}
+						</SortableContext>
+					</tbody>
+				</table>
+			</DndContext>
 		</>
 	)
 }
 
 function TableRow({sdata, price_record, index}) {
-  //TODO rewrite so variables stay the same from model to user
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition,
+		isDragging,
+	} = useSortable({id: price_record.selection_id || price_record.id})
 
-  const [edit_type, setEditType] = useState(false)
-  const [edit_one, setEditOne] = useState(false)
-  const [edit_two, setEditTwo] = useState(false)
-  const [edit_list, setEditList] = useState(false)
-  const [edit_net, setEditNet] = useState(false)
+	const style = {
+		transform: CSS.Transform.toString(transform),
+		transition,
+		opacity: isDragging ? 0.5 : 1,
+	}
+
+	const [edit_type, setEditType] = useState(false)
+	const [edit_one, setEditOne] = useState(false)
+	const [edit_two, setEditTwo] = useState(false)
+	const [edit_list, setEditList] = useState(false)
+	const [edit_net, setEditNet] = useState(false)
 
 	const [rule_type, setRecord] = useState(price_record.rule_type)
 	const [display_one, setOne] = useState(price_record.rule_display_1)
@@ -51,24 +166,24 @@ function TableRow({sdata, price_record, index}) {
 
 	const isMounted = useRef(false)
 	const onClickHandler = (setter) => {
-	  setter(true)
+		setter(true)
 	}
 
 	const onChangeHandler = (event, setter) => {
-	  setter(event.target.value)
+		setter(event.target.value)
 	}
 
 	// add a delay, then execute the api call on cleanup
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
+	useEffect(() => {
+		const delayDebounceFn = setTimeout(() => {
 			if (isMounted.current) {
-			  UPDATE()
+				UPDATE()
 			} else {
-					isMounted.current = true
-				}
-    }, 1500)
+				isMounted.current = true
+			}
+		}, 1500)
 		return( () => clearTimeout(delayDebounceFn) )
-  }, [rule_type, display_one, display_two, list, net])
+	}, [rule_type, display_one, display_two, list, net])
 
 
 	const UPDATE = () => {
@@ -77,11 +192,11 @@ function TableRow({sdata, price_record, index}) {
 			mode: 'same-origin',
 			method: "POST",
 			headers: {
-		    "Content-Type": "application/json",
+				"Content-Type": "application/json",
 				"Accept": 'application/json',
 				'Authorization': `Token ${CONTEXT.auth_token}`,
 				'X-CSRFToken': CONTEXT.csrf_token
-						},
+			},
 			body: JSON.stringify({'data':[{
 				'id': price_record.id,
 				'rule_type': rule_type,
@@ -90,18 +205,31 @@ function TableRow({sdata, price_record, index}) {
 				'list_price': list,
 				'net_price': net
 			}] }),
-					})
-						.then(response => response.json())
-						.then(data => {
-							console.log(data);
-						})
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+		})
 	}
 
 	const classes="shadow appearance-none border rounded w-full py-1 text-gray-700 leading-tight focus:outline-none focus:shadow-outliney-1"
 
-  return(
+	return(
 		<>
-			<tr key={index} className="hover:bg-gray-50 text-gray-400 text-left">
+			<tr ref={setNodeRef} style={style} className="hover:bg-gray-50 text-gray-400 text-left">
+				<td {...attributes} {...listeners} style={{'width': '20px', 'cursor': 'grab'}} className="text-gray-300 hover:text-gray-500">
+					<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+						<circle cx="2" cy="2" r="1"/>
+						<circle cx="6" cy="2" r="1"/>
+						<circle cx="10" cy="2" r="1"/>
+						<circle cx="2" cy="6" r="1"/>
+						<circle cx="6" cy="6" r="1"/>
+						<circle cx="10" cy="6" r="1"/>
+						<circle cx="2" cy="10" r="1"/>
+						<circle cx="6" cy="10" r="1"/>
+						<circle cx="10" cy="10" r="1"/>
+					</svg>
+				</td>
 				{
 				edit_type ?
 					<td style={{'width': `${sdata.col_1}px`}}><input onChange={ (event) => onChangeHandler(event,setRecord)} className={classes} value={rule_type}></input></td>

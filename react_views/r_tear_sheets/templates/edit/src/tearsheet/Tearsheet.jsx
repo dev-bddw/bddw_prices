@@ -45,7 +45,7 @@ export default function Tearsheet() {
 					return(<TemplateA sdata={sdata} price_records={price_records}/>)
 				case 'B':
 					// TWO COLUMN DISPLAY (default tearsheet display -- 5 column view)
-					return(<TemplateB sdata={sdata} price_records={price_records}/>)
+					return(<TemplateB sdata={sdata} price_records={price_records} setPriceRecords={setPriceRecords} tearsheet_id={CONTEXT.tearsheet.id}/>)
 				case 'C':
 				  // RULE DISPLAY ABOVE (four column view)
 					return(<TemplateC sdata={sdata} price_records={price_records}/>)

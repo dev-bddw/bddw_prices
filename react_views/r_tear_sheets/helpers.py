@@ -134,21 +134,25 @@ def return_price_records_by_rule_type(pk: int):
     ).order_by("display_order")
 
     if active_selections.exists():
-        # Get the actual price records from the selections
-        list_of_price_records = []
+        # Get the actual price records from the selections, preserving selection info
+        selection_data = []
         for selection in active_selections:
             if selection.price_record:
-                list_of_price_records.append(selection.price_record)
+                selection_data.append({
+                    'selection_id': selection.id,
+                    'price_record': selection.price_record,
+                    'display_order': selection.display_order,
+                })
             # Note: formula_price_records are handled separately in formula tearsheets
 
-        if not list_of_price_records:
+        if not selection_data:
             return None
 
         rule_types = []
 
-        for x in list_of_price_records:
-            if x.rule_type not in rule_types:
-                rule_types.append(x.rule_type)
+        for item in selection_data:
+            if item['price_record'].rule_type not in rule_types:
+                rule_types.append(item['price_record'].rule_type)
 
         price_records = []
 
@@ -157,15 +161,16 @@ def return_price_records_by_rule_type(pk: int):
                 {
                     f"{p}": [
                         {
-                            "id": y.id,
-                            "list_price": y.list_price,
-                            "net_price": y.net_price,
-                            "rule_type": y.rule_type,
-                            "rule_display_1": y.rule_display_1,
-                            "rule_display_2": y.rule_display_2,
+                            "id": item['price_record'].id,
+                            "selection_id": item['selection_id'],
+                            "list_price": item['price_record'].list_price,
+                            "net_price": item['price_record'].net_price,
+                            "rule_type": item['price_record'].rule_type,
+                            "rule_display_1": item['price_record'].rule_display_1,
+                            "rule_display_2": item['price_record'].rule_display_2,
                         }
-                        for y in list_of_price_records
-                        if y.rule_type == p
+                        for item in selection_data
+                        if item['price_record'].rule_type == p
                     ]
                 }
             )
