@@ -111,7 +111,7 @@ def return_context(request, id: int) -> str:
                 "title": x.title,
                 "sdata": x.sdata,
                 "template": x.template,
-                "img": x.image.url,
+                "img": request.build_absolute_uri(x.image.url) if (x.image and x.image.name) else None,
                 "price_records": price_records(),
                 "captions": captions(),
                 "details": details(),

@@ -57,12 +57,16 @@ INSTALLED_APPS += ["django_extensions"]  # noqa F405
 # Your stuff...
 # ------------------------------------------------------------------------------
 
-# Serve images from your live s3 bucket
+# Media: serve uploads from local disk so image URLs work when not using S3 storage.
+# Local does not set DEFAULT_FILE_STORAGE to S3, so files are saved to MEDIA_ROOT;
+# MEDIA_URL must be /media/ so Django serves them via static() in urls.py.
+# Set USE_S3_BUCKET=yes and AWS_STORAGE_BUCKET_NAME + S3 storage if you want S3 in local.
 # ------------------------------------------------------------------------------
-USE_S3_BUCKET = True
-
-if USE_S3_BUCKET:
-    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=None)
+USE_S3_BUCKET = env.bool("USE_S3_BUCKET", default=False)
+if USE_S3_BUCKET and env("AWS_STORAGE_BUCKET_NAME", default=None):
+    AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
     aws_s3_domain = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
     MEDIA_URL = f"https://{aws_s3_domain}/media/"
+else:
+    MEDIA_URL = "/media/"
 

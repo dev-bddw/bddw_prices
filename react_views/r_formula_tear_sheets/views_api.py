@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import FormParser, MultiPartParser
 
 from formula_tear_sheets.models import (
     FormulaImageCaption,
@@ -22,17 +23,17 @@ def edit_tearsheet_api(request, id):
 
 
 @api_view(["POST"])
+@parser_classes([MultiPartParser, FormParser])
 def edit_image_api(request, id):
     if request.method == "POST":
         image = request.FILES.get("image")
+        if not image:
+            return JsonResponse({"error": "No image file"}, status=400)
         tearsheet = FormulaTearSheet.objects.get(id=id)
         tearsheet.image = image
         tearsheet.save()
-
-        return JsonResponse({"url": tearsheet.image.url})
-
-        # return redirect(reverse('edit-tearsheet', kwargs={'id': id}))
-
+        url = request.build_absolute_uri(tearsheet.image.url)
+        return JsonResponse({"url": url})
     else:
         return HttpResponse("Request method not supported")
 

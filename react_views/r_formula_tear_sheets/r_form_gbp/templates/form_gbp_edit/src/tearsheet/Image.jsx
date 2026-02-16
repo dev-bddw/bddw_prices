@@ -45,14 +45,27 @@ export default function Image({img }) {
 						},
 			body: form_data
 					})
-						.then(response => response.json())
-						.then(data => { setImgUrl(data.url) } )
+						.then(response => {
+							if (!response.ok) return response.json().then(data => { throw new Error(data.error || response.statusText) });
+							return response.json();
+						})
+						.then(data => { if (data.url) setImgUrl(data.url); } )
+						.catch(err => console.error('Image upload failed:', err))
 	}
 
 	return (
 		<div>
 				<div onClick={ (event) => { handleClick(event)}} className="cursor-pointer relative">
-					<img className='hover:opacity-90 object-fill' src={img_url}/>
+					{img_url ? (
+						<img
+							className='hover:opacity-90 object-fill'
+							src={img_url}
+							alt="Tearsheet"
+							onError={() => setImgUrl(null)}
+						/>
+					) : (
+						<div className="flex items-center justify-center bg-gray-200 min-h-[200px] text-gray-500">Click to add image</div>
+					)}
 					<input style={{'display': 'none'}} ref={hiddenFileInput} type="file" name="image_url" accept="image/jpeg,image/png,image/gif" onChange={(event) => {onChangeHandler(event)}}></input>
 					<p className="opacity-25 hover:opacity-100 duration-300 absolute text-5xl underline text-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Change Image</p>
 				</div>
