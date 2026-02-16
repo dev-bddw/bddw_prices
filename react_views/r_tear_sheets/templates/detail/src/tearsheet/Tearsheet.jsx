@@ -31,7 +31,10 @@ export default function Tearsheet() {
 		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
 		'pt_pr': CONTEXT.tearsheet.sdata.pt_pr,
 		'pt': CONTEXT.tearsheet.sdata.pt,
-		'font_size': CONTEXT.tearsheet.sdata.font_size
+		'font_size': CONTEXT.tearsheet.sdata.font_size,
+		'image_scale': CONTEXT.tearsheet.sdata.image_scale,
+		'image_offset_x': CONTEXT.tearsheet.sdata.image_offset_x,
+		'image_offset_y': CONTEXT.tearsheet.sdata.image_offset_y,
 		}
 	)
 
@@ -72,7 +75,14 @@ export default function Tearsheet() {
 							'font-size': `${sdata.font_size}px`
 							}}>
 								<Heading title={CONTEXT.tearsheet.title}/>
-								<Image img={img}/>
+								<Image
+									img={img}
+									imageTransform={{
+										image_scale: sdata.image_scale,
+										image_offset_x: sdata.image_offset_x,
+										image_offset_y: sdata.image_offset_y,
+									}}
+								/>
 								<Captions sdata={sdata} captions={captions} />
 								<Details sdata={sdata} details={details}/>
 								{renderTemplate(template) }

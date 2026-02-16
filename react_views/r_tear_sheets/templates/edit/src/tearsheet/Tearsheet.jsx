@@ -33,6 +33,9 @@ export default function Tearsheet() {
 		'col_4': CONTEXT.tearsheet.sdata.col_4,
 		'col_5': CONTEXT.tearsheet.sdata.col_5,
 		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
+		'image_scale': CONTEXT.tearsheet.sdata.image_scale != null ? CONTEXT.tearsheet.sdata.image_scale : 1,
+		'image_offset_x': CONTEXT.tearsheet.sdata.image_offset_x != null ? CONTEXT.tearsheet.sdata.image_offset_x : 0,
+		'image_offset_y': CONTEXT.tearsheet.sdata.image_offset_y != null ? CONTEXT.tearsheet.sdata.image_offset_y : 0,
 		}
 	)
 
@@ -73,14 +76,21 @@ export default function Tearsheet() {
 							'font-size': `${sdata.font_size}px`
 							}} className="align-top">
 								<Heading title={CONTEXT.tearsheet.title}/>
-								<Image img={img}/>
+								<Image
+									img={img}
+									imageTransform={{
+										image_scale: sdata.image_scale,
+										image_offset_x: sdata.image_offset_x,
+										image_offset_y: sdata.image_offset_y,
+									}}
+								/>
 								<Captions showCreateInputs={showCreateInputs} sdata={sdata} captions={captions} />
 								<Details showCreateInputs={showCreateInputs} sdata={sdata} details={details}/>
 								{renderTemplate(template) }
 								<FooterDetails showCreateInputs={showCreateInputs} sdata={sdata} footers={footer_details} />
 						</td>
 						<td className="align-top">
-								<ConfigPanel showCreateInputs={showCreateInputs}  setShowCreateInputs={setShowCreateInputs} template={template} setTemplate={setTemplate} sdata={sdata} setSheetData={setSheetData} />
+								<ConfigPanel showCreateInputs={showCreateInputs} setShowCreateInputs={setShowCreateInputs} template={template} setTemplate={setTemplate} sdata={sdata} setSheetData={setSheetData} hasImage={!!img} />
 						</td>
 					</tr>
 				</tbody>

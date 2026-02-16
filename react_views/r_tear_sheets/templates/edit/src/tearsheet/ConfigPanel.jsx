@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
 import Slider from '@mui/material/Slider';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,9 +9,12 @@ import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import Button from '@mui/material/Button';
 
 
-export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData}) {
+const NUDGE_STEP = 10;
+
+export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData, hasImage }) {
 
 	const default_values ={
 		'font_size': 10,
@@ -27,6 +29,9 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'col_4': 80,
 		'col_5': 54,
 		'pt_footer': 5,
+		'image_scale': 1,
+		'image_offset_x': 0,
+		'image_offset_y': 0,
 	}
 
 	const easy_defs = {
@@ -57,6 +62,9 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'col_4': CONTEXT.tearsheet.sdata.col_4,
 		'col_5': CONTEXT.tearsheet.sdata.col_5,
 		'pt_footer': CONTEXT.tearsheet.sdata.pt_footer,
+		'image_scale': CONTEXT.tearsheet.sdata.image_scale != null ? CONTEXT.tearsheet.sdata.image_scale : 1,
+		'image_offset_x': CONTEXT.tearsheet.sdata.image_offset_x != null ? CONTEXT.tearsheet.sdata.image_offset_x : 0,
+		'image_offset_y': CONTEXT.tearsheet.sdata.image_offset_y != null ? CONTEXT.tearsheet.sdata.image_offset_y : 0,
 	})
 
 	const initial_template = useRef( template )
@@ -117,19 +125,45 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		}));
 	}
 
-	// need to break these sliders into like groups
-	// details columns
-	// price records columns
-	// misc
+	const handleImageScaleChange = (event, value) => {
+		setSheetData(prev => ({ ...prev, image_scale: Math.max(1, value) }))
+	}
+
+	const nudge = (dx, dy) => {
+		setSheetData(prev => ({
+			...prev,
+			image_offset_x: (prev.image_offset_x || 0) + dx,
+			image_offset_y: (prev.image_offset_y || 0) + dy,
+		}))
+	}
+
+	const sliderKeys = Object.keys(sdata).filter(key => easy_defs[key] != null)
+
 	return(
 		<div className="confg_wrapper drop-shadow-xl" style={{'margin': '0 0 0 50px', 'width': '475px'}}>
 			<div className="px-5 bg-gray-50 border border-solid rounded-lg text-left">
 				<h3 className="font-bold py-3">CONFIG</h3>
 				<TemplateDropdown  template={template} setTemplate={setTemplate}/>
 				<InputSwitch  showCreateInputs={showCreateInputs} setShowCreateInputs={setShowCreateInputs}/>
-				{ Object.keys(sdata).map( (key) => {
-					return(
+				{hasImage && (
+					<div className="py-4">
+						<h4 className="font-semibold text-slate-600 py-2">Position image</h4>
 						<Box sx={{ width: 400, color: 'black' }}>
+							<p className="font-sans text-slate-400 py-2 text-s">Zoom ({sdata.image_scale})</p>
+							<Slider size="small" aria-label="image-zoom" min={1} max={3} step={0.1} value={Math.max(1, sdata.image_scale ?? 1)} onChange={handleImageScaleChange} />
+						</Box>
+						<p className="font-sans text-slate-400 py-2 text-s">Move</p>
+						<div className="flex gap-2 flex-wrap">
+							<Button size="small" variant="outlined" onClick={() => nudge(-NUDGE_STEP, 0)}>Left</Button>
+							<Button size="small" variant="outlined" onClick={() => nudge(NUDGE_STEP, 0)}>Right</Button>
+							<Button size="small" variant="outlined" onClick={() => nudge(0, -NUDGE_STEP)}>Up</Button>
+							<Button size="small" variant="outlined" onClick={() => nudge(0, NUDGE_STEP)}>Down</Button>
+						</div>
+					</div>
+				)}
+				{ sliderKeys.map( (key) => {
+					return(
+						<Box key={key} sx={{ width: 400, color: 'black' }}>
 							<p className="font-sans text-slate-400 py-2 text-s">{easy_defs[key]} ({sdata[key]}) </p>
 							<Slider size="small" aria-label="col-width" max={ key == 'font_size' ? 30 : 1000} value={sdata[key]} defaultValue={sdata[key]} onChange={ (event) => handleChange(event,key) } />
 					</Box>
