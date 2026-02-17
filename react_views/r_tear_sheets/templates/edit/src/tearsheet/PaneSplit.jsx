@@ -101,8 +101,8 @@ export default function PaneSplit({
           height: isHorizontal ? gw : logicalHeight,
           minWidth: isHorizontal ? 0 : gw,
           minHeight: isHorizontal ? gw : 0,
-          background: '#fff',
-          border: '1px solid #e5e7eb',
+          background: 'white',
+          border: '1px solid rgba(0,0,0,0.06)',
           boxSizing: 'border-box',
           cursor: editMode ? (isHorizontal ? 'ns-resize' : 'ew-resize') : 'default',
           flexShrink: 0,
@@ -117,7 +117,7 @@ export default function PaneSplit({
             style={{
               width: isHorizontal ? 24 : 4,
               height: isHorizontal ? 4 : 24,
-              background: '#d1d5db',
+              background: 'rgba(0,0,0,0.12)',
               borderRadius: 2,
               pointerEvents: 'none',
             }}
