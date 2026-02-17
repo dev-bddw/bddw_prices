@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 
-// Fixed frame size used in both edit and detail so image displays identically
-const IMAGE_FRAME_WIDTH = 816;
-const IMAGE_FRAME_HEIGHT = 400;
+// Fixed frame size used in both edit and detail so image displays identically (1500×1200)
+const IMAGE_FRAME_WIDTH = 1500;
+const IMAGE_FRAME_HEIGHT = 1200;
+// Content column width; scale frame to fit
+const COLUMN_WIDTH = 816;
+const DISPLAY_SCALE = COLUMN_WIDTH / IMAGE_FRAME_WIDTH;
+const DISPLAY_HEIGHT = Math.round(IMAGE_FRAME_HEIGHT * DISPLAY_SCALE);
 
 export default function Image({ img, imageTransform }) {
 
@@ -62,34 +66,46 @@ export default function Image({ img, imageTransform }) {
 	}
 
 	return (
-		<div>
+		<div style={{ maxWidth: COLUMN_WIDTH }}>
 				<div
 					onClick={(event) => { handleClick(event); }}
 					className="cursor-pointer relative"
 					style={{
-						width: IMAGE_FRAME_WIDTH,
-						height: img_url ? IMAGE_FRAME_HEIGHT : 200,
-						minHeight: img_url ? IMAGE_FRAME_HEIGHT : 200,
+						width: img_url ? COLUMN_WIDTH : '100%',
+						height: img_url ? DISPLAY_HEIGHT : 200,
+						minHeight: img_url ? DISPLAY_HEIGHT : 200,
 						overflow: 'hidden',
 						position: 'relative',
 					}}
 				>
 					{img_url ? (
 						<div
-							className="hover:opacity-90"
 							style={{
 								position: 'absolute',
-								left: '50%',
-								top: '50%',
-								width: '100%',
-								height: '100%',
-								backgroundImage: `url(${img_url})`,
-								backgroundSize: 'cover',
-								backgroundPosition: 'center',
-								transformOrigin: 'center',
-								transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) scale(${scale})`,
+								left: 0,
+								top: 0,
+								width: IMAGE_FRAME_WIDTH,
+								height: IMAGE_FRAME_HEIGHT,
+								transform: `scale(${DISPLAY_SCALE})`,
+								transformOrigin: '0 0',
 							}}
-						/>
+						>
+							<div
+								className="hover:opacity-90"
+								style={{
+									position: 'absolute',
+									left: '50%',
+									top: '50%',
+									width: '100%',
+									height: '100%',
+									backgroundImage: `url(${img_url})`,
+									backgroundSize: 'cover',
+									backgroundPosition: 'center',
+									transformOrigin: 'center',
+									transform: `translate(-50%, -50%) translate(${offsetX}px, ${offsetY}px) scale(${scale})`,
+								}}
+							/>
+						</div>
 					) : (
 						<div className="flex items-center justify-center bg-gray-200 min-h-[200px] text-gray-500">Click to add image</div>
 					)}
