@@ -93,18 +93,38 @@ export default function PaneSplit({
       />
       <div
         role="separator"
+        aria-label={isHorizontal ? 'Drag to resize panes vertically' : 'Drag to resize panes horizontally'}
         onMouseDown={handleGutterMouseDown}
+        title={editMode ? (isHorizontal ? 'Drag gutter up or down' : 'Drag gutter left or right') : undefined}
         style={{
           width: isHorizontal ? logicalWidth : gw,
           height: isHorizontal ? gw : logicalHeight,
           minWidth: isHorizontal ? 0 : gw,
           minHeight: isHorizontal ? gw : 0,
-          background: editMode ? '#94a3b8' : '#cbd5e1',
+          background: '#fff',
+          border: '1px solid #e5e7eb',
+          boxSizing: 'border-box',
           cursor: editMode ? (isHorizontal ? 'ns-resize' : 'ew-resize') : 'default',
           flexShrink: 0,
           userSelect: 'none',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
-      />
+      >
+        {editMode && gw >= 6 && (
+          <div
+            style={{
+              width: isHorizontal ? 24 : 4,
+              height: isHorizontal ? 4 : 24,
+              background: '#d1d5db',
+              borderRadius: 2,
+              pointerEvents: 'none',
+            }}
+            aria-hidden
+          />
+        )}
+      </div>
       <PaneTree
         layout={children[1]}
         path={[...path, 1]}

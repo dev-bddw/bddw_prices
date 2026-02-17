@@ -211,10 +211,10 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 				)}
 				{showGutterWidth && (
 					<div className="py-4">
-						<h4 className="font-semibold text-slate-600 py-2">Gutter width</h4>
+						<h4 className="font-semibold text-slate-600 py-2">Gutter width between frames</h4>
 						<Box sx={{ width: 400, color: 'black' }}>
-							<Slider size="small" aria-label="gutter-width" min={0} max={24} step={1} value={sdata.image_gutter_width ?? 8} onChange={handleGutterWidthChange} />
-							<p className="font-sans text-slate-400 py-2 text-s">({sdata.image_gutter_width ?? 8}px)</p>
+							<p className="font-sans text-slate-400 py-2 text-s">Width of the divider between panes (pixels)</p>
+							<Slider size="small" aria-label="gutter-width" min={0} max={32} step={1} value={sdata.image_gutter_width ?? 8} onChange={handleGutterWidthChange} valueLabelDisplay="auto" valueLabelFormat={(v) => `${v}px`} />
 						</Box>
 					</div>
 				)}
