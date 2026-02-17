@@ -158,11 +158,11 @@ STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [
     str(APPS_DIR / "static"),
-    # tearsheets
-    "/app/react_views/r_tear_sheets/templates/detail/dist/assets/",
+    # tearsheets (dist/ so that /static/assets/*.js is served for base: '/static/')
+    "/app/react_views/r_tear_sheets/templates/detail/dist/",
     "/app/react_views/r_tear_sheets/templates/detail_for_print/dist/assets/",
     "/app/react_views/r_tear_sheets/templates/detail_for_print_list/dist/assets/",
-    "/app/react_views/r_tear_sheets/templates/edit/dist/assets/",
+    "/app/react_views/r_tear_sheets/templates/edit/dist/",
     # gbp tearsheets
     "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_detail/dist/assets/",
     "/app/react_views/r_tear_sheets/r_gbp/templates/gbp_edit/dist/assets/",

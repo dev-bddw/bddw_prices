@@ -1,3 +1,5 @@
+<script type="module" crossorigin src="/static/assets/index.c6159e02.js"></script>
+<link rel="stylesheet" href="/static/assets/index.4afc4f5a.css">
 {% extends 'react_base.html' %}
 {% load static %}
 
@@ -5,9 +7,9 @@
 
 {% block javascript %}
   {{block.super}}
- <script type="module" crossorigin src="{% static 'index.5c43e73c.js' %}"></script>
- <link rel="stylesheet" href="{% static 'index.4afc4f5a.css' %}">
-
+ <script type="module" crossorigin src="#"></script>
+ <link rel="stylesheet" href="#">
+ 
 {% endblock javascript %}
 
 {% block content %}
@@ -26,6 +28,7 @@
 		 'edit_pricerecord_api' : '{% url 'react_views:r_tear_sheets:edit-pricerecord-api' %}',
 		 'edit_tearsheet_api' : '{% url 'react_views:r_tear_sheets:edit-tearsheet-api' id  %}',
 		 'edit_image_api' : '{% url 'react_views:r_tear_sheets:edit-image-api' id %}',
+		 'edit_pane_image_api' : '{% url 'react_views:r_tear_sheets:edit-pane-image-api' id %}',
 		 'create_caption_api' : '{% url 'react_views:r_tear_sheets:create-caption-api' id %}',
 		 'edit_caption_api' : '{% url 'react_views:r_tear_sheets:edit-caption-api' %}',
 		 'create_detail_api' : '{% url 'react_views:r_tear_sheets:create-detail-api' id %}',

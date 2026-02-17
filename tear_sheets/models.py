@@ -60,6 +60,8 @@ class TearSheet(models.Model):
             "image_scale": 1,
             "image_offset_x": 0,
             "image_offset_y": 0,
+            "image_gutter_width": 8,
+            "pane_layout": None,
         }
 
     def sdata_json_default(self):

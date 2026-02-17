@@ -9,6 +9,7 @@ from .views_api import (
     edit_detail_api,
     edit_footer_api,
     edit_image_api,
+    edit_pane_image_api,
     edit_pricerecord_api,
     edit_tearsheet_api,
 )
@@ -53,6 +54,7 @@ urlpatterns = [
 urlpatterns += [
     path("edit-tearsheetapi/<id>", edit_tearsheet_api, name="edit-tearsheet-api"),
     path("edit-image/<id>", edit_image_api, name="edit-image-api"),
+    path("edit-pane-image/<id>", edit_pane_image_api, name="edit-pane-image-api"),
     path("edit-price-record/", edit_pricerecord_api, name="edit-pricerecord-api"),
     path("edit-caption-record/", edit_caption_api, name="edit-caption-api"),
     path("edit-detail-record/", edit_detail_api, name="edit-detail-api"),

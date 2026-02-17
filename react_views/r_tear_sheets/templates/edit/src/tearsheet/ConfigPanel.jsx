@@ -11,12 +11,13 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 
+import { canSplit, replaceLeafWithSplit, hasSplit, getLeafAtPath, setLeafAtPath } from './paneLayout';
 
 const NUDGE_STEP = 10;
 
-export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData, hasImage }) {
+export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, template, setTemplate, sdata, setSheetData, hasImage, effectiveLayout, selectedPanePath, setSelectedPanePath }) {
 
-	const default_values ={
+	const default_values = {
 		'font_size': 10,
 		'pt_cap': 5,
 		'd_col_1': 83,
@@ -32,7 +33,9 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'image_scale': 1,
 		'image_offset_x': 0,
 		'image_offset_y': 0,
-	}
+		'pane_layout': null,
+		'image_gutter_width': 8,
+	};
 
 	const easy_defs = {
 		'd_col_1': 'Details Column One Width',
@@ -49,7 +52,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'font_size': 'Font Size'
 	}
 
-	const initial_values = useRef( {
+	const initial_values = useRef({
 		'font_size': CONTEXT.tearsheet.sdata.font_size,
 		'pt_cap': CONTEXT.tearsheet.sdata.pt_cap,
 		'd_col_1': CONTEXT.tearsheet.sdata.d_col_1,
@@ -65,7 +68,9 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		'image_scale': CONTEXT.tearsheet.sdata.image_scale != null ? CONTEXT.tearsheet.sdata.image_scale : 1,
 		'image_offset_x': CONTEXT.tearsheet.sdata.image_offset_x != null ? CONTEXT.tearsheet.sdata.image_offset_x : 0,
 		'image_offset_y': CONTEXT.tearsheet.sdata.image_offset_y != null ? CONTEXT.tearsheet.sdata.image_offset_y : 0,
-	})
+		'pane_layout': CONTEXT.tearsheet.sdata.pane_layout ?? null,
+		'image_gutter_width': CONTEXT.tearsheet.sdata.image_gutter_width ?? 8,
+	});
 
 	const initial_template = useRef( template )
 
@@ -125,17 +130,51 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		}));
 	}
 
+	const hasMultiPane = effectiveLayout && sdata?.pane_layout != null;
+	const selectedLeaf = hasMultiPane && selectedPanePath?.length != null ? getLeafAtPath(effectiveLayout, selectedPanePath) : null;
+	const showPositionImage = (hasImage && !hasMultiPane) || (hasMultiPane && selectedLeaf != null);
+	const canSplitCurrent = effectiveLayout && canSplit(effectiveLayout, selectedPanePath ?? []);
+	const showGutterWidth = effectiveLayout && hasSplit(effectiveLayout);
+
 	const handleImageScaleChange = (event, value) => {
-		setSheetData(prev => ({ ...prev, image_scale: Math.max(1, value) }))
-	}
+		const v = Math.max(1, value);
+		if (hasMultiPane && selectedPanePath?.length != null) {
+			setSheetData((prev) => ({ ...prev, pane_layout: setLeafAtPath(prev.pane_layout, selectedPanePath, { image_scale: v }) }));
+		} else {
+			setSheetData((prev) => ({ ...prev, image_scale: v }));
+		}
+	};
 
 	const nudge = (dx, dy) => {
-		setSheetData(prev => ({
-			...prev,
-			image_offset_x: (prev.image_offset_x || 0) + dx,
-			image_offset_y: (prev.image_offset_y || 0) + dy,
-		}))
-	}
+		if (hasMultiPane && selectedPanePath?.length != null) {
+			const leaf = getLeafAtPath(sdata.pane_layout, selectedPanePath);
+			setSheetData((prev) => ({
+				...prev,
+				pane_layout: setLeafAtPath(prev.pane_layout, selectedPanePath, {
+					image_offset_x: (leaf?.image_offset_x ?? 0) + dx,
+					image_offset_y: (leaf?.image_offset_y ?? 0) + dy,
+				}),
+			}));
+		} else {
+			setSheetData((prev) => ({
+				...prev,
+				image_offset_x: (prev.image_offset_x || 0) + dx,
+				image_offset_y: (prev.image_offset_y || 0) + dy,
+			}));
+		}
+	};
+
+	const positionZoomValue = showPositionImage && (hasMultiPane ? (selectedLeaf?.image_scale ?? 1) : (sdata.image_scale ?? 1));
+
+	const handleGutterWidthChange = (event, value) => {
+		setSheetData((prev) => ({ ...prev, image_gutter_width: value }));
+	};
+
+	const handleSplit = (direction) => {
+		const nextLayout = replaceLeafWithSplit(sdata.pane_layout ?? effectiveLayout, selectedPanePath ?? [], direction);
+		setSheetData((prev) => ({ ...prev, pane_layout: nextLayout }));
+		setSelectedPanePath?.([]);
+	};
 
 	const sliderKeys = Object.keys(sdata).filter(key => easy_defs[key] != null)
 
@@ -145,12 +184,12 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 				<h3 className="font-bold py-3">CONFIG</h3>
 				<TemplateDropdown  template={template} setTemplate={setTemplate}/>
 				<InputSwitch  showCreateInputs={showCreateInputs} setShowCreateInputs={setShowCreateInputs}/>
-				{hasImage && (
+				{showPositionImage && (
 					<div className="py-4">
 						<h4 className="font-semibold text-slate-600 py-2">Position image</h4>
 						<Box sx={{ width: 400, color: 'black' }}>
-							<p className="font-sans text-slate-400 py-2 text-s">Zoom ({sdata.image_scale})</p>
-							<Slider size="small" aria-label="image-zoom" min={1} max={3} step={0.1} value={Math.max(1, sdata.image_scale ?? 1)} onChange={handleImageScaleChange} />
+							<p className="font-sans text-slate-400 py-2 text-s">Zoom ({positionZoomValue})</p>
+							<Slider size="small" aria-label="image-zoom" min={1} max={3} step={0.1} value={Math.max(1, positionZoomValue ?? 1)} onChange={handleImageScaleChange} />
 						</Box>
 						<p className="font-sans text-slate-400 py-2 text-s">Move</p>
 						<div className="flex gap-2 flex-wrap">
@@ -159,6 +198,24 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 							<Button size="small" variant="outlined" onClick={() => nudge(0, -NUDGE_STEP)}>Up</Button>
 							<Button size="small" variant="outlined" onClick={() => nudge(0, NUDGE_STEP)}>Down</Button>
 						</div>
+					</div>
+				)}
+				{canSplitCurrent && (
+					<div className="py-4">
+						<h4 className="font-semibold text-slate-600 py-2">Split frame</h4>
+						<div className="flex gap-2 flex-wrap">
+							<Button size="small" variant="outlined" onClick={() => handleSplit('horizontal')}>Split horizontally</Button>
+							<Button size="small" variant="outlined" onClick={() => handleSplit('vertical')}>Split vertically</Button>
+						</div>
+					</div>
+				)}
+				{showGutterWidth && (
+					<div className="py-4">
+						<h4 className="font-semibold text-slate-600 py-2">Gutter width</h4>
+						<Box sx={{ width: 400, color: 'black' }}>
+							<Slider size="small" aria-label="gutter-width" min={0} max={24} step={1} value={sdata.image_gutter_width ?? 8} onChange={handleGutterWidthChange} />
+							<p className="font-sans text-slate-400 py-2 text-s">({sdata.image_gutter_width ?? 8}px)</p>
+						</Box>
 					</div>
 				)}
 				{ sliderKeys.map( (key) => {

@@ -1,24 +1,24 @@
-import {useRef, useState, useEffect} from 'react'
+import { useRef, useState, useEffect } from 'react';
 
-import TemplateA from './TemplateA'
-import TemplateB from './TemplateB'
-import TemplateC from './TemplateC'
-import Image from './Image'
-import Heading from './Heading'
-import Captions from './Captions'
-import Details from './Details'
-import FooterDetails from './FooterDetail'
+import TemplateA from './TemplateA';
+import TemplateB from './TemplateB';
+import TemplateC from './TemplateC';
+import Image from './Image';
+import Heading from './Heading';
+import Captions from './Captions';
+import Details from './Details';
+import FooterDetails from './FooterDetail';
+import { createLegacyLeaf } from './paneLayout';
 
 export default function Tearsheet() {
+	const [price_records, setPriceRecords] = useState(CONTEXT.tearsheet.price_records);
+	const captions = CONTEXT.tearsheet.captions;
+	const details = CONTEXT.tearsheet.details;
+	const footer_details = CONTEXT.tearsheet.footer_details;
+	const img = CONTEXT.tearsheet.img;
+	const title = CONTEXT.tearsheet.title;
 
-	const [price_records, setPriceRecords] = useState(CONTEXT.tearsheet.price_records)
-  const captions = CONTEXT.tearsheet.captions
-	const details = CONTEXT.tearsheet.details
-	const footer_details = CONTEXT.tearsheet.footer_details
-	const img = CONTEXT.tearsheet.img
-	const title = CONTEXT.tearsheet.title
-
-	const [sdata, setSheetData] = useState( {
+	const [sdata, setSheetData] = useState({
 		'd_col_1': CONTEXT.tearsheet.sdata.d_col_1,
 		'd_col_2': CONTEXT.tearsheet.sdata.d_col_2,
 		'col_1': CONTEXT.tearsheet.sdata.col_1,
@@ -35,8 +35,11 @@ export default function Tearsheet() {
 		'image_scale': CONTEXT.tearsheet.sdata.image_scale,
 		'image_offset_x': CONTEXT.tearsheet.sdata.image_offset_x,
 		'image_offset_y': CONTEXT.tearsheet.sdata.image_offset_y,
-		}
-	)
+		'pane_layout': CONTEXT.tearsheet.sdata.pane_layout ?? null,
+		'image_gutter_width': CONTEXT.tearsheet.sdata.image_gutter_width ?? 8,
+	});
+
+	const effectiveLayout = sdata.pane_layout ?? createLegacyLeaf(img, sdata.image_scale, sdata.image_offset_x, sdata.image_offset_y);
 
 	const [template, setTemplate] = useState(CONTEXT.tearsheet.template)
 
@@ -77,11 +80,8 @@ export default function Tearsheet() {
 								<Heading title={CONTEXT.tearsheet.title}/>
 								<Image
 									img={img}
-									imageTransform={{
-										image_scale: sdata.image_scale,
-										image_offset_x: sdata.image_offset_x,
-										image_offset_y: sdata.image_offset_y,
-									}}
+									sdata={sdata}
+									effectiveLayout={effectiveLayout}
 								/>
 								<Captions sdata={sdata} captions={captions} />
 								<Details sdata={sdata} details={details}/>
