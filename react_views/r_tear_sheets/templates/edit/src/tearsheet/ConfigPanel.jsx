@@ -130,6 +130,11 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		}));
 	}
 
+	// MUI Slider passes (event, value); use value so font_size and numeric configs update correctly
+	const handleSliderChange = (event, value, key) => {
+		setSheetData(prev => ({ ...prev, [key]: value }));
+	}
+
 	const hasMultiPane = effectiveLayout && sdata?.pane_layout != null;
 	const selectedLeaf = hasMultiPane && selectedPanePath?.length != null ? getLeafAtPath(effectiveLayout, selectedPanePath) : null;
 	const showPositionImage = (hasImage && !hasMultiPane) || (hasMultiPane && selectedLeaf != null);
@@ -179,7 +184,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 	const sliderKeys = Object.keys(sdata).filter(key => easy_defs[key] != null)
 
 	return(
-		<div className="confg_wrapper drop-shadow-xl" style={{'margin': '0 0 0 50px', 'width': '475px'}}>
+		<div className="confg_wrapper drop-shadow-xl" style={{ margin: '0', width: '475px', padding: '24px 0' }}>
 			<div className="px-5 bg-gray-50 border border-solid rounded-lg text-left">
 				<h3 className="font-bold py-3">CONFIG</h3>
 				<TemplateDropdown  template={template} setTemplate={setTemplate}/>
@@ -222,7 +227,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 					return(
 						<Box key={key} sx={{ width: 400, color: 'black' }}>
 							<p className="font-sans text-slate-400 py-2 text-s">{easy_defs[key]} ({sdata[key]}) </p>
-							<Slider size="small" aria-label="col-width" max={ key == 'font_size' ? 30 : 1000} value={sdata[key]} defaultValue={sdata[key]} onChange={ (event) => handleChange(event,key) } />
+							<Slider size="small" aria-label="col-width" max={ key == 'font_size' ? 30 : 1000} value={Number(sdata[key])} onChange={ (event, value) => handleSliderChange(event, value, key) } />
 					</Box>
 					)})
 				}

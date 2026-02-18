@@ -107,14 +107,13 @@ export default function Tearsheet() {
 				<tbody>
 					<tr>
 						<td style={{
-							'padding-right': '75px',
-							'padding-left': '75px',
-							'width':'816px',
-							'line-height': '1.5',
-							'font-weight': '400',
-							'letter-spacing': '.05em',
-							'font-size': `${sdata.font_size}px`
-							}} className="align-top">
+							paddingRight: '48px',
+							paddingLeft: '75px',
+							width: '816px',
+							lineHeight: '1.5',
+							fontWeight: '400',
+							letterSpacing: '.05em',
+						}} className="align-top">
 								<Heading title={CONTEXT.tearsheet.title}/>
 								<Image
 									img={img}
@@ -126,12 +125,14 @@ export default function Tearsheet() {
 									onLayoutChange={onLayoutChange}
 									onUploadPaneImage={onUploadPaneImage}
 								/>
-								<Captions showCreateInputs={showCreateInputs} sdata={sdata} captions={captions} />
-								<Details showCreateInputs={showCreateInputs} sdata={sdata} details={details}/>
-								{renderTemplate(template) }
-								<FooterDetails showCreateInputs={showCreateInputs} sdata={sdata} footers={footer_details} />
+								<div className="tearsheet-content" style={{ fontSize: `${Number(sdata.font_size) || 12}px` }}>
+									<Captions showCreateInputs={showCreateInputs} sdata={sdata} captions={captions} />
+									<Details showCreateInputs={showCreateInputs} sdata={sdata} details={details}/>
+									{renderTemplate(template) }
+									<FooterDetails showCreateInputs={showCreateInputs} sdata={sdata} footers={footer_details} />
+								</div>
 						</td>
-						<td className="align-top">
+						<td className="align-top" style={{ paddingLeft: '32px', paddingRight: '32px', verticalAlign: 'top' }}>
 								<ConfigPanel
 									showCreateInputs={showCreateInputs}
 									setShowCreateInputs={setShowCreateInputs}

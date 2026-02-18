@@ -1,0 +1,9 @@
+/* Tearsheet content: font size control applies to all backend-rendered text (captions, details, prices, footer) */
+.tearsheet-content,
+.tearsheet-content table,
+.tearsheet-content td,
+.tearsheet-content th,
+.tearsheet-content input,
+.tearsheet-content button {
+  font-size: inherit;
+}

@@ -46,8 +46,8 @@ export default function Heading({title}) {
 	}
 
 	return (
-		<div className="text-gray-500 text-left">
-			<a className="text-xs" href={CONTEXT.view_tearsheet}> {'<<< detail'}</a>
+		<div className="text-gray-500 text-left" style={{ fontSize: '14px' }}>
+			<a href={CONTEXT.view_tearsheet} style={{ fontSize: '14px' }}> {'<<< detail'}</a>
 			{ clicked ?
 				<input onChange={ (event) => onChangeHandler(event)} style={{'display': 'block', 'font-size': '30px'}} className="w-full py-2 text-gray-500 text-left" value={_title}></input> : <span onClick={ ()=> { setClicked(true)}}  style={{'display': 'block', 'font-size': '30px'}} className="w-full py-2 text-gray-500 text-left">{_title}</span>
 			}
