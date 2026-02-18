@@ -232,7 +232,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 					)})
 				}
 				<div style={{'height': '40px'}}></div>
-				<div style={{'letter-spacing': '1','font-size': '14px' }} className="text-left">
+				<div style={{ letterSpacing: '1', fontSize: '14px', display: 'flex', flexWrap: 'wrap', gap: '12px' }} className="text-left">
 					<button className="bg-gray-50 hover:bg-white text-gray-800 py-3 px-4 border border-gray-400 rounded shadow" onClick={ ()=> save() }>SAVE</button>
 					<button className="bg-gray-50 hover:bg-white text-gray-800 py-3 px-4 border border-gray-400 rounded shadow" onClick={ ()=> reset() }>DISCARD CHANGES</button>
 					<button className="bg-gray-50 hover:bg-white text-gray-800 py-3 px-4 border border-gray-400 rounded shadow" onClick={ ()=> defaults() }>DEFAULTS</button>
