@@ -190,7 +190,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 				<TemplateDropdown  template={template} setTemplate={setTemplate}/>
 				<InputSwitch  showCreateInputs={showCreateInputs} setShowCreateInputs={setShowCreateInputs}/>
 				{showPositionImage && (
-					<div className="py-4">
+					<div style={{ paddingTop: '20px', paddingBottom: '20px' }}>
 						<h4 className="font-semibold text-slate-600 py-2">Position image</h4>
 						<Box sx={{ width: 400, color: 'black' }}>
 							<p className="font-sans text-slate-400 py-2 text-s">Zoom ({positionZoomValue})</p>
@@ -206,7 +206,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 					</div>
 				)}
 				{canSplitCurrent && (
-					<div className="py-4">
+					<div style={{ paddingTop: '20px', paddingBottom: '20px' }}>
 						<h4 className="font-semibold text-slate-600 py-2">Split frame</h4>
 						<div className="flex gap-2 flex-wrap">
 							<Button size="small" variant="outlined" onClick={() => handleSplit('horizontal')}>Split horizontally</Button>
@@ -215,7 +215,7 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 					</div>
 				)}
 				{showGutterWidth && (
-					<div className="py-4">
+					<div style={{ paddingTop: '20px', paddingBottom: '20px' }}>
 						<h4 className="font-semibold text-slate-600 py-2">Gutter width between frames</h4>
 						<Box sx={{ width: 400, color: 'black' }}>
 							<p className="font-sans text-slate-400 py-2 text-s">Width of the divider between panes (pixels)</p>
