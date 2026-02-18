@@ -19,10 +19,17 @@ from tear_sheets.models import (
 @api_view(["POST"])
 def edit_tearsheet_api(request, id):
     if request.method == "POST":
-        TearSheet.objects.filter(id=id).update(**request.data["data"])
-
+        data = request.data.get("data") or {}
+        template = data.get("template")
+        sdata = data.get("sdata")
+        update_kwargs = {}
+        if template is not None:
+            update_kwargs["template"] = template
+        if sdata is not None:
+            update_kwargs["sdata"] = sdata
+        if update_kwargs:
+            TearSheet.objects.filter(id=id).update(**update_kwargs)
         return JsonResponse({"errors": []})
-
     else:
         return HttpResponse("Request method not supported")
 

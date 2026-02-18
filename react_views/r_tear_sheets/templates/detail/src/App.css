@@ -1,0 +1,9 @@
+/* Tearsheet content: use saved font size for all backend-rendered text */
+.tearsheet-content,
+.tearsheet-content table,
+.tearsheet-content td,
+.tearsheet-content th,
+.tearsheet-content input,
+.tearsheet-content button {
+  font-size: inherit;
+}
