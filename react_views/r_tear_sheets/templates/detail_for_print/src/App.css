@@ -1,3 +1,7 @@
 #root {
 	text-rendering: optimizeLegibility;
 }
+
+.tearsheet-content {
+	/* Font size set inline from sdata.font_size */
+}
