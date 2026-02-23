@@ -98,6 +98,54 @@ export function hasSplit(layout) {
   return layout?.type === 'split';
 }
 
+/**
+ * True if the leaf at path can be removed without creating stair-step borders:
+ * only when its sibling (same parent split) is also a leaf. Then we unsplit
+ * by replacing the parent with the sibling.
+ */
+export function canRemoveLeaf(layout, path) {
+  if (!layout || !Array.isArray(path)) return false;
+  const node = getNodeAtPath(layout, path);
+  if (!node || node.type !== 'leaf') return false;
+  if (path.length === 0) return false; // single pane, nothing to unsplit
+  if (path.length === 1) {
+    if (layout.type !== 'split' || !layout.children) return false;
+    const sibling = layout.children[1 - path[0]];
+    return sibling?.type === 'leaf';
+  }
+  if (path.length === 2) {
+    const parent = getNodeAtPath(layout, path.slice(0, 1));
+    if (!parent || parent.type !== 'split' || !parent.children) return false;
+    const sibling = parent.children[1 - path[1]];
+    return sibling?.type === 'leaf';
+  }
+  return false;
+}
+
+/**
+ * Remove the leaf at path by replacing its parent split with the sibling.
+ * The sibling (other child of the same split) becomes the replacement; its content is kept.
+ */
+export function removeLeaf(layout, path) {
+  if (!layout || !Array.isArray(path) || path.length === 0) return layout;
+  if (path.length === 1) {
+    if (layout.type !== 'split' || !layout.children) return layout;
+    return layout.children[1 - path[0]];
+  }
+  if (path.length === 2) {
+    const parentIdx = path[0];
+    const childIdx = path[1];
+    if (layout.type !== 'split' || !layout.children) return layout;
+    const parent = layout.children[parentIdx];
+    if (!parent || parent.type !== 'split' || !parent.children) return layout;
+    const sibling = parent.children[1 - childIdx];
+    const newChildren = [...layout.children];
+    newChildren[parentIdx] = sibling;
+    return { ...layout, children: newChildren };
+  }
+  return layout;
+}
+
 export function updateNodeAtPath(layout, path, updater) {
   if (!layout || path.length === 0) return updater(layout);
   const [idx, ...rest] = path;

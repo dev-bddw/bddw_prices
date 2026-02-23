@@ -11,7 +11,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Button from '@mui/material/Button';
 
-import { canSplit, replaceLeafWithSplit, hasSplit, getLeafAtPath, setLeafAtPath } from './paneLayout';
+import { canSplit, replaceLeafWithSplit, hasSplit, getLeafAtPath, setLeafAtPath, canRemoveLeaf, removeLeaf } from './paneLayout';
 
 const NUDGE_STEP = 10;
 
@@ -140,6 +140,8 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 	const showPositionImage = (hasImage && !hasMultiPane) || (hasMultiPane && selectedLeaf != null);
 	const canSplitCurrent = effectiveLayout && canSplit(effectiveLayout, selectedPanePath ?? []);
 	const showGutterWidth = effectiveLayout && hasSplit(effectiveLayout);
+	const layoutForRemove = sdata?.pane_layout ?? effectiveLayout;
+	const canRemoveCurrent = hasMultiPane && layoutForRemove && selectedPanePath != null && selectedPanePath.length > 0 && canRemoveLeaf(layoutForRemove, selectedPanePath);
 
 	const handleImageScaleChange = (event, value) => {
 		const v = Math.max(1, value);
@@ -181,6 +183,13 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 		setSelectedPanePath?.([]);
 	};
 
+	const handleRemoveFrame = () => {
+		if (!canRemoveCurrent || !layoutForRemove) return;
+		const nextLayout = removeLeaf(layoutForRemove, selectedPanePath);
+		setSheetData((prev) => ({ ...prev, pane_layout: nextLayout }));
+		setSelectedPanePath?.([]);
+	};
+
 	const sliderKeys = Object.keys(sdata).filter(key => easy_defs[key] != null)
 
 	return(
@@ -212,6 +221,15 @@ export default function ConfigPanel({ showCreateInputs, setShowCreateInputs, tem
 							<Button size="small" variant="outlined" onClick={() => handleSplit('horizontal')}>Split horizontally</Button>
 							<Button size="small" variant="outlined" onClick={() => handleSplit('vertical')}>Split vertically</Button>
 						</div>
+					</div>
+				)}
+				{hasMultiPane && selectedPanePath != null && selectedPanePath.length > 0 && (
+					<div style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+						<h4 className="font-semibold text-slate-600 py-2">Remove frame</h4>
+						<p className="font-sans text-slate-400 py-2 text-s">Remove the selected pane. Only allowed when the adjacent pane is a single frame (keeps borders straight).</p>
+						<Button size="small" variant="outlined" color="secondary" onClick={handleRemoveFrame} disabled={!canRemoveCurrent}>
+							Remove selected frame
+						</Button>
 					</div>
 				)}
 				{showGutterWidth && (
