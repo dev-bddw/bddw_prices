@@ -1,5 +1,3 @@
-<script type="module" crossorigin src="/static/assets/index.4d10dbf4.js"></script>
-<link rel="stylesheet" href="/static/assets/index.6f8e6ec7.css">
 {% extends 'react_base.html' %}
 {% load static %}
 
@@ -7,9 +5,9 @@
 
 {% block javascript %}
   {{block.super}}
- <script type="module" crossorigin src="#"></script>
- <link rel="stylesheet" href="#">
- 
+ <script type="module" crossorigin src="{% static "assets/index.4d10dbf4.js" %}"></script>
+ <link rel="stylesheet" href="{% static "assets/index.6f8e6ec7.css" %}">
+
 {% endblock javascript %}
 
 {% block content %}
